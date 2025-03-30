@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">secon-hack</string>
+    <string name="title_activity_main">secon-hack</string>
+    <string name="package_name">ru.secon.hack</string>
+    <string name="custom_url_scheme">ru.secon.hack</string>
+</resources>

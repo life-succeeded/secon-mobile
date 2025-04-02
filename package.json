@@ -24,7 +24,8 @@
   },
   "scripts": {
     "start": "rsbuild dev",
-    "build": "rsbuild build && cap sync android",
+    "build": "rsbuild build",
+    "build:android": "rsbuild build && cap sync android",
     "preview": "rsbuild preview",
     "lint": "eslint src",
     "android:sync": "cap sync android",

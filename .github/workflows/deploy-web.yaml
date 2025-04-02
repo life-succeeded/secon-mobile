@@ -1,0 +1,37 @@
+name: Docker Build & Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted 
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get short SHA
+        id: vars
+        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Build Docker Image with unique tag
+        run: |
+          docker build -t secon-hack:${{ env.SHORT_SHA }} .
+
+      - name: Stop and remove old container if exists
+        run: |
+          if [ "$(docker ps -q -f name=secon-hack)" ]; then
+            docker stop secon-hack
+          fi
+          if [ "$(docker ps -aq -f name=secon-hack)" ]; then
+            docker rm secon-hack
+          fi
+
+      - name: Run new container
+        run: |
+          docker run -d --name secon-hack -p 3000:3000 secon-hack:${{ env.SHORT_SHA }}
+
+      - name: Cleanup old dangling images
+        run: docker image prune -f

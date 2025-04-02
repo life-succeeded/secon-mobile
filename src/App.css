@@ -28,11 +28,51 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Глобальные стили для Ionic компонентов */
+.toolbar-gradient {
+  --background: linear-gradient(135deg, #3880ff 0%, #3dc2ff 100%);
+  --color: white;
+  --border-width: 0;
 }
+
+.button-with-gradient {
+  --background: linear-gradient(135deg, #3880ff 0%, #3dc2ff 100%);
+  --background-hover: linear-gradient(135deg, #3171e0 0%, #2bb1e8 100%);
+  --background-activated: linear-gradient(135deg, #3171e0 0%, #2bb1e8 100%);
+  --background-focused: linear-gradient(135deg, #3171e0 0%, #2bb1e8 100%);
+  --border-radius: 50%;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.fab-gradient {
+  --background: linear-gradient(135deg, #3880ff 0%, #3dc2ff 100%);
+  --background-hover: linear-gradient(135deg, #3171e0 0%, #2bb1e8 100%);
+  --background-activated: linear-gradient(135deg, #3171e0 0%, #2bb1e8 100%);
+  --background-focused: linear-gradient(135deg, #3171e0 0%, #2bb1e8 100%);
+  --box-shadow: 0 4px 8px rgba(56, 128, 255, 0.3);
+}
+
+/* Анимации */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Фиксы для Ionic */
+ion-content {
+  --padding-bottom: 80px;
+}
+
+ion-item {
+  --inner-padding-end: 0;
+  --padding-start: 0;
+}
+

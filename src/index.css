@@ -1,15 +1,197 @@
 @import "tailwindcss";
-
-body {
+/* Основные стили */
+html, body, #root {
+  height: 100%;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Ionic Fixes */
+ion-app {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+}
+
+ion-router-outlet {
+  flex: 1;
+  position: relative;
+}
+
+/* Критически важные стили */
+ion-page {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  contain: none !important;
+}
+
+ion-content {
+  --background: #f8f9fa;
+  flex: 1;
+  display: block !important;
+  position: relative !important;
+  overflow: auto;
+}
+
+/* Хедер по умолчанию */
+ion-header {
+  flex-shrink: 0;
+}
+
+ion-toolbar {
+  --background: linear-gradient(135deg, #3880ff 0%, #3dc2ff 100%);
+  --color: white;
+}
+
+/* Анимация спиннера */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Фикс для отступов */
+ion-content {
+  --padding-bottom: 80px;
+}
+
+/* Кастомные стили для кнопок */
+ion-button[color="primary"] {
+  --background: var(--ion-color-primary);
+  --background-hover: var(--ion-color-primary-shade);
+  --background-activated: var(--ion-color-primary-tint);
+  --background-focused: var(--ion-color-primary-shade);
+}
+
+/* Градиент для primary цвета */
+:root {
+  --ion-color-primary: #3880ff;
+  --ion-color-primary-rgb: 56,128,255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255,255,255;
+  --ion-color-primary-shade: #3171e0;
+  --ion-color-primary-tint: #4c8dff;
+  
+  /* Градиентный эффект */
+  --ion-color-primary-gradient: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-tint) 100%);
+}
+
+/* Применяем градиент */
+ion-toolbar[color="primary"], 
+ion-button[color="primary"].button-solid, 
+ion-fab-button[color="primary"] {
+  --background: var(--ion-color-primary-gradient);
+}
+
+.signature-preview {
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 10px 16px;
+  background: #f9f9f9;
+}
+
+.photo-container {
+  position: relative;
+  background: #f8fafc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.delete-photo-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  --background: white;
+  --border-radius: 50%;
+  --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 28px;
+  height: 28px;
+}
+
+/* Стили для календаря */
+.custom-datetime {
+  --width: 100%;
+  --max-width: 100%;
+  --background: white;
+}
+
+.date-picker-button {
+  --border-radius: 8px;
+  --border-color: #e2e8f0;
+  --background: #f8fafc;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+/* Кастомизация IonDatetime */
+.custom-datetime {
+  --background: white;
+  --background-rgb: 255, 255, 255;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --border-color: #e2e8f0;
+  --ion-color-primary: #3b82f6;
+  --ion-color-primary-rgb: 59, 130, 246;
+}
+
+.custom-datetime::part(wheel-item) {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+.custom-datetime::part(wheel-item active) {
+  color: #1e293b;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.custom-datetime::part(time-button) {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+/* Стили для кнопок выбора даты/времени */
+.date-picker-button::part(native),
+.time-picker-button::part(native) {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  color: #334155;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.date-picker-button::part(native):hover,
+.time-picker-button::part(native):hover {
+  background: #f8fafc;
+}
+
+.date-picker-button::part(native):focus,
+.time-picker-button::part(native):focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.5);
+}
+/* Стили для модального окна */
+ion-modal {
+  --border-radius: 16px 16px 0 0;
+  --box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для кнопок календаря */
+ion-datetime::part(calendar-day active) {
+  background: var(--ion-color-primary);
+  color: white;
+}
+
+ion-datetime::part(calendar-day):hover {
+  background: rgba(var(--ion-color-primary-rgb), 0.1);
 }

@@ -29,6 +29,9 @@ jobs:
       - name: Setup Gradle cache
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Set gradlew executable permission
+        run: chmod +x ./android/gradlew
+
       - name: Build debug APK
         run: ./android/gradlew assembleDebug
 

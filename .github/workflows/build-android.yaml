@@ -58,16 +58,15 @@ jobs:
                   mv "$APK_PATH" "$NEW_NAME"
                   echo "APK_NAME=$NEW_NAME" >> $GITHUB_ENV
 
-            - name: Create Git tag
-              run: |
-                  git config user.name "github-actions"
-                  git config user.email "github-actions@github.com"
-                  git tag mobile-${SHORT_SHA}
-                  git push origin mobile-${SHORT_SHA}
+            - name: 'Get Previous tag'
+              id: previous_tag
+              uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+              with:
+                  fallback: mobile-${SHORT_SHA}
 
             - name: Create Release and Upload APK
-                  uses: softprops/action-gh-release@v1
-                  with:
+              uses: softprops/action-gh-release@v1
+              with:
                     tag_name: mobile-${{ env.SHORT_SHA }}
                     name: "Build ${{ env.SHORT_SHA }}"
                     draft: false

@@ -65,18 +65,16 @@ jobs:
                   git tag mobile-${SHORT_SHA}
                   git push origin mobile-${SHORT_SHA}
 
-            - name: Create Release (if not exists)
-              uses: softprops/action-gh-release@v1
-              with:
-                  tag_name: mobile-${{ env.SHORT_SHA }}
-                  name: 'Build ${{ env.SHORT_SHA }}'
-                  draft: false
-                  prerelease: false
-
-            - name: Upload APK to Release
-              uses: softprops/action-gh-release@v1
-              with:
-                  files: ${{ env.APK_NAME }}
+            - name: Create Release and Upload APK
+                  uses: softprops/action-gh-release@v1
+                  with:
+                    tag_name: mobile-${{ env.SHORT_SHA }}
+                    name: "Build ${{ env.SHORT_SHA }}"
+                    draft: false
+                    prerelease: false
+                    files: ${{ env.APK_NAME }}
+                  env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             # - name: Upload APK
             #   uses: actions/upload-artifact@v4

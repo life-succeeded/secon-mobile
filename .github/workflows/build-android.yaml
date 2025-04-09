@@ -32,6 +32,17 @@ jobs:
       - name: Set gradlew executable permission
         run: chmod +x ./android/gradlew
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build Android with npm
+        run: npm run build:android
+
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug

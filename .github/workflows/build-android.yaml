@@ -58,13 +58,21 @@ jobs:
                   mv "$APK_PATH" "$NEW_NAME"
                   echo "APK_NAME=$NEW_NAME" >> $GITHUB_ENV
 
-            - name: 'Get Previous tag'
-              id: previous_tag
-              uses: 'WyriHaximus/github-action-get-previous-tag@v1'
-              with:
-                  fallback: mobile-${SHORT_SHA}
+            - name: Create GitHub Release with Tag
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  TAG_NAME="mobile-${SHORT_SHA}"
+                  if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+                    echo "Release with tag $TAG_NAME already exists"
+                  else
+                    gh release create "$TAG_NAME" \
+                      --title "Build $SHORT_SHA" \
+                      --notes "Automated release from workflow"
+                    echo "Created GitHub release with tag $TAG_NAME"
+                  fi
 
-            - name: Create Release and Upload APK
+            - name: Upload APK to Release
               uses: softprops/action-gh-release@v1
               with:
                   tag_name: mobile-${{ env.SHORT_SHA }}
@@ -74,9 +82,3 @@ jobs:
                   files: ${{ env.APK_NAME }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            # - name: Upload APK
-            #   uses: actions/upload-artifact@v4
-            #   with:
-            #       name: '${{ env.APP_NAME }}-${{ env.SHORT_SHA }}'
-            #       path: android/app/build/outputs/apk/debug/app-debug.apk

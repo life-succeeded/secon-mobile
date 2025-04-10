@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge'
 import { TIconVariant } from '../../icons/types'
 import { HeartIcon } from '../../icons/bxHeart'
 import { fallback } from '../../../utils/helpers'
+import { ArrowIcon } from '../../icons/bxArrow'
 
 interface IButtonProps {
     onClick?: TOnClickHandler
@@ -15,6 +16,8 @@ const renderIcon = (variant: TIconVariant) => {
     switch (variant) {
         case 'heart':
             return <HeartIcon fill="white" width={16} height={16} />
+        case 'arrow':
+            return <ArrowIcon fill="white" width={16} height={16} />
         default:
             return <></>
     }

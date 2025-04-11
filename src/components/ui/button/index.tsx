@@ -7,12 +7,16 @@ import { ArrowIcon } from '../../icons/bxArrow'
 import { renderIcon } from '../../icons/helpers'
 import { tv } from 'tailwind-variants'
 
+/* focus:outline-none 
+  focus:bg-[#5c8a8a]*/
+
 const button = tv({
-    base: 'flex h-[44px] cursor-pointer items-center justify-center rounded-[6px] p-3 text-white select-none',
+    base: 'flex h-[44px] cursor-pointer items-center justify-center rounded-[6px] p-3 text-white select-none focus:outline-none ',
     variants: {
         color: {
-            default: 'bg-black-1 hover:bg-black-3 active:bg-black-3',
-            transparent: 'bg-transparent hover:bg-black-3/10 active:bg-black-3/10',
+            default: 'bg-black-1 hover:bg-black-3 active:bg-black-3 focus:bg-black-1',
+            transparent:
+                'bg-transparent hover:bg-black-3/10 active:bg-black-3/10 focus:bg-transparent',
         },
     },
 })

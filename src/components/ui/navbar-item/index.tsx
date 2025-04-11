@@ -32,7 +32,7 @@ export const NavbarItem = (props: INavbarItemProps) => {
                     className: props.className,
                 })}
             >
-                {renderIcon(props.icon, { fill })}
+                {renderIcon(props.icon, { fill, height: 24 })}
                 <span className="text-12-20-small">{props.text}</span>
             </li>
         </>

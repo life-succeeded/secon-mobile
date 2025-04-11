@@ -5,6 +5,8 @@ import { HeartIcon } from './bxHeart'
 import { FileBlankIcon } from './bxFileBlank'
 import { TaskIcon } from './bxTask'
 import { MapIcon } from './bxMap'
+import { PlusIcon } from './bxPlus'
+import { FileIcon } from './bxFile'
 
 export const renderIcon = (variant: TIconVariant, params?: IIconParams) => {
     const { fill, width, height, className } = params ?? {}
@@ -49,6 +51,25 @@ export const renderIcon = (variant: TIconVariant, params?: IIconParams) => {
         case 'map':
             return (
                 <MapIcon
+                    fill={fallback(fill, 'white')}
+                    width={fallback(width, undefined)}
+                    height={fallback(height, undefined)}
+                    className={fallback(className, undefined)}
+                />
+            )
+        case 'plus':
+            return (
+                <PlusIcon
+                    fill={fallback(fill, 'white')}
+                    width={fallback(width, undefined)}
+                    height={fallback(height, undefined)}
+                    className={fallback(className, undefined)}
+                />
+            )
+
+        case 'file':
+            return (
+                <FileIcon
                     fill={fallback(fill, 'white')}
                     width={fallback(width, undefined)}
                     height={fallback(height, undefined)}

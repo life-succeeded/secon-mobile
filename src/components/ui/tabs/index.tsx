@@ -2,19 +2,19 @@ import { useState } from 'react'
 import { TChildren } from '../../../utils/types'
 import { twMerge } from 'tailwind-merge'
 
-interface Tab {
+export interface ITab {
     id: string
     label: string
     content: TChildren
 }
 
-interface TabsProps {
-    tabs: Tab[]
+interface ITabsProps {
+    tabs: ITab[]
     defaultTab?: string
     className?: string
 }
 
-export const Tabs = ({ tabs, defaultTab, className }: TabsProps) => {
+export const Tabs = ({ tabs, defaultTab, className }: ITabsProps) => {
     const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id)
 
     if (!tabs.length) return null

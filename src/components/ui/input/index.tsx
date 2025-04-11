@@ -20,7 +20,7 @@ const renderLabel = (label: string) => {
 export const Input = (props: IInputProps) => {
     return (
         <>
-            <div className="flex flex-col gap-2">
+            <div className="flex w-full flex-col gap-2">
                 {props.label && renderLabel(props.label)}
                 <input
                     type="text"

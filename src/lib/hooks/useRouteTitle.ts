@@ -6,6 +6,7 @@ const routeTitles: Record<string, string> = {
     '/create': 'Акт',
     '/acts': 'Акты',
     '/report': 'Отчёт',
+    '/login': 'Войти',
 }
 
 function extractAndValidateId(path: string): number | null {

@@ -1,4 +1,5 @@
 import { HeartIcon } from './components/icons/bxHeart'
+import { Alert } from './components/ui/alert'
 import { Badge } from './components/ui/badge'
 import { Button } from './components/ui/button'
 import Card from './components/ui/card'
@@ -26,6 +27,7 @@ function App() {
                             </Card>
                         </div>
                         <Badge variant="green" text="test" />
+                        <Alert text="test" />
                     </div>
                 </div>
                 <Navbar />

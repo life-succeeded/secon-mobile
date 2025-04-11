@@ -12,7 +12,7 @@ export interface IInputProps {
 const renderLabel = (label: string) => {
     return (
         <>
-            <label>{label}</label>
+            <label className="text-14-20-regular">{label}</label>
         </>
     )
 }
@@ -25,7 +25,7 @@ export const Input = (props: IInputProps) => {
                 <input
                     type="text"
                     className={twMerge(
-                        'border-white-3 placeholder-grey-3 bg-white-2 focus:border-black-2 h-[44px] rounded-[6px] border px-4 py-3 focus:border-[2px]',
+                        'border-white-3 placeholder-grey-3 bg-white-2 focus:border-black-2 active:border-black-2 h-[44px] rounded-[6px] border px-4 py-3 focus:border-[2px] active:border-[2px]',
                         props.className,
                     )}
                     value={props.value}

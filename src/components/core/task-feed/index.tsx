@@ -1,14 +1,39 @@
+import { twMerge } from 'tailwind-merge'
 import { range } from '../../../utils/helpers'
 import { Task } from '../task'
+import { ITab, Tabs } from '../../ui/tabs'
+
+const tabs: Array<ITab> = [
+    {
+        id: 'all',
+        label: 'Все',
+        content: <TabsList />,
+    },
+    {
+        id: 'todo',
+        label: 'План',
+        content: <TabsList />,
+    },
+    {
+        id: 'inProgress',
+        label: 'В работе',
+        content: <TabsList />,
+    },
+    {
+        id: 'done',
+        label: 'Готово',
+        content: <TabsList />,
+    },
+]
 
 interface ITaskFeed {
     className?: string
 }
 
-export const TaskFeed = (props: ITaskFeed) => {
+function TabsList(props: ITaskFeed) {
     return (
         <>
-            <div className="border-white-3 flex flex-col border-t">
+            <div className={twMerge('border-white-3 flex flex-col border-t', props.className)}>
                 {range(10).map(() => {
                     return (
                         <div className="border-white-3 border-b">
@@ -17,6 +42,14 @@ export const TaskFeed = (props: ITaskFeed) => {
                     )
                 })}
             </div>
+        </>
+    )
+}
+
+export const TaskFeed = (props: ITaskFeed) => {
+    return (
+        <>
+            <Tabs tabs={tabs} defaultTab="all" />
         </>
     )
 }

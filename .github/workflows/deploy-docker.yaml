@@ -1,41 +1,41 @@
 name: Docker Build & Deploy
 
 on:
-  push:
-    branches: [master]
+    push:
+        branches: [master]
 
 env:
-  CONTAINER_NAME: secon-hack
-  CONTAINER_PORT: 3000
+    CONTAINER_NAME: secon-hack
+    CONTAINER_PORT: 3000
 
 jobs:
-  deploy:
-    runs-on: self-hosted
+    deploy:
+        runs-on: self-hosted
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-      - name: Get short SHA
-        id: vars
-        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+            - name: Get short SHA
+              id: vars
+              run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: Build Docker Image with unique tag
-        run: |
-          docker build -t $CONTAINER_NAME:${{ env.SHORT_SHA }} .
+            - name: Build Docker Image with unique tag
+              run: |
+                  docker build -t $CONTAINER_NAME:${{ env.SHORT_SHA }} .
 
-      - name: Stop and remove old container if exists
-        run: |
-          if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
-            docker stop $CONTAINER_NAME
-          fi
-          if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
-            docker rm $CONTAINER_NAME
-          fi
+            - name: Stop and remove old container if exists
+              run: |
+                  if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+                    docker stop $CONTAINER_NAME
+                  fi
+                  if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
+                    docker rm $CONTAINER_NAME
+                  fi
 
-      - name: Run new container
-        run: |
-          docker run -d --name $CONTAINER_NAME --network=backend -e ENV=prod -p $CONTAINER_PORT:$CONTAINER_PORT $CONTAINER_NAME:${{ env.SHORT_SHA }}
+            - name: Run new container
+              run: |
+                  docker run -d --name $CONTAINER_NAME --network=backend -e ENV=prod -p $CONTAINER_PORT:$CONTAINER_PORT $CONTAINER_NAME:${{ env.SHORT_SHA }}
 
             - name: Remove old images of the same container (keep current)
               run: |
@@ -45,18 +45,23 @@ jobs:
                   awk '{ print $2 }' | \
                   xargs -r docker rmi -f
 
-      - name: Truncate container logs
-        run: |
-          CONTAINER_ID=$(docker ps -aqf "name=$CONTAINER_NAME")
-          if [ -n "$CONTAINER_ID" ]; then
-            LOG_FILE="/var/lib/docker/containers/$CONTAINER_ID/${CONTAINER_ID}-json.log"
-            if [ -f "$LOG_FILE" ]; then
-              sudo truncate -s 0 "$LOG_FILE"
-            fi
-          fi
+            - name: Remove all stopped containers with same name
+              run: |
+                  docker ps -a --filter "name=$CONTAINER_NAME" --filter "status=exited" -q | \
+                  xargs -r docker rm
 
-      - name: Cleanup unused Docker resources
-        run: docker system prune -f --volumes
+            - name: Truncate container logs
+              run: |
+                  CONTAINER_ID=$(docker ps -aqf "name=$CONTAINER_NAME")
+                  if [ -n "$CONTAINER_ID" ]; then
+                    LOG_FILE="/var/lib/docker/containers/$CONTAINER_ID/${CONTAINER_ID}-json.log"
+                    if [ -f "$LOG_FILE" ]; then
+                      sudo truncate -s 0 "$LOG_FILE"
+                    fi
+                  fi
 
-      - name: Cleanup old dangling images
-        run: docker image prune -f
+            - name: Cleanup unused Docker resources
+              run: docker system prune -f --volumes
+
+            - name: Cleanup old dangling images
+              run: docker image prune -f

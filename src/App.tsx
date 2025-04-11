@@ -4,6 +4,7 @@ import { Badge } from './components/ui/badge'
 import { Button } from './components/ui/button'
 import Card from './components/ui/card'
 import Checkbox from './components/ui/checkbox'
+import { Header } from './components/ui/header'
 import { Input } from './components/ui/input'
 import Item from './components/ui/item'
 import { Navbar } from './components/ui/navbar'
@@ -14,6 +15,7 @@ function App() {
     return (
         <>
             <div className="flex h-screen flex-col">
+                <Header />
                 <div className="flex-grow overflow-auto">
                     {' '}
                     {/* Контент с возможностью прокрутки */}
@@ -29,9 +31,9 @@ function App() {
                         </div>
                         <Badge variant="green" text="test" />
                         <Alert text="test" />
-                        <Radio label="test" onChange={() => {}} name="test" />
-                        <Radio label="test" onChange={() => {}} name="test" />
-                        <Radio label="test" onChange={() => {}} name="test" />
+                        <Radio label="test" name="test" />
+                        <Radio label="test" name="test" />
+                        <Radio label="test" name="test" />
                     </div>
                 </div>
                 <Navbar />

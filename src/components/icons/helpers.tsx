@@ -1,5 +1,5 @@
 import { ArrowIcon } from './bxArrow'
-import { IIconParams, TIconVariant } from './types'
+import { IIconParams, IIconProps, TIconVariant } from './types'
 import { fallback } from '../../utils/helpers'
 import { HeartIcon } from './bxHeart'
 import { FileBlankIcon } from './bxFileBlank'
@@ -7,6 +7,7 @@ import { TaskIcon } from './bxTask'
 import { MapIcon } from './bxMap'
 import { PlusIcon } from './bxPlus'
 import { FileIcon } from './bxFile'
+import { ExitIcon } from './bxExit'
 
 export const renderIcon = (variant: TIconVariant, params?: IIconParams) => {
     const { fill, width, height, className } = params ?? {}
@@ -66,10 +67,18 @@ export const renderIcon = (variant: TIconVariant, params?: IIconParams) => {
                     className={fallback(className, undefined)}
                 />
             )
-
         case 'file':
             return (
                 <FileIcon
+                    fill={fallback(fill, 'white')}
+                    width={fallback(width, undefined)}
+                    height={fallback(height, undefined)}
+                    className={fallback(className, undefined)}
+                />
+            )
+        case 'exit':
+            return (
+                <ExitIcon
                     fill={fallback(fill, 'white')}
                     width={fallback(width, undefined)}
                     height={fallback(height, undefined)}

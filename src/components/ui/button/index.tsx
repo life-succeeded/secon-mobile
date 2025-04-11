@@ -11,15 +11,27 @@ import { tv } from 'tailwind-variants'
   focus:bg-[#5c8a8a]*/
 
 const button = tv({
-    base: 'flex h-[44px] cursor-pointer items-center justify-center rounded-[6px] p-3 text-white select-none focus:outline-none ',
+    base: [
+      'flex h-[44px] cursor-pointer items-center justify-center rounded-[6px] p-3 text-white select-none',
+      'transition-colors duration-200',
+      'focus:outline-none',
+      'active:scale-95', 
+    ],
     variants: {
-        color: {
-            default: 'bg-black-1 hover:bg-black-3 active:bg-black-3 focus:bg-black-1',
-            transparent:
-                'bg-transparent hover:bg-black-3/10 active:bg-black-3/10 focus:bg-transparent',
-        },
+      color: {
+        default: 'bg-black-1 hover:bg-black-3 active:bg-black-3',
+        transparent: [
+          'bg-transparent',
+          'hover:bg-black-3/10',
+          'active:bg-black-3/10',
+          '!active:bg-transparent', 
+        ],
+      },
     },
-})
+    defaultVariants: {
+      color: 'default',
+    },
+  });
 
 type TButtonVariants = keyof typeof button.variants.color
 
@@ -40,7 +52,7 @@ const renderChildrenWithIcon = (
     iconParams?: IIconParams,
 ) => {
     return (
-        <div className="flex items-center justify-center gap-[3px]">
+        <div className="flex items-center justify-center gap-[3px] active:scale-98 focus:outline-none select-none touch-none">
             {renderIcon(variant)}
             {children}
         </div>
@@ -66,3 +78,4 @@ export const Button = (props: IButtonProps) => {
         </>
     )
 }
+

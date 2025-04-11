@@ -33,7 +33,7 @@ interface ITaskFeed {
 function TabsList(props: ITaskFeed) {
     return (
         <>
-            <div className={twMerge('border-white-3 flex flex-col border-t', props.className)}>
+            <div className={twMerge('border-white-3 flex flex-col', props.className)}>
                 {range(10).map(() => {
                     return (
                         <div className="border-white-3 border-b">

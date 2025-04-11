@@ -16,7 +16,7 @@ function App() {
                 <ExampleComponent />
                 <div className="flex flex-col space-y-4">
                     <Card title="Адрес">
-                        <Item icon="heart" text="Hello, world!" />
+                        <Item icon="fileBlank" text="Hello, world!" />
                     </Card>
                 </div>
             </div>

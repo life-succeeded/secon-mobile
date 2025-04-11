@@ -1,4 +1,4 @@
-export type TIconVariant = 'heart' | 'arrow'
+export type TIconVariant = 'heart' | 'arrow' | 'fileBlank'
 
 export interface IIconProps {
     className?: string

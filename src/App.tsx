@@ -1,4 +1,5 @@
 import { HeartIcon } from './components/icons/bxHeart'
+import { Badge } from './components/ui/badge'
 import { Button } from './components/ui/button'
 import Card from './components/ui/card'
 import Checkbox from './components/ui/checkbox'
@@ -19,6 +20,8 @@ function App() {
                         <Item icon="fileBlank" text="Hello, world!" />
                     </Card>
                 </div>
+
+                <Badge variant="green" text="test" />
             </div>
         </>
     )

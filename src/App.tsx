@@ -7,6 +7,7 @@ import Checkbox from './components/ui/checkbox'
 import { Input } from './components/ui/input'
 import Item from './components/ui/item'
 import { Navbar } from './components/ui/navbar'
+import Radio from './components/ui/radio'
 import ExampleComponent from './components/ui/test'
 
 function App() {
@@ -28,6 +29,9 @@ function App() {
                         </div>
                         <Badge variant="green" text="test" />
                         <Alert text="test" />
+                        <Radio label="test" onChange={() => {}} name="test" />
+                        <Radio label="test" onChange={() => {}} name="test" />
+                        <Radio label="test" onChange={() => {}} name="test" />
                     </div>
                 </div>
                 <Navbar />

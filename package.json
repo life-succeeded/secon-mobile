@@ -33,7 +33,8 @@
     "preview": "rsbuild preview",
     "lint": "eslint src",
     "android:sync": "cap sync android",
-    "android:open": "cap open android"
+    "android:open": "cap open android",
+    "android:assets": "exec @capacitor/assets generate --android"
   },
   "eslintConfig": {
     "extends": [

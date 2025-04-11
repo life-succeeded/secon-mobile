@@ -5,5 +5,11 @@ export interface IIconProps {
     width?: number
     height?: number
     fill?: string
-    
+}
+
+export interface IIconParams {
+    fill?: string
+    width?: number
+    height?: number
+    className?: string
 }

@@ -1,9 +1,10 @@
 import { TChildren, TOnClickHandler } from '../../../utils/types'
 import { twMerge } from 'tailwind-merge'
-import { TIconVariant } from '../../icons/types'
+import { IIconParams, TIconVariant } from '../../icons/types'
 import { HeartIcon } from '../../icons/bxHeart'
 import { fallback } from '../../../utils/helpers'
 import { ArrowIcon } from '../../icons/bxArrow'
+import { renderIcon } from '../../icons/helpers'
 
 interface IButtonProps {
     onClick?: TOnClickHandler
@@ -12,16 +13,6 @@ interface IButtonProps {
     icon?: TIconVariant
 }
 
-const renderIcon = (variant: TIconVariant) => {
-    switch (variant) {
-        case 'heart':
-            return <HeartIcon fill="white" width={16} height={16} />
-        case 'arrow':
-            return <ArrowIcon fill="white" width={16} height={16} />
-        default:
-            return <></>
-    }
-}
 const renderChildrenWithIcon = (variant: TIconVariant, children?: TChildren) => {
     return (
         <div className="flex items-center justify-center gap-[3px]">

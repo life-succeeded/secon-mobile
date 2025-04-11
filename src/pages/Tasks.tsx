@@ -16,7 +16,7 @@ function Tasks() {
 
     return (
         <>
-            <div className="flex h-screen flex-col">
+            <div className="flex flex-col">
                 <Agents agents={agents} />
                 <TaskFeed />
             </div>

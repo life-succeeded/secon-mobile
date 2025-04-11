@@ -8,6 +8,7 @@ import { Header } from './components/ui/header'
 import { Input } from './components/ui/input'
 import Item from './components/ui/item'
 import { Navbar } from './components/ui/navbar'
+import { ProgressBar } from './components/ui/progressbar'
 import Radio from './components/ui/radio'
 import ExampleComponent from './components/ui/test'
 
@@ -17,13 +18,12 @@ function App() {
             <div className="flex h-screen flex-col">
                 <Header />
                 <div className="flex-grow overflow-auto">
-                    {' '}
-                    {/* Контент с возможностью прокрутки */}
                     <div className="flex w-[255px] flex-col gap-4">
                         <Button icon="heart">Hello, world!</Button>
                         <Input placeholder="hello mr human"></Input>
                         <Checkbox label="test" checked={false} onChange={() => {}} />
                         <ExampleComponent />
+                        <ProgressBar value={2} />
                         <div className="flex flex-col space-y-4">
                             <Card title="Адрес">
                                 <Item icon="fileBlank" text="Hello, world!" />

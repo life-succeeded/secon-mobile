@@ -30,6 +30,8 @@ interface IButtonProps {
     icon?: TIconVariant
     variant?: TButtonVariants
     iconParams?: IIconParams
+    type?: 'submit'
+    disabled?: boolean
 }
 
 const renderChildrenWithIcon = (
@@ -49,11 +51,13 @@ export const Button = (props: IButtonProps) => {
     return (
         <>
             <button
+                type={fallback(props.type, undefined)}
                 className={button({
                     color: fallback(props.variant, 'default'),
                     className: props.className,
                 })}
                 onClick={props.onClick}
+                disabled={props.disabled}
             >
                 {props.icon
                     ? renderChildrenWithIcon(props.icon, props.children, props.iconParams)

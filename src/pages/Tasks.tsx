@@ -9,7 +9,9 @@ function Tasks() {
 
     assertAuthenticated()
 
-    const agents = Object.entries(getAuthData()).map((fio) => parseFullName(fio[1]))
+    const agents = Object.entries(getAuthData())
+        .filter((entry): entry is [string, string] => typeof entry[1] === 'string')
+        .map(([_, fio]) => parseFullName(fio))
 
     return (
         <>

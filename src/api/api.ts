@@ -1,26 +1,19 @@
 import { Config } from '../utils/config'
 import axios, { AxiosError } from 'axios'
+import { IBrigade, IBrigadeCreate } from './api.types'
 
 const instance = axios.create({
     baseURL: Config.apiEndpoint,
 })
 
-export const createBrigade = async (item: TSpecialty) => {
+export const createBrigade = async (item: IBrigadeCreate) => {
     try {
-        const { data, status } = await instance.post<ApiResponse<TSpecialty, ApiError>>(
-            `specialities`,
-            item,
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            },
-        )
+        const brigade = await instance.post<IBrigade>(`brigades`, item)
 
-        return { success: data.success, status: status }
+        return brigade
     } catch (err) {
-        if (err instanceof AxiosError) {
-            return { success: false, status: err.status }
-        }
+        console.error(err)
 
-        return { success: false, status: 500 }
+        return null
     }
 }

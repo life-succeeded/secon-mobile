@@ -8,12 +8,13 @@ export const useAuth = () => {
     const getAuthData = () => {
         const fio1 = sessionStorage.getItem('fio1')
         const fio2 = sessionStorage.getItem('fio2')
-        return { fio1, fio2 }
+        const brigadeId = Number(sessionStorage.getItem('brigadeId'))
+        return { fio1, fio2, brigadeId }
     }
 
     const isAuthenticated = () => {
-        const { fio1, fio2 } = getAuthData()
-        return !!fio1 && !!fio2
+        const { fio1, fio2, brigadeId } = getAuthData()
+        return !!fio1 && !!fio2 && !!brigadeId
     }
 
     const assertAuthenticated = () => {

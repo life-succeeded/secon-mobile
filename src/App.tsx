@@ -13,9 +13,28 @@ import Item from './components/ui/item'
 import { Navbar } from './components/ui/navbar'
 import { ProgressBar } from './components/ui/progressbar'
 import Radio from './components/ui/radio'
+import { Tabs } from './components/ui/tabs'
 import ExampleComponent from './components/ui/test'
 
 function App() {
+    const tabs = [
+        {
+            id: 'tab1',
+            label: 'Вкладка 1',
+            content: <div>Содержимое первой вкладки</div>,
+        },
+        {
+            id: 'tab2',
+            label: 'Вкладка 2',
+            content: <div>Содержимое второй вкладки</div>,
+        },
+        {
+            id: 'tab3',
+            label: 'Вкладка 3',
+            content: <div>Содержимое третьей вкладки</div>,
+        },
+    ]
+
     return (
         <>
             <div className="flex h-screen flex-col">
@@ -47,6 +66,8 @@ function App() {
                         />
 
                         <TaskFeed />
+
+                        <Tabs tabs={tabs} defaultTab={'tab2'} />
                     </div>
                 </div>
                 <Navbar />

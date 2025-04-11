@@ -27,7 +27,7 @@ export const Button = (props: IButtonProps) => {
         <>
             <button
                 className={twMerge(
-                    'bg-black-1 hover:bg-black-3 flex h-[44px] cursor-pointer items-center justify-center rounded-[6px] p-3 text-white select-none',
+                    'bg-black-1 hover:bg-black-3 active:bg-black-3 flex h-[44px] cursor-pointer items-center justify-center rounded-[6px] p-3 text-white select-none',
                     props.className,
                 )}
                 onClick={props.onClick}

@@ -1,4 +1,3 @@
-import { FileText, ImageIcon } from 'lucide-react'
 import { TChildren } from '../../../utils/types'
 
 interface ICardProps {

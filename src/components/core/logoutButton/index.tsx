@@ -7,6 +7,7 @@ export const LogoutButton = () => {
     const handleLogout = () => {
         sessionStorage.removeItem('fio1')
         sessionStorage.removeItem('fio2')
+        sessionStorage.removeItem('brigadeId')
         navigate('/login')
     }
     return (

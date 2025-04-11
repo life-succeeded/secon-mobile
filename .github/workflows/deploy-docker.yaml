@@ -35,14 +35,19 @@ jobs:
 
             - name: Run new container
               run: |
-                  docker run -d --name $CONTAINER_NAME --network=backend -e ENV=prod -p $CONTAINER_PORT:$CONTAINER_PORT $CONTAINER_NAME:${{ env.SHORT_SHA }}
+                  docker run -d --name $CONTAINER_NAME-${{ env.SHORT_SHA }} --network=backend -e ENV=prod -p $CONTAINER_PORT:$CONTAINER_PORT $CONTAINER_NAME:${{ env.SHORT_SHA }}
 
             - name: Remove old images of the same container (keep current)
               run: |
+                  current_image_id=$(docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' | \
+                  grep "^$CONTAINER_NAME:${{ env.SHORT_SHA }}" | awk '{ print $2 }')
+
+                  used_image_ids=$(docker ps --format '{{.Image}}' | xargs -n1 docker inspect --format '{{.Id}}')
                   docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' | \
                   grep "^$CONTAINER_NAME:" | \
                   grep -v ":${{ env.SHORT_SHA }}" | \
                   awk '{ print $2 }' | \
+                  grep -vF "$used_image_ids" | \
                   xargs -r docker rmi -f
 
             - name: Remove all stopped containers with same name

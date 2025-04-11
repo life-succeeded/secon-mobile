@@ -1,7 +1,7 @@
-import { BrowserRouter } from 'react-router';
 import { AppRoutes } from './lib/routes';
 import { Header } from './components/ui/header';
 import { Navbar } from './components/ui/navbar';
+import { NavigationTracker } from './lib/NavigationTracker';
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
     
         <main className="flex-1 overflow-auto p-4">
           <AppRoutes />
+          <NavigationTracker />
         </main>
         
         <Navbar />

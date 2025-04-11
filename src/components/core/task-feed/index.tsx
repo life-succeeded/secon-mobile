@@ -2,6 +2,7 @@ import { twMerge } from 'tailwind-merge'
 import { range } from '../../../utils/helpers'
 import { Task } from '../task'
 import { ITab, Tabs } from '../../ui/tabs'
+import { Link } from 'react-router'
 
 const tabs: Array<ITab> = [
     {
@@ -36,9 +37,11 @@ function TabsList(props: ITaskFeed) {
             <div className={twMerge('border-white-3 flex flex-col', props.className)}>
                 {range(10).map(() => {
                     return (
-                        <div className="border-white-3 border-b">
-                            <Task address="улица Пушкина 1, д 1, кв 1" status="todo" />
-                        </div>
+                        <Link to={'/acts/1'}>
+                            <div className="border-white-3 cursor-pointer border-b">
+                                <Task address="улица Пушкина 1, д 1, кв 1" status="todo" />
+                            </div>
+                        </Link>
                     )
                 })}
             </div>

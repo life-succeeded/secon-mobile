@@ -98,7 +98,7 @@ export const Login = () => {
 
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex h-full w-full flex-col items-center justify-center gap-3 self-center p-4"
+                className="flex w-full flex-col items-center justify-center gap-3 self-center p-4"
                 noValidate
             >
                 <Input

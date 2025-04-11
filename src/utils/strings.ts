@@ -5,6 +5,10 @@ export function getFullName(params: { name: string; surname: string; patronymic:
 }
 
 export function parseFullName(fio: string) {
+    if (!fio) {
+        return { name: '', surname: '', patronymic: '' }
+    }
+
     const parts = fio.split(' ')
     return {
         name: parts[1],

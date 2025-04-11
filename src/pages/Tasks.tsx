@@ -5,7 +5,9 @@ import { useAuth } from '../lib/hooks/useAuth'
 import { parseFullName } from '../utils/strings'
 
 function Tasks() {
-    const { getAuthData } = useAuth()
+    const { getAuthData, assertAuthenticated } = useAuth()
+
+    assertAuthenticated()
 
     const agents = Object.entries(getAuthData()).map((fio) => parseFullName(fio[1]))
 

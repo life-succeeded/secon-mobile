@@ -16,11 +16,17 @@ export const useAuth = () => {
         return !!fio1 && !!fio2
     }
 
+    const assertAuthenticated = () => {
+        if (!isAuthenticated()) {
+            navigate('/login')
+        }
+    }
+
     useEffect(() => {
         if (!isAuthenticated()) {
             navigate('/login')
         }
     }, [navigate])
 
-    return { getAuthData, isAuthenticated }
+    return { getAuthData, isAuthenticated, assertAuthenticated }
 }

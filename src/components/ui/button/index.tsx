@@ -7,12 +7,15 @@ import { ArrowIcon } from '../../icons/bxArrow'
 import { renderIcon } from '../../icons/helpers'
 import { tv } from 'tailwind-variants'
 
+/* focus:outline-none 
+  focus:bg-[#5c8a8a]*/
+
 const button = tv({
     base: [
       'flex h-[44px] cursor-pointer items-center justify-center rounded-[6px] p-3 text-white select-none',
-      'transition-colors duration-200', // Добавляем плавный переход
-      'focus:outline-none', // Убираем стандартный outline
-      'active:scale-95', // Легкая анимация при нажатии
+      'transition-colors duration-200',
+      'focus:outline-none',
+      'active:scale-95', 
     ],
     variants: {
       color: {
@@ -21,7 +24,7 @@ const button = tv({
           'bg-transparent',
           'hover:bg-black-3/10',
           'active:bg-black-3/10',
-          '!active:bg-transparent', // Важно для мобильных устройств
+          '!active:bg-transparent', 
         ],
       },
     },
@@ -39,6 +42,8 @@ interface IButtonProps {
     icon?: TIconVariant
     variant?: TButtonVariants
     iconParams?: IIconParams
+    type?: 'submit'
+    disabled?: boolean
 }
 
 const renderChildrenWithIcon = (
@@ -56,20 +61,21 @@ const renderChildrenWithIcon = (
 
 export const Button = (props: IButtonProps) => {
     return (
-      <button
-        className={button({
-          color: fallback(props.variant, 'default'),
-          className: props.className,
-        })}
-        onClick={props.onClick}
-        onTouchEnd={(e) => {
-          // Явный сброс состояния для мобильных устройств
-          e.currentTarget.classList.remove('active');
-        }}
-      >
-        {props.icon
-          ? renderChildrenWithIcon(props.icon, props.children, props.iconParams)
-          : props.children}
-      </button>
-    );
-  };
+        <>
+            <button
+                type={fallback(props.type, undefined)}
+                className={button({
+                    color: fallback(props.variant, 'default'),
+                    className: props.className,
+                })}
+                onClick={props.onClick}
+                disabled={props.disabled}
+            >
+                {props.icon
+                    ? renderChildrenWithIcon(props.icon, props.children, props.iconParams)
+                    : props.children}
+            </button>
+        </>
+    )
+}
+

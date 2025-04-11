@@ -1,10 +1,19 @@
+import { useNavigate } from 'react-router'
 import { renderIcon } from '../../icons/helpers'
 import { Button } from '../../ui/button'
 
 export const LogoutButton = () => {
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        sessionStorage.removeItem('fio1')
+        sessionStorage.removeItem('fio2')
+        navigate('/login')
+    }
     return (
         <>
-            <Button variant="transparent">{renderIcon('exit', { fill: 'black' })}</Button>
+            <Button variant="transparent" onClick={handleLogout}>
+                {renderIcon('exit', { fill: 'black' })}
+            </Button>
         </>
     )
 }

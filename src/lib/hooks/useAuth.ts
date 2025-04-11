@@ -1,4 +1,3 @@
-// hooks/useAuth.ts
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -14,7 +13,7 @@ export const useAuth = () => {
 
     const isAuthenticated = () => {
         const { fio1, fio2, brigadeId } = getAuthData()
-        return !!fio1 && !!fio2 && !!brigadeId
+        return !!fio1 && !!fio2 && brigadeId !== 0
     }
 
     const assertAuthenticated = () => {

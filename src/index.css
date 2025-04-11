@@ -41,14 +41,6 @@
   }
 }
 
-/* Android: подстраховка через min-height */
-@media screen and (max-width: 1024px) {
-  .h-screen {
-    min-height: 100vh;
-  }
-}
-
-
 @layer utilities {
   /* 24px/32px 500 */
   .text-24-32-medium {

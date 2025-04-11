@@ -9,6 +9,7 @@ export type TIconVariant =
     | 'exit'
     | 'image'
     | 'time'
+    | 'user'
 
 export interface IIconProps {
     className?: string

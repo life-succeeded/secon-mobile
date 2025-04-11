@@ -1,5 +1,3 @@
-import { FileText, ImageIcon } from 'lucide-react'
-import { TChildren } from '../../../utils/types'
 import { IIconParams, TIconVariant } from '../../icons/types'
 import { renderIcon } from '../../icons/helpers'
 import { twMerge } from 'tailwind-merge'

@@ -37,18 +37,13 @@ jobs:
         run: |
           docker run -d --name $CONTAINER_NAME --network=backend -e ENV=prod -p $CONTAINER_PORT:$CONTAINER_PORT $CONTAINER_NAME:${{ env.SHORT_SHA }}
 
-      - name: Remove old images of the same container (keep current)
-        run: |
-          docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' | \
-          grep "^$CONTAINER_NAME:" | \
-          grep -v ":${{ env.SHORT_SHA }}" | \
-          awk '{ print $2 }' | \
-          xargs -r docker rmi
-
-      - name: Remove all stopped containers with same name
-        run: |
-          docker ps -a --filter "name=$CONTAINER_NAME" --filter "status=exited" -q | \
-          xargs -r docker rm
+            - name: Remove old images of the same container (keep current)
+              run: |
+                  docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' | \
+                  grep "^$CONTAINER_NAME:" | \
+                  grep -v ":${{ env.SHORT_SHA }}" | \
+                  awk '{ print $2 }' | \
+                  xargs -r docker rmi -f
 
       - name: Truncate container logs
         run: |

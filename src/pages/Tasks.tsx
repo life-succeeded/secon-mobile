@@ -11,6 +11,7 @@ function Tasks() {
 
     const agents = Object.entries(getAuthData())
         .filter((entry): entry is [string, string] => typeof entry[1] === 'string')
+        .filter(([key, _]) => key !== 'brigadeId')
         .map(([_, fio]) => parseFullName(fio))
 
     return (

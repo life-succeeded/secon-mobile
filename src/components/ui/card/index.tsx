@@ -7,8 +7,8 @@ interface ICardProps {
 
 const Card = (props: ICardProps) => {
     return (
-        <div className="bg-white-1 border-grey-3 flex flex-col gap-3 rounded-md border px-5 py-3">
-            <h2 className="text-14-20-medium font-inter text-black-1">{props.title}</h2>
+        <div className="bg-white-1 flex flex-col gap-3 px-5 py-3 select-none">
+            <h2 className="text-14-20-medium text-black-1">{props.title}</h2>
             {props.children}
         </div>
     )

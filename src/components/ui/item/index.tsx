@@ -9,6 +9,7 @@ interface IItemProps {
     text: string
     icon: TIconVariant
     iconParams?: IIconParams
+    href?: string
 }
 
 const Item = (props: IItemProps) => {
@@ -21,8 +22,8 @@ const Item = (props: IItemProps) => {
                     className: twMerge('text-grey-1', fallback(props?.iconParams?.className, '')),
                 })}
                 <a
-                    href="#"
-                    className="text-14-20-regular font-inter text-black-1 hover:text-black-3 underline underline-offset-2"
+                    href={fallback(props.href, '#')}
+                    className="text-14-20-regular text-black-1 hover:text-black-3 underline-offset-2"
                 >
                     {props.text}
                 </a>

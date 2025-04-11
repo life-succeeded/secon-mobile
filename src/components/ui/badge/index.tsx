@@ -2,7 +2,7 @@ import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
 const badge = tv({
-    base: 'font-semibold text-sm rounded-[6px]',
+    base: 'font-semibold text-xs leading-5 items-center rounded-[6px]',
     variants: {
         color: {
             blue: 'bg-blue-1 text-blue-2 border-2 border-blue-3',
@@ -12,7 +12,7 @@ const badge = tv({
     },
 })
 
-type TBadgeStatus = keyof typeof badge.variants.color
+export type TBadgeStatus = keyof typeof badge.variants.color
 
 interface IBadgeProps {
     className?: string

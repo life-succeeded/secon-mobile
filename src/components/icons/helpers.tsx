@@ -8,7 +8,10 @@ import { MapIcon } from './bxMap'
 import { PlusIcon } from './bxPlus'
 import { FileIcon } from './bxFile'
 import { ExitIcon } from './bxExit'
+import { ImageIcon } from './bxImage'
+import { TimeIcon } from './bxTime'
 
+// this could be much better than it is... saving time with this monstrosity...
 export const renderIcon = (variant: TIconVariant, params?: IIconParams) => {
     const { fill, width, height, className } = params ?? {}
 
@@ -79,6 +82,24 @@ export const renderIcon = (variant: TIconVariant, params?: IIconParams) => {
         case 'exit':
             return (
                 <ExitIcon
+                    fill={fallback(fill, 'white')}
+                    width={fallback(width, undefined)}
+                    height={fallback(height, undefined)}
+                    className={fallback(className, undefined)}
+                />
+            )
+        case 'image':
+            return (
+                <ImageIcon
+                    fill={fallback(fill, 'white')}
+                    width={fallback(width, undefined)}
+                    height={fallback(height, undefined)}
+                    className={fallback(className, undefined)}
+                />
+            )
+        case 'time':
+            return (
+                <TimeIcon
                     fill={fallback(fill, 'white')}
                     width={fallback(width, undefined)}
                     height={fallback(height, undefined)}

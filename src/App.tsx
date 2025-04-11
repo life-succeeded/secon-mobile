@@ -1,3 +1,6 @@
+import { Act } from './components/core/act'
+import { Task } from './components/core/task'
+import { TaskFeed } from './components/core/task-feed'
 import { HeartIcon } from './components/icons/bxHeart'
 import { Alert } from './components/ui/alert'
 import { Badge } from './components/ui/badge'
@@ -18,7 +21,7 @@ function App() {
             <div className="flex h-screen flex-col">
                 <Header />
                 <div className="flex-grow overflow-auto">
-                    <div className="flex w-[255px] flex-col gap-4">
+                    <div className="flex w-full flex-col gap-4">
                         <Button icon="heart">Hello, world!</Button>
                         <Input placeholder="hello mr human"></Input>
                         <Checkbox label="test" checked={false} onChange={() => {}} />
@@ -34,6 +37,16 @@ function App() {
                         <Radio label="test" name="test" />
                         <Radio label="test" name="test" />
                         <Radio label="test" name="test" />
+
+                        <Task address="улица Пушкина 1, д 1, кв 1" />
+
+                        <Act
+                            address="улица Пушкина 1"
+                            imageName="Картинка.jpeg"
+                            actName="Акт.pdf"
+                        />
+
+                        <TaskFeed />
                     </div>
                 </div>
                 <Navbar />

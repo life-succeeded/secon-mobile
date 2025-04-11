@@ -4,7 +4,7 @@ import { LogoutButton } from '../../core/logoutButton'
 export const Header = () => {
     return (
         <>
-            <div className="border-b-white-3 relative flex h-16 w-full items-center justify-center border-b">
+            <div className="border-b-white-3 relative flex h-16 w-full items-center justify-center border-b py-4">
                 <div className="absolute left-4">
                     <BackButton />
                 </div>

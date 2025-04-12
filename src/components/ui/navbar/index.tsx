@@ -20,7 +20,7 @@ export const Navbar = () => {
     ]
 
     return (
-        <nav className="mx-4 p-4">
+        <nav className="fixed right-0 bottom-0 left-0 mx-4 p-4">
             <ul className="flex flex-row justify-between space-x-4 select-none">
                 {navItems.map((item) => (
                     <NavbarItem

@@ -9,6 +9,8 @@ function Tasks() {
 
     assertAuthenticated()
 
+    console.log(getAuthData())
+
     const agents = Object.entries(getAuthData())
         .filter((entry): entry is [string, string] => typeof entry[1] === 'string')
         .filter(([key, _]) => key !== 'brigadeId')

@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
-import { updateFormState, nextFormStep } from '../../store/navigationSlice'
-import { ProgressBar } from '../../components/ui/progressbar'
+import { nextFormStep } from '../../store/navigationSlice'
 import { Button } from '../../components/ui/button'
 import Radio from '../../components/ui/radio'
 
-function SwitchingDevice() {
+function Restriction() {
     const dispatch = useDispatch()
-    const { formState, currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
+    const { formState } = useSelector((state: RootState) => state.navigation.formSteps)
 
     const handleNext = () => {
 
@@ -19,7 +18,7 @@ function SwitchingDevice() {
             <div className="mx-5flex-grow overflow-auto">
                 <div className="flex w-full flex-col justify-center gap-5">
                     <div className="flex w-full flex-col justify-center gap-4 ">
-                    <label className="text-14-20-regular">Коммутационный (вводной) аппарат:</label>
+                    <label className="text-14-20-regular">Основание введения ограничения (приостановления) режима потребления: </label>
                         <div className="flex flex-col gap-2">
                                 <Radio label="Имеется" name="yes" />
                                 <Radio label="Отсутствует" name="no" />
@@ -35,4 +34,4 @@ function SwitchingDevice() {
     )
 }
 
-export default SwitchingDevice
+export default Restriction

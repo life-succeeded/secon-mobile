@@ -1,47 +1,35 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { updateFormState, nextFormStep } from '../../store/navigationSlice'
-import { ProgressBar } from '../../components/ui/progressbar'
-import { Input } from '../../components/ui/input'
 import { Button } from '../../components/ui/button'
 import Radio from '../../components/ui/radio'
-import Checkbox from '../../components/ui/checkbox'
 
-function ActInfo() {
+function ActType() {
     const dispatch = useDispatch()
-    const { formState, currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
+    const { formState } = useSelector((state: RootState) => state.navigation.formSteps)
 
     const handleNext = () => {
-        if (!formState.phoneNumber?.trim()) {
-            alert('Пожалуйста, введите контактный номер')
-            return
-        }
-
         dispatch(nextFormStep())
     }
 
     return (
-        <div className="flex h-screen flex-col">
-            <div className="mx-5 mt-25 flex-grow overflow-auto">
-                <div className="flex w-full flex-col justify-center gap-5">
-                    <ProgressBar value={currentStep} className="self-center" />
-                    <div className="flex w-full flex-col justify-center gap-2 ">
-                    <label className="text-14-20-regular">Акт о:</label>
-                        <div className="flex flex-col gap-4 my-3">
-                                <Radio label="О ВВЕДЕНИИ ОГРАНИЧЕНИЯ (ПРИОСТАНОВЛЕНИИ) КОММУНАЛЬНОЙ УСЛУГИ ПО ЭЛЕКТРОСНАБЖЕНИЮ" name="act1" />
-                                <Radio label="О ВОЗОБНОВЛЕНИИ ПРЕДОСТАВЛЕНИЯ КОММУНАЛЬНОЙ УСЛУГИ ПО ЭЛЕКТРОСНАБЖЕНИЮ " name="act2" />
-                                <Radio label="ОСУЩЕСТВЛЕНИЯ ПРОВЕРКИ ВВЕДЕННОГО ОГРАНИЧЕНИЯ РЕЖИМА ПОТРЕБЛЕНИЯ" name="act3" />
-                                <Radio label="О САМОВОЛЬНОМ ПОДКЛЮЧЕНИИ К ЭЛЕКТРИЧЕСКИМ СЕТЯМ" name="act4" />
-                        </div>
-                    </div>
+        <div className="flex flex-col h-full relative px-5 pt-25"> 
 
-                    <Button onClick={handleNext} className=' mt-1'>
-                        Продолжить
-                    </Button>
-                </div>
+            <div className="flex flex-col gap-4 overflow-auto">
+                <label className="text-14-20-regular">Акт о:</label>
+                <Radio label="О ВВЕДЕНИИ ОГРАНИЧЕНИЯ..." name="act1" />
+                <Radio label="О ВОЗОБНОВЛЕНИИ..." name="act2" />
+                <Radio label="ОСУЩЕСТВЛЕНИЯ ПРОВЕРКИ..." name="act3" />
+                <Radio label="О САМОВОЛЬНОМ ПОДКЛЮЧЕНИИ..." name="act4" />
+            </div>
+
+            <div className="absolute top-130 left-5 right-5">
+                <Button className="w-full" onClick={handleNext}>
+                    Продолжить
+                </Button>
             </div>
         </div>
     )
 }
 
-export default ActInfo
+export default ActType

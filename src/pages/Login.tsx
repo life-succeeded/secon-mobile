@@ -18,8 +18,6 @@ type FormData = {
 
 export const Login = () => {
     const fm = useForm<FormData>({
-        mode: 'onChange',
-        reValidateMode: 'onSubmit',
         defaultValues: {
             brigadeId: '',
         },

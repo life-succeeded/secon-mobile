@@ -86,7 +86,7 @@ export const ActDetails = () => {
             <div className="border-t border-gray-200 p-5">
                 <div className="m-5 flex flex-col gap-3">
                     <p className="text-14-20-regular select-none">{task.address}</p>
-                    <Input label="Время визита" />
+                    <Input name="time" label="Время визита" />
                     <Label text={getFullName(task.consumer)} icon="user" />
                     <Label
                         text={task.consumer.phone_number}

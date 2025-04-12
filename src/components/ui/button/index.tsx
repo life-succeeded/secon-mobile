@@ -7,31 +7,30 @@ import { ArrowIcon } from '../../icons/bxArrow'
 import { renderIcon } from '../../icons/helpers'
 import { tv } from 'tailwind-variants'
 
-/* focus:outline-none 
-  focus:bg-[#5c8a8a]*/
-
 const button = tv({
     base: [
-      'flex h-[44px] cursor-pointer items-center justify-center rounded-[6px] p-3 text-white select-none',
-      'transition-colors duration-200',
-      'focus:outline-none',
-      'active:scale-95', 
+        'flex h-[44px] cursor-pointer items-center justify-center rounded-[6px] p-3 text-white select-none',
+        'transition-colors duration-200',
+        'focus:outline-none',
+        'active:scale-95',
+        'disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:active:scale-100', // Добавленные стили для disabled состояния
     ],
     variants: {
-      color: {
-        default: 'bg-black-1 hover:bg-black-3 active:bg-black-3',
-        transparent: [
-          'bg-transparent',
-          'hover:bg-black-3/10',
-          'active:bg-black-3/10',
-          '!active:bg-transparent', 
-        ],
-      },
+        color: {
+            default: 'bg-black-1 hover:bg-black-3 active:bg-black-3',
+            transparent: [
+                'bg-transparent',
+                'hover:bg-black-3/10',
+                'active:bg-black-3/10',
+                '!active:bg-transparent',
+                'disabled:hover:bg-transparent', // Особый случай для transparent варианта
+            ],
+        },
     },
     defaultVariants: {
-      color: 'default',
+        color: 'default',
     },
-  });
+})
 
 type TButtonVariants = keyof typeof button.variants.color
 
@@ -42,7 +41,7 @@ interface IButtonProps {
     icon?: TIconVariant
     variant?: TButtonVariants
     iconParams?: IIconParams
-    type?: 'submit'
+    type?: 'submit' | 'reset' | 'button'
     disabled?: boolean
 }
 
@@ -52,8 +51,8 @@ const renderChildrenWithIcon = (
     iconParams?: IIconParams,
 ) => {
     return (
-        <div className="flex items-center justify-center gap-[3px] active:scale-98 focus:outline-none select-none touch-none">
-            {renderIcon(variant)}
+        <div className="flex touch-none items-center justify-center gap-[3px] select-none focus:outline-none active:scale-98">
+            {renderIcon(variant, iconParams)}
             {children}
         </div>
     )
@@ -61,21 +60,18 @@ const renderChildrenWithIcon = (
 
 export const Button = (props: IButtonProps) => {
     return (
-        <>
-            <button
-                type={fallback(props.type, undefined)}
-                className={button({
-                    color: fallback(props.variant, 'default'),
-                    className: props.className,
-                })}
-                onClick={props.onClick}
-                disabled={props.disabled}
-            >
-                {props.icon
-                    ? renderChildrenWithIcon(props.icon, props.children, props.iconParams)
-                    : props.children}
-            </button>
-        </>
+        <button
+            type={fallback(props.type, undefined)}
+            className={button({
+                color: fallback(props.variant, 'default'),
+                className: props.className,
+            })}
+            onClick={props.disabled ? undefined : props.onClick} // Отключаем обработчик, если кнопка disabled
+            disabled={props.disabled}
+        >
+            {props.icon
+                ? renderChildrenWithIcon(props.icon, props.children, props.iconParams)
+                : props.children}
+        </button>
     )
 }
-

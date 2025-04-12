@@ -1,19 +1,19 @@
 import { useParams } from 'react-router'
 import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
-import { useEffect, useState } from 'react'
-import { getTaskById } from '../api/api'
-import { ITask } from '../api/api.types'
+import { useState } from 'react'
 import { Spinner } from '../components/ui/spinner'
 import InteractiveMap from '../components/core/map'
 import LocateControl from '../components/core/LocateControl'
 import { getFullName } from '../utils/strings'
+import useGetTaskById from '../api/hooks/useGetTaskById'
 
 export const ActDetails = () => {
     const { id } = useParams<{ id: string }>()
     const [isLocating, setIsLocating] = useState(false)
     const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
+
+    const { data: task, error, isLoading } = useGetTaskById({ id })
 
     const handleLocate = () => {
         if (!navigator.geolocation) {
@@ -41,32 +41,16 @@ export const ActDetails = () => {
         )
     }
 
-    const [task, setTask] = useState<ITask>(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
-
-    useEffect(() => {
-        const fetchTask = async () => {
-            try {
-                const response = await getTaskById(id)
-                setTask(response.data)
-            } catch (err) {
-                setError('Failed to load tasks')
-                console.error(err)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        fetchTask()
-    }, null)
-
-    if (loading) {
+    if (isLoading) {
         return <Spinner />
     }
 
     if (error) {
-        return <div className="p-4 text-center text-red-500">{error}</div>
+        return <div className="p-4 text-center text-red-500">Ошибка при загрузке задачи</div>
+    }
+
+    if (!task) {
+        return <div className="p-4 text-center">Задача не найдена</div>
     }
 
     return (
@@ -86,7 +70,7 @@ export const ActDetails = () => {
             <div className="border-t border-gray-200 p-5">
                 <div className="m-5 flex flex-col gap-3">
                     <p className="text-14-20-regular select-none">{task.address}</p>
-                    <Input name="time" label="Время визита" />
+                    {/* <Input name="time" label="Время визита" /> */}
                     <Label text={getFullName(task.consumer)} icon="user" />
                     <Label
                         text={task.consumer.phone_number}

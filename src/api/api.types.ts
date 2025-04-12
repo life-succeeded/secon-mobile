@@ -37,3 +37,5 @@ export interface ITask {
     created_at: string
     updated_at: string
 }
+
+export interface ITaskCreate extends Omit<ITask, 'id'> {}

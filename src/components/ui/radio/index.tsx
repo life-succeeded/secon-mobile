@@ -36,7 +36,7 @@
 import { useFormContext, Controller } from 'react-hook-form'
 import type { FieldValues, UseControllerProps, Control } from 'react-hook-form'
 
-type RadioProps<TFormValues extends FieldValues = FieldValues, TValue = string> = {
+type TRadioProps<TFormValues extends FieldValues = FieldValues, TValue = string> = {
     name: UseControllerProps<TFormValues>['name']
     value: TValue
     label: string
@@ -52,7 +52,7 @@ export default function Radio<TFormValues extends FieldValues = FieldValues, TVa
     disabled = false,
     className = '',
     control,
-}: RadioProps<TFormValues, TValue>) {
+}: TRadioProps<TFormValues>) {
     const formContext = useFormContext<TFormValues>()
 
     const renderRadio = ({ field }: { field: any }) => (

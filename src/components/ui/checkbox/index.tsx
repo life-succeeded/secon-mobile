@@ -1,42 +1,58 @@
-import { useState } from 'react'
+import {
+    FieldError,
+    UseFormRegister,
+    Path,
+    UseFormStateProps,
+    UseFormStateReturn,
+    useFormContext,
+} from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
+import { fp } from '../../../lib/fp'
 
-type TCheckboxChangeEvent = React.ChangeEvent<HTMLInputElement>
-
-interface ICheckboxProps {
+type CheckboxProps<T extends Record<string, unknown>> = {
     label?: string
-    checked?: boolean
+    name: Path<T>
+    register: UseFormRegister<T>
+    required?: boolean
+    error?: string
     className?: string
-    onChange?: (e: TCheckboxChangeEvent) => void
+    disabled?: boolean
 }
 
-const Checkbox = (props: ICheckboxProps) => {
-    const [checked, setChecked] = useState<boolean>(props.checked || false)
-
-    const handleCheckboxChange = (event: TCheckboxChangeEvent) => {
-        setChecked(event.target.checked)
-
-        if (props.onChange) {
-            props.onChange(event)
-        }
-    }
-
+export const Checkbox = <T extends Record<string, unknown>>({
+    label,
+    name,
+    register,
+    required = false,
+    className = '',
+    disabled = false,
+}: CheckboxProps<T>) => {
+    const { formState } = useFormContext()
     return (
-        <label
-            className={twMerge(
-                'mb-[10px] inline-flex items-center gap-2 select-none',
-                props.className,
-            )}
-        >
-            <input
-                type="checkbox"
-                checked={checked}
-                onChange={handleCheckboxChange}
-                className="accent-black-1 border-black-1 h-4 w-4 border outline-none hover:shadow-none focus:ring-0 focus:outline-none"
-            />
-            <span className="text-sm">{props.label}</span>
-        </label>
+        <div className={`flex flex-col ${className}`}>
+            <label className={twMerge(`mb-[10px] inline-flex gap-2 select-none`, className)}>
+                <input
+                    type="checkbox"
+                    className={`accent-black-1 border-black-1 h-4 w-4 -translate-y-[-2px] border outline-none hover:shadow-none focus:ring-0 focus:outline-none ${
+                        disabled ? 'cursor-not-allowed opacity-50' : ''
+                    } ${fp.has(`errors.${name}.message`, formState) ? 'border-red-500' : 'border-gray-300'} `}
+                    {...register(name, { required })}
+                    disabled={disabled}
+                />
+                {label && (
+                    <span
+                        className={`text-14-20-regular ${disabled ? 'opacity-50' : ''} ${
+                            fp.has(`errors.${name}.message`, formState) ? 'text-red-500' : ''
+                        }`}
+                    >
+                        {label}
+                    </span>
+                )}
+            </label>
+            <div className="text-12-16-medium text-red-500">
+                {fp.getOr('', `errors.${name}.message`, formState)}
+                {fp.has(`errors.${name}.message`, formState)}
+            </div>
+        </div>
     )
 }
-
-export default Checkbox

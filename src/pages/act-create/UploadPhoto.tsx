@@ -16,8 +16,8 @@ function UploadPhoto() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState<string | null>(null)
 
-    const { takePicture, photos } = useMultiCamera()
-    const [isNoAccess, setIsNoAccess] = useState(false)
+    const { takePicture, photos } = useMultiCamera();
+    const [isNoAccess, setIsNoAccess] = useState(false);
 
     const handleNext = () => {
         dispatch(nextFormStep())
@@ -104,7 +104,7 @@ function UploadPhoto() {
                             </div>
                         </div>
                         <Checkbox
-                            {...fm.register('noAccess')}
+                            // {...fm.register('noAccess')}
                             onChange={(e) => {
                                 const checked = e.target.checked
                                 setIsNoAccess(checked)

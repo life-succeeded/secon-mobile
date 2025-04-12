@@ -67,7 +67,7 @@ export const ActDetails = () => {
                 </div>
             </div>
 
-            <div className="border-t border-gray-200 p-5">
+            <div className="border-t border-gray-200 px-5 pb-5">
                 <div className="m-5 flex flex-col gap-3">
                     <p className="text-14-20-regular select-none">{task.address}</p>
                     {/* <Input name="time" label="Время визита" /> */}

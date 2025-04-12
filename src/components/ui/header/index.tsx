@@ -1,6 +1,7 @@
 import { BackButton } from '../../core/backButton'
 import { LogoutButton } from '../../core/logoutButton'
 import { useRouteTitle } from '../../../lib/hooks/useRouteTitle'
+import { useDispatch } from 'react-redux'
 
 interface IHeaderProps {
     hideControls?: boolean
@@ -8,7 +9,12 @@ interface IHeaderProps {
 
 export const Header = (props: IHeaderProps) => {
     const title = useRouteTitle()
+    const dispatch = useDispatch();
 
+    const onBackClick = () => {
+      dispatch(handleHeaderBack()); 
+    };
+  
     return (
         <div className="border-b-white-3 relative flex h-16 max-h-16 min-h-16 w-full items-center justify-center border-b">
             <div
@@ -29,3 +35,7 @@ export const Header = (props: IHeaderProps) => {
         </div>
     )
 }
+function handleHeaderBack(): any {
+    throw new Error('Function not implemented.')
+}
+

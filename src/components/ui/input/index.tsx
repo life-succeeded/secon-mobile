@@ -1,13 +1,15 @@
+import { useFormContext } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
+import { fp } from '../../../lib/fp'
 
 export interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     className?: string
     label?: string
-    error?: string
+    name: string
 }
 
-export const Input = ({ className, label, error, ...props }: IInputProps) => {
-    const hasError = !!error
+export const Input = ({ className, label, name, ...props }: IInputProps) => {
+    const { register, formState } = useFormContext();
 
     return (
         <div className="flex w-full flex-col gap-2">
@@ -18,11 +20,15 @@ export const Input = ({ className, label, error, ...props }: IInputProps) => {
                     'border-white-3 placeholder-grey-3 bg-white-2 h-[44px] rounded-[6px] border px-4 py-3',
                     'focus:border-black-2 focus:border-[2px]',
                     'active:border-black-2 active:border-[2px]',
-                    hasError && 'border-red-500 focus:border-red-500 active:border-red-500',
+                    fp.has(`errors.${name}.message`, formState) && 'border-red-500 focus:border-red-500 active:border-red-500',
                     className,
                 )}
+                {...register(name, { required: true })}
             />
-            {error && <span className="text-12-16-medium text-red-500">{error}</span>}
+            <div className="text-12-16-medium text-red-500">
+                {fp.getOr('', `errors.${name}.message`, formState)}
+                {fp.has(`errors.${name}.message`, formState)}
+            </div>
         </div>
     )
 }

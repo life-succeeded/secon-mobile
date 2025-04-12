@@ -8,6 +8,7 @@ import { getTasks } from '../../../api/api'
 import { ITask } from '../../../api/api.types'
 import { useAuth } from '../../../lib/hooks/useAuth'
 import { formatDate } from '../../../utils/date'
+import { Spinner } from '../../ui/spinner'
 
 const TaskFeedTabs = ({ tasks }: { tasks: ITask[] }) => {
     const tabs: Array<ITab> = [
@@ -95,11 +96,7 @@ export const TaskFeed = (props: ITaskFeed) => {
     }, [])
 
     if (loading) {
-        return (
-            <div className="flex h-64 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-t-2 border-b-2 border-blue-500"></div>
-            </div>
-        )
+        return <Spinner />
     }
 
     if (error) {

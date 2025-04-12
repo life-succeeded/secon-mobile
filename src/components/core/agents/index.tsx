@@ -24,9 +24,9 @@ export const Agents = (props: IAgentProps) => {
                                 height: 16,
                                 fill: '#8f8f8f',
                             })}
-                            <a className="text-14-20-regular text-black-1 hover:text-black-3 underline-offset-2">
+                            <p className="text-14-20-regular text-black-1 hover:text-black-3 underline-offset-2">
                                 {getFullName(agent)}
-                            </a>
+                            </p>
                         </div>
                     )
                 })}

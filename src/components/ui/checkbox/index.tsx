@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type TCheckboxChangeEvent = React.ChangeEvent<HTMLInputElement>
 
 interface ICheckboxProps {
     label?: string
     checked?: boolean
+    className?: string
     onChange?: (e: TCheckboxChangeEvent) => void
 }
 
@@ -20,7 +22,12 @@ const Checkbox = (props: ICheckboxProps) => {
     }
 
     return (
-        <label className="mb-[10px] inline-flex items-center gap-2 select-none">
+        <label
+            className={twMerge(
+                'mb-[10px] inline-flex items-center gap-2 select-none',
+                props.className,
+            )}
+        >
             <input
                 type="checkbox"
                 checked={checked}

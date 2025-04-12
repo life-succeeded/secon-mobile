@@ -2,30 +2,43 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface NavigationState {
   history: string[];
-  currentIndex: number; // Добавляем индекс текущей позиции
+  currentIndex: number;
+  formSteps: {
+    currentStep: number;
+    maxSteps: number;
+    formState: {
+      accountNumber?: string;
+      phoneNumber?: string;
+      consumer?: string;
+      address?: string;
+    };
+  };
 }
 
 const initialState: NavigationState = {
   history: ['/'],
   currentIndex: 0,
+  formSteps: {
+    currentStep: 1,
+    maxSteps: 8,
+    formState: {},
+  },
 };
 
 const navigationSlice = createSlice({
   name: 'navigation',
   initialState,
   reducers: {
-    pushRoute: (state, action: PayloadAction<string>) => {
-      state.history = state.history.slice(0, state.currentIndex + 1);
-      
-      // Добавляем новый маршрут
-      if (state.history[state.currentIndex] !== action.payload) {
-        state.history.push(action.payload);
-        state.currentIndex += 1;
-      }
+    pushRoute(state, action) {
+      const path = action.payload;
+      const newHistory = state.history.slice(0, state.currentIndex + 1);
+      newHistory.push(path);
+      state.history = newHistory;
+      state.currentIndex++;
     },
-    goBack: (state) => {
+    goBack(state) {
       if (state.currentIndex > 0) {
-        state.currentIndex -= 1;
+        state.currentIndex--;
       }
     },
     goForward: (state) => {
@@ -33,8 +46,34 @@ const navigationSlice = createSlice({
         state.currentIndex += 1;
       }
     },
+    
+    nextFormStep: (state) => {
+      if (state.formSteps.currentStep < state.formSteps.maxSteps) {
+        state.formSteps.currentStep += 1;
+      }
+    },
+    prevFormStep: (state) => {
+      if (state.formSteps.currentStep > 1) {
+        state.formSteps.currentStep -= 1;
+      }
+    },
+    updateFormState: (state, action: PayloadAction<Partial<NavigationState['formSteps']['formState']>>) => {
+      state.formSteps.formState = { ...state.formSteps.formState, ...action.payload };
+    },
+    resetForm: (state) => {
+      state.formSteps.currentStep = 1;
+      state.formSteps.formState = {};
+    },
   },
 });
 
-export const { pushRoute, goBack, goForward } = navigationSlice.actions;
+export const { 
+  pushRoute, 
+  goBack, 
+  goForward,
+  nextFormStep, 
+  prevFormStep, 
+  updateFormState, 
+  resetForm 
+} = navigationSlice.actions;
 export const navigationReducer = navigationSlice.reducer;

@@ -4,9 +4,41 @@ import { Button } from '../components/ui/button'
 import { Act } from '../components/core/act'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
+import { useEffect, useState } from 'react'
+import { getTaskById } from '../api/api'
+import { ITask } from '../api/api.types'
+import { Spinner } from '../components/ui/spinner'
 
 export const ActDetails = () => {
     const { id } = useParams<{ id: string }>()
+
+    const [task, setTask] = useState<ITask>(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        const fetchTask = async () => {
+            try {
+                const response = await getTaskById(id)
+                setTask(response.data)
+            } catch (err) {
+                setError('Failed to load tasks')
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchTask()
+    }, null)
+
+    if (loading) {
+        return <Spinner />
+    }
+
+    if (error) {
+        return <div className="p-4 text-center text-red-500">{error}</div>
+    }
 
     return (
         <div className="flex h-full flex-col">

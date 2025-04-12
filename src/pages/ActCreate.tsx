@@ -1,6 +1,11 @@
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import WizardParser from './act-create/WizardParser'
+import ActType from './act-create/ActType'
+import SwitchingDevice from './act-create/SwitchingDevice'
+import UploadPhoto from './act-create/UploadPhoto'
+import Violation from './act-create/Violation'
+import ViolationDescription from './act-create/ViolationDescription'
 
 function ActCreate() {
     const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
@@ -14,9 +19,9 @@ function ActCreate() {
                     type: 'input',
                     title: 'Лицевой счет',
                     name: 'licevoy_schet',
-                    placeholder: 'Введите лицевой счет'
-                }
-            ]
+                    placeholder: 'Введите лицевой счет',
+                },
+            ],
         },
         {
             id: 'step2',
@@ -25,19 +30,19 @@ function ActCreate() {
                 {
                     type: 'input',
                     title: 'Контактный номер',
-                    name: 'contact_number'
+                    name: 'contact_number',
                 },
                 {
                     type: 'input',
                     title: 'Потребитель',
-                    name: 'potrebitel'
+                    name: 'potrebitel',
                 },
                 {
                     type: 'input',
                     title: 'ОБъект',
-                    name: 'obyect'
+                    name: 'obyect',
                 },
-            ]
+            ],
         },
         {
             id: 'step3',
@@ -48,14 +53,14 @@ function ActCreate() {
                     title: 'Добавление фото счетчика до работы',
                     name: 'photo_schetchika_1',
                     cameraKey: 'counter',
-                    placeholder: 'Добавить фото счетчика'
+                    placeholder: 'Добавить фото счетчика',
                 },
                 {
                     type: 'fileInput',
                     title: '',
                     name: 'photo_schetchika_2',
                     cameraKey: 'counter',
-                    placeholder: 'Добавить фото счетчика'
+                    placeholder: 'Добавить фото счетчика',
                 },
                 {
                     type: 'checkbox',
@@ -63,7 +68,7 @@ function ActCreate() {
                     cameraKey: 'counter',
                     title: 'Нет доступа к счетчику',
                 },
-            ]
+            ],
         },
         {
             id: 'step4',
@@ -72,14 +77,14 @@ function ActCreate() {
                 {
                     type: 'fileInput',
                     title: 'Добавление фото счетчика после работы',
-                    placeholder: 'Добавить фото счетчика'
+                    placeholder: 'Добавить фото счетчика',
                 },
                 {
                     type: 'fileInput',
                     title: '',
-                    placeholder: 'Добавить фото счетчика'
-                }
-            ]
+                    placeholder: 'Добавить фото счетчика',
+                },
+            ],
         },
         {
             id: 'step5',
@@ -105,15 +110,15 @@ function ActCreate() {
                             title: 'Радио 4',
                             value: 'value4',
                         },
-                    ]
-                }
-            ]
+                    ],
+                },
+            ],
         },
     ]
 
     return (
         <div className="flex h-[80vh] flex-col">
-            <WizardParser wizard={wizard}/>
+            <WizardParser wizard={wizard} />
             {/*<div className="flex-grow overflow-auto">*/}
             {/*    {currentStep === 1 && <ContactInfo />}*/}
             {/*    {currentStep === 2 && <UploadPhoto />}*/}
@@ -121,9 +126,7 @@ function ActCreate() {
             {/*    {currentStep === 4 && <SwitchingDevice />}*/}
             {/*    {currentStep === 5 && <ActType />}*/}
             {/*</div>*/}
-            <div className="flex-grow overflow-auto">
-
-            </div>
+            <div className="flex-grow overflow-auto"></div>
         </div>
     )
 }

@@ -27,10 +27,10 @@ function ContactInfo() {
         defaultValues: {
             fullName: '',
             number: '',
-            address: ''
+            address: '',
         },
-        resolver: yupResolver(contactInfoResolver)
-    });
+        resolver: yupResolver(contactInfoResolver),
+    })
 
     const onSubmit = async (data: FormData) => {
         setIsSubmitting(true)
@@ -43,17 +43,22 @@ function ContactInfo() {
             handleNext()
         } catch (error) {
             console.error('Ошибка при сохранении контактной информации:', error)
-            setSubmitError('Произошла ошибка при сохранении данных. Пожалуйста, попробуйте еще раз.')
+            setSubmitError(
+                'Произошла ошибка при сохранении данных. Пожалуйста, попробуйте еще раз.',
+            )
         } finally {
             setIsSubmitting(false)
         }
     }
 
     return (
-        <div className="pt-25 relative flex h-full flex-col px-5">
+        <div className="relative flex h-full flex-col p-5">
             <div className="flex w-full flex-col gap-5">
                 <FormProvider {...fm}>
-                    <form onSubmit={fm.handleSubmit(onSubmit)} className="flex w-full flex-col gap-3">
+                    <form
+                        onSubmit={fm.handleSubmit(onSubmit)}
+                        className="flex w-full flex-col gap-3"
+                    >
                         <Input
                             name="number"
                             label={'Контактный номер'}
@@ -69,18 +74,13 @@ function ContactInfo() {
 
                         <div className="flex flex-col gap-2">
                             <label className="text-14-20-regular">Объект</label>
-                            <Input
-                                name="address"
-                                placeholder="Введите адрес объекта"
-                            />
-                            {submitError && <div className="text-sm text-red-500">{submitError}</div>}
+                            <Input name="address" placeholder="Введите адрес объекта" />
+                            {submitError && (
+                                <div className="text-sm text-red-500">{submitError}</div>
+                            )}
                         </div>
-                        <div className="absolute bottom-5 left-5 right-5">
-                            <Button 
-                                className="w-full" 
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
+                        <div className="absolute right-5 bottom-5 left-5">
+                            <Button className="w-full" type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? 'Сохранение...' : 'Продолжить'}
                             </Button>
                         </div>

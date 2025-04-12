@@ -11,10 +11,12 @@ export interface IBrigadeCreate {
 
 export interface IBrigade {
     id: string
-    first_inspector: IInspector
-    second_inspector: IInspector
-    created_at: string
+    first_inspector: IInspector;
+    second_inspector: IInspector;
+    created_at: string;
 }
+
+export const InspectorTostring = (inspector: IInspector) => `${inspector.name} ${inspector.surname} ${inspector.patronymic}`; 
 
 export interface IConsumer {
     surname: string

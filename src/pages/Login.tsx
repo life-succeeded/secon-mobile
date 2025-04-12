@@ -1,30 +1,30 @@
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { Button } from '../components/ui/button'
 import { Header } from '../components/ui/header'
 import { Input } from '../components/ui/input'
-import { useEffect, useState } from 'react'
-import { createBrigade } from '../api/api'
-import { parseFullName } from '../utils/strings'
+import { useState } from 'react'
+
+import { object, string } from 'yup'
+import { yupResolver } from "@hookform/resolvers/yup";
+import { getBrigadeById } from '../api/api'
+import { getFullName } from '../utils/strings'
+import { InspectorTostring } from '../api/api.types'
+import { loginResolver } from '../lib/validators/login'
 
 type FormData = {
-    fio1: string
-    fio2: string
+    brigadeId: string
 }
 
 export const Login = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<FormData>({
+    const fm = useForm<FormData>({
         mode: 'onChange',
-        reValidateMode: 'onChange',
+        reValidateMode: 'onSubmit',
         defaultValues: {
-            fio1: '',
-            fio2: '',
+            brigadeId: '',
         },
-    })
+        resolver: yupResolver(loginResolver)
+    });
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState<string | null>(null)
@@ -35,21 +35,17 @@ export const Login = () => {
         setSubmitError(null)
 
         try {
-            const fio1 = data.fio1.trim()
-            const fio2 = data.fio2.trim()
+            const brigadeId = data.brigadeId.trim()
 
-            const brigadeResponse = await createBrigade({
-                first_inspector: parseFullName(fio1),
-                second_inspector: parseFullName(fio2),
-            })
+            const brigade = await getBrigadeById(brigadeId);
 
-            if (!brigadeResponse || !brigadeResponse.data) {
-                throw new Error('Не удалось создать бригаду')
+            if (!brigade || !brigade.data) {
+                throw new Error('Не удалось получить бригаду')
             }
 
-            sessionStorage.setItem('fio1', fio1)
-            sessionStorage.setItem('fio2', fio2)
-            sessionStorage.setItem('brigadeId', brigadeResponse.data.id.toString())
+            sessionStorage.setItem('brigadeId', brigadeId)
+            sessionStorage.setItem('fio1', InspectorTostring(brigade.data.first_inspector))
+            sessionStorage.setItem('fio2', InspectorTostring(brigade.data.second_inspector))
 
             navigate('/')
         } catch (error) {
@@ -60,75 +56,29 @@ export const Login = () => {
         }
     }
 
-    const validateFIO = (value: string) => {
-        if (!value) return 'ФИО обязательно для заполнения'
-
-        const trimmed = value.trim()
-        if (!trimmed) return 'ФИО не может состоять только из пробелов'
-
-        const parts = trimmed.split(/\s+/).filter((part) => part.length > 0)
-
-        if (parts.length < 2) return 'Введите хотя бы имя и фамилию'
-        if (parts.length > 3) return 'ФИО должно содержать не более 3 слов'
-
-        for (const part of parts) {
-            const subParts = part.split('-')
-
-            for (const subPart of subParts) {
-                if (!/^[А-ЯЁ][а-яё]*$/.test(subPart)) {
-                    if (subParts.length > 1) {
-                        return 'Каждая часть двойной фамилии/имени должна начинаться с заглавной буквы и содержать только буквы'
-                    }
-                    return 'Каждое слово должно начинаться с заглавной буквы и содержать только буквы'
-                }
-            }
-
-            // Проверяем, что после дефиса тоже заглавная буква
-            if (part.includes('-') && !/^[А-ЯЁ][а-яё]*-[А-ЯЁ][а-яё]*$/.test(part)) {
-                return 'Двойные фамилии/имена должны быть в формате "Иванов-Петров"'
-            }
-        }
-
-        return true
-    }
-
     return (
         <>
             <Header hideControls={true} />
 
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="flex w-full flex-col items-center justify-center gap-3 self-center p-4"
-                noValidate
-            >
-                <Input
-                    label="ФИО 1"
-                    error={errors.fio1?.message}
-                    {...register('fio1', {
-                        required: 'ФИО обязательно для заполнения',
-                        validate: validateFIO,
-                    })}
-                />
-
-                <Input
-                    label="ФИО 2"
-                    error={errors.fio2?.message}
-                    {...register('fio2', {
-                        required: 'ФИО обязательно для заполнения',
-                        validate: validateFIO,
-                    })}
-                />
-
-                {submitError && <div className="text-sm text-red-500">{submitError}</div>}
-
-                <Button
-                    type="submit"
-                    className="mt-5 w-full"
-                    disabled={!!errors.fio1 || !!errors.fio2 || isSubmitting}
+            <FormProvider {...fm}>
+                <form
+                    onSubmit={fm.handleSubmit(data => onSubmit(data).then())}
+                    className="flex w-full flex-col items-center justify-center gap-3 self-center p-4"
+                    noValidate
                 >
-                    {isSubmitting ? 'Вход...' : 'Войти'}
-                </Button>
-            </form>
+                    <Input label="Бригада" placeholder='Введите бригаду' name={'brigadeId'} />
+
+                    {submitError && <div className="text-sm text-red-500">{submitError}</div>}
+
+                    <Button
+                        type="submit"
+                        className="mt-5 w-full"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? 'Вход...' : 'Войти'}
+                    </Button>
+                </form>
+            </FormProvider>
         </>
     )
 }

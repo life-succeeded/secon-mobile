@@ -18,6 +18,18 @@ export const createBrigade = async (item: IBrigadeCreate) => {
     }
 }
 
+export const getBrigadeById = async (id: string) => {
+    try {
+        const brigade = await instance.get<IBrigade>(`brigades/${id}`)
+
+        return brigade
+    } catch (err) {
+        console.error(err)
+
+        return null;
+    }
+}
+
 export const getTasks = async (brigadeId: string) => {
     const result = await instance.get<Array<ITask>>(`/tasks/by-brigade-id/${brigadeId}`)
 

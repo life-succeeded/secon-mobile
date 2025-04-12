@@ -1,37 +1,89 @@
-import { useState } from 'react'
+// import { Controller, useFormContext } from "react-hook-form"
 
-type TRadioChangeEvent = React.ChangeEvent<HTMLInputElement>
+// export type RadioProps<T = string> = {
+//     name: string
+//     value: T
+//     label: string
+//     disabled?: boolean
+//     className?: string
+// }
 
-interface IRadioProps {
-    label?: string
-    checked?: boolean
-    onChange?: (e: TRadioChangeEvent) => void
-    name: string
+// const Radio = ({ name, value, label, disabled = false, className = '' }) => {
+//     const { register } = useFormContext()
+
+//     return (
+//         <Controller
+//         name={name}
+//         control={control}
+//         render={({ }) => (
+//             <label className="mb-[10px] inline-flex gap-2 select-none">
+//             <input
+//                 type="radio"
+//                 value={value as unknown as string}
+//                 disabled={disabled}
+//                 {...register(name)}
+//                 className="accent-black-1 border-black-1 h-4 w-4 -translate-y-[-2px] border outline-none hover:shadow-none focus:ring-0 focus:outline-none"
+//             />
+//             <span className="text-14-20-regular">{label}</span>
+//         </label>
+//         )} />
+
+//     )
+// }
+
+// export default Radio
+
+import { useFormContext, Controller } from 'react-hook-form'
+import type { FieldValues, UseControllerProps, Control } from 'react-hook-form'
+
+type RadioProps<TFormValues extends FieldValues = FieldValues, TValue = string> = {
+    name: UseControllerProps<TFormValues>['name']
+    value: TValue
+    label: string
+    disabled?: boolean
+    className?: string
+    control?: Control<TFormValues>
 }
 
-const Radio = (props: IRadioProps) => {
-    const [checked, setChecked] = useState<boolean>(props.checked || false)
+export default function Radio<TFormValues extends FieldValues = FieldValues, TValue = string>({
+    name,
+    value,
+    label,
+    disabled = false,
+    className = '',
+    control,
+}: RadioProps<TFormValues, TValue>) {
+    const formContext = useFormContext<TFormValues>()
 
-    const handleCheckboxChange = (event: TRadioChangeEvent) => {
-        setChecked(event.target.checked)
+    const renderRadio = ({ field }: { field: any }) => (
+        <label className={`mb-[10px] inline-flex gap-2 select-none ${className}`}>
+            <input
+                type="radio"
+                value={value as unknown as string}
+                checked={field.value === value}
+                onChange={() => field.onChange(value)}
+                disabled={disabled}
+                className="accent-black-1 border-black-1 h-4 w-4 -translate-y-[-2px] border outline-none hover:shadow-none focus:ring-0 focus:outline-none"
+            />
+            <span className="text-14-20-regular">{label}</span>
+        </label>
+    )
 
-        if (props.onChange) {
-            props.onChange(event)
-        }
+    if (control || formContext) {
+        const actualControl = control ?? formContext.control
+        return <Controller name={name} control={actualControl} render={renderRadio} />
     }
 
     return (
-        <label className="mb-[10px] inline-flex gap-2 select-none">
+        <label className={`mb-[10px] inline-flex gap-2 select-none ${className}`}>
             <input
                 type="radio"
-                name={props.name}
-                checked={checked}
-                onChange={handleCheckboxChange}
-                className="accent-black-1 border-black-1 h-4 w-4 border outline-none hover:shadow-none focus:ring-0 focus:outline-none -translate-y-[-2px]"
+                name={name}
+                value={value as unknown as string}
+                disabled={disabled}
+                className="accent-black-1 border-black-1 h-4 w-4 -translate-y-[-2px] border outline-none hover:shadow-none focus:ring-0 focus:outline-none"
             />
-            <span className="text-14-20-regular">{props.label}</span>
+            <span className="text-14-20-regular">{label}</span>
         </label>
     )
 }
-
-export default Radio

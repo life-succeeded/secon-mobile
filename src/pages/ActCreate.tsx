@@ -16,10 +16,13 @@ function ActCreate() {
             currentStep: 1,
             content: [
                 {
-                    type: 'input',
+                    type: 'checkbox',
                     title: 'Лицевой счет',
                     name: 'licevoy_schet',
+                    value: false,
                     placeholder: 'Введите лицевой счет',
+                    disabled: false,
+                    required: false,
                 },
             ],
         },

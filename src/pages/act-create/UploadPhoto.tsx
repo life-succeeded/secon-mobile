@@ -104,7 +104,7 @@ function UploadPhoto() {
                             </div>
                         </div>
                         <Checkbox
-                            {...fm.register('noAccess')}
+                            // {...fm.register('noAccess')}
                             onChange={(e) => {
                                 const checked = e.target.checked
                                 setIsNoAccess(checked)

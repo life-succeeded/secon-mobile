@@ -11,7 +11,7 @@ function buildDefaultValues(wizardConfig: any[]) {
     return wizardConfig.reduce(
         (acc, step) => {
             step.content?.forEach((field: any) => {
-                const name = field.name;
+                const name = field.name
 
                 if (!(name in acc)) {
                     if (field.type === 'checkbox') {
@@ -39,31 +39,31 @@ const WizardParser = ({ wizard }) => {
     const dispatch = useDispatch()
     const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
 
-    const { photos, takePicture } = useMultiCamera();
+    const { photos, takePicture } = useMultiCamera()
 
     const onSubmit = methods.handleSubmit((data) => {
-        console.log('Данные формы (все поля):', data);
-
+        console.log('Данные формы (все поля):', data)
+        return
         if (step?.id === 'step3') {
             if (!data.noAccess && (!photos.counter || !photos.seal)) {
-                alert('Пожалуйста, добавьте фото или отметьте "Нет доступа"');
-                return;
+                alert('Пожалуйста, добавьте фото или отметьте "Нет доступа"')
+                return
             }
         }
 
         // Сохранить в sessionStorage если надо
         if (!data.noAccess) {
-            sessionStorage.setItem('counterPhoto', JSON.stringify(photos.counter));
-            sessionStorage.setItem('sealPhoto', JSON.stringify(photos.seal));
+            sessionStorage.setItem('counterPhoto', JSON.stringify(photos.counter))
+            sessionStorage.setItem('sealPhoto', JSON.stringify(photos.seal))
         } else {
-            sessionStorage.removeItem('counterPhoto');
-            sessionStorage.removeItem('sealPhoto');
+            sessionStorage.removeItem('counterPhoto')
+            sessionStorage.removeItem('sealPhoto')
         }
-        sessionStorage.setItem('noAccess', String(data.noAccess));
+        sessionStorage.setItem('noAccess', String(data.noAccess))
 
         // Переходим на следующий шаг
-        dispatch(nextFormStep());
-    });
+        dispatch(nextFormStep())
+    })
 
     const step = wizard.find((item) => item.currentStep === currentStep)
     if (!step) {
@@ -76,7 +76,14 @@ const WizardParser = ({ wizard }) => {
                 {step.title && <h1>{step.title}</h1>}
 
                 {step.content.map((field, index) => {
-                    return <FieldRenderer key={`${field.title}_${index}`} field={field} photos={photos} takePicture={takePicture}/>
+                    return (
+                        <FieldRenderer
+                            key={`${field.title}_${index}`}
+                            field={field}
+                            photos={photos}
+                            takePicture={takePicture}
+                        />
+                    )
                 })}
 
                 <div className="right-5 bottom-5 left-5">

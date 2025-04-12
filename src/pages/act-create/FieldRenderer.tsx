@@ -1,11 +1,8 @@
 import { useFormContext } from 'react-hook-form'
 import { Input } from '../../components/ui/input'
-import { FC, useState } from 'react'
-import { Button } from '../../components/ui/button'
-import { useMultiCamera } from '../../lib/hooks/useMultiCamera'
-import { Label } from '../../components/ui/label'
+import { FC } from 'react'
 import Radio from '../../components/ui/radio'
-import Checkbox from '../../components/ui/checkbox'
+import { Checkbox } from '../../components/ui/checkbox'
 
 type WizardField = {
     type: 'input' | 'fileInput' | 'checkbox' | 'radio'
@@ -19,6 +16,8 @@ type WizardField = {
         value: string
     }[]
     cameraKey?: string
+    disabled: boolean
+    required: boolean
 }
 
 interface FieldRendererProps {
@@ -28,15 +27,13 @@ interface FieldRendererProps {
 }
 
 export const FieldRenderer: FC<FieldRendererProps> = ({ field, photos, takePicture }) => {
-    const { register, watch, setValue } = useFormContext()
-    const [submitError, setSubmitError] = useState<string | null>(null)
+    const { register } = useFormContext()
 
     const handleTakePicture = async (type: 'counter' | 'seal') => {
         try {
             await takePicture(type)
         } catch (error) {
             console.error('Ошибка при создании фото:', error)
-            setSubmitError('Не удалось сделать фото. Пожалуйста, попробуйте еще раз.')
         }
     }
 
@@ -51,7 +48,15 @@ export const FieldRenderer: FC<FieldRendererProps> = ({ field, photos, takePictu
         case 'radio':
             return <Radio name={field.name} value={field.value} label={field.label} />
         case 'checkbox':
-            return <Checkbox name={field.name} value={field.value} label={field.label} />
+            return (
+                <Checkbox
+                    label={field.title}
+                    name={field.name}
+                    register={register}
+                    disabled={field.disabled}
+                    required={field.required}
+                />
+            )
 
         default:
             return null

@@ -21,15 +21,15 @@ const Radio = (props: IRadioProps) => {
     }
 
     return (
-        <label className="mb-[10px] inline-flex items-center gap-2 select-none">
+        <label className="mb-[10px] inline-flex gap-2 select-none">
             <input
                 type="radio"
                 name={props.name}
                 checked={checked}
                 onChange={handleCheckboxChange}
-                className="accent-black-1 border-black-1 h-4 w-4 border outline-none hover:shadow-none focus:ring-0 focus:outline-none"
+                className="accent-black-1 border-black-1 h-4 w-4 border outline-none hover:shadow-none focus:ring-0 focus:outline-none -translate-y-[-2px]"
             />
-            <span className="text-sm">{props.label}</span>
+            <span className="text-14-20-regular">{props.label}</span>
         </label>
     )
 }

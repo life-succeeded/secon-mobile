@@ -1,16 +1,44 @@
-// src/pages/ActDetails.tsx
 import { useParams } from 'react-router'
 import { Button } from '../components/ui/button'
-import { Act } from '../components/core/act'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
 import { useEffect, useState } from 'react'
 import { getTaskById } from '../api/api'
 import { ITask } from '../api/api.types'
 import { Spinner } from '../components/ui/spinner'
+import InteractiveMap from '../components/core/map'
+import LocateControl from '../components/core/LocateControl'
 
 export const ActDetails = () => {
     const { id } = useParams<{ id: string }>()
+    const [isLocating, setIsLocating] = useState(false)
+    const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
+
+    const handleLocate = () => {
+        if (!navigator.geolocation) {
+            alert('Геолокация не поддерживается вашим браузером')
+            return
+        }
+
+        setIsLocating(true)
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                setUserLocation([position.coords.latitude, position.coords.longitude])
+                setIsLocating(false)
+            },
+            (error) => {
+                alert('Не удалось определить местоположение')
+                console.error(error)
+                setIsLocating(false)
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0,
+            },
+        )
+    }
 
     const [task, setTask] = useState<ITask>(null)
     const [loading, setLoading] = useState(true)
@@ -42,13 +70,22 @@ export const ActDetails = () => {
 
     return (
         <div className="flex h-full flex-col">
-            <div className="flex-grow overflow-auto">
-                <div>map</div>
+            <div className="relative h-[50vh] w-full">
+                <InteractiveMap
+                    enableRouting={true}
+                    userLocation={userLocation}
+                    className="h-full w-full rounded-md"
+                />
+
+                <div className="absolute right-4 bottom-4 z-[1001]">
+                    <LocateControl onClick={handleLocate} isLocating={isLocating} />
+                </div>
+            </div>
+
+            <div className="border-t border-gray-200 p-5">
                 <div className="m-5 flex flex-col gap-3">
                     <p className="text-14-20-regular select-none">ул. Пушкина, д. 1, кв. 1</p>
-
                     <Input label="Время визита" />
-
                     <Label text={'Пресняков Артём Дмитриевич'} icon="user" />
                     <Label
                         text={'8 800 555 35 35'}
@@ -58,9 +95,6 @@ export const ActDetails = () => {
                     <Label text={'70ББ000584'} icon="idCard" />
                     <Label text={'Причина: плохой очень человек'} icon="fileBlank" />
                 </div>
-            </div>
-
-            <div className="border-t border-gray-200 p-5">
                 <Button className="w-full">Составить акт</Button>
             </div>
         </div>

@@ -4,85 +4,91 @@ import { updateFormState, nextFormStep } from '../../store/navigationSlice'
 import { Input } from '../../components/ui/input'
 import { Button } from '../../components/ui/button'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { contactInfoResolver } from '../../lib/validators/act-create/contact-info'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 type FormData = {
-    adress: string
+    address: string
     number: string
     fullName: string
 }
 
 function ContactInfo() {
     const dispatch = useDispatch()
-    const { formState, currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [submitError, setSubmitError] = useState<string | null>(null)
 
     const handleNext = () => {
-        if (!formState.phoneNumber?.trim()) {
-            alert('Пожалуйста, введите контактный номер')
-            return
-        }
-        console.log({ currentStep })
-
         dispatch(nextFormStep())
     }
 
-    const fm = useForm<FormData>()
+    const fm = useForm<FormData>({
+        defaultValues: {
+            fullName: '',
+            number: '',
+            address: ''
+        },
+        resolver: yupResolver(contactInfoResolver)
+    });
+
+    const onSubmit = async (data: FormData) => {
+        setIsSubmitting(true)
+        setSubmitError(null)
+
+        try {
+            sessionStorage.setItem('contactNumber', data.number)
+            sessionStorage.setItem('consumerName', data.fullName)
+            sessionStorage.setItem('objectAddress', data.address)
+            handleNext()
+        } catch (error) {
+            console.error('Ошибка при сохранении контактной информации:', error)
+            setSubmitError('Произошла ошибка при сохранении данных. Пожалуйста, попробуйте еще раз.')
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
 
     return (
         <div className="pt-25 relative flex h-full flex-col px-5">
             <div className="flex w-full flex-col gap-5">
                 <FormProvider {...fm}>
-                    <form className="flex w-full flex-col gap-3">
+                    <form onSubmit={fm.handleSubmit(onSubmit)} className="flex w-full flex-col gap-3">
                         <Input
                             name="number"
                             label={'Контактный номер'}
-                            value={formState.phoneNumber || ''}
                             placeholder="Введите контактный номер"
-                            onChange={(e) =>
-                                dispatch(
-                                    updateFormState({
-                                        phoneNumber: e.target.value,
-                                    }),
-                                )
-                            }
                         />
+                        {submitError && <div className="text-sm text-red-500">{submitError}</div>}
                         <Input
                             name="fullName"
                             label={'Потребитель'}
-                            value={formState.consumer || ''}
                             placeholder="Введите ФИО потребителя"
-                            onChange={(e) =>
-                                dispatch(
-                                    updateFormState({
-                                        consumer: e.target.value,
-                                    }),
-                                )
-                            }
                         />
+                        {submitError && <div className="text-sm text-red-500">{submitError}</div>}
 
                         <div className="flex flex-col gap-2">
                             <label className="text-14-20-regular">Объект</label>
                             <Input
-                                name="addres"
-                                value={formState.address || ''}
+                                name="address"
                                 placeholder="Введите адрес объекта"
-                                onChange={(e) =>
-                                    dispatch(
-                                        updateFormState({
-                                            address: e.target.value,
-                                        }),
-                                    )
-                                }
                             />
+                            {submitError && <div className="text-sm text-red-500">{submitError}</div>}
+                        </div>
+                        <div className="absolute bottom-5 left-5 right-5">
+                            <Button 
+                                className="w-full" 
+                                type="submit"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? 'Сохранение...' : 'Продолжить'}
+                            </Button>
                         </div>
                     </form>
                 </FormProvider>
             </div>
-            <div className="top-130 absolute left-5 right-5">
-                <Button className="w-full" onClick={handleNext}>
-                    Продолжить
-                </Button>
-            </div>
         </div>
     )
 }
+
 export default ContactInfo

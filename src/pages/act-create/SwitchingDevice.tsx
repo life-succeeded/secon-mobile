@@ -10,10 +10,6 @@ function SwitchingDevice() {
     const { formState, currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
 
     const handleNext = () => {
-        if (!formState.phoneNumber?.trim()) {
-            alert('Пожалуйста, введите контактный номер')
-            return
-        }
 
         dispatch(nextFormStep())
     }

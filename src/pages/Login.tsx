@@ -57,13 +57,15 @@ export const Login = () => {
     }
 
     return (
-        <>
-            <Header hideControls={true} />
+    <>
+        <Header hideControls={true} />
 
-            <FormProvider {...fm}>
+        <FormProvider {...fm}>
+            <div className="h-full w-full p-5 grid grid-rows-[minmax(0,0.8fr),minmax(0,1fr),minmax(0,4fr)] overflow-hidden">
+                <div className="min-h-0 max-h-[100px]"></div>
                 <form
                     onSubmit={fm.handleSubmit(data => onSubmit(data).then())}
-                    className="flex w-full flex-col items-center justify-center gap-3 self-center p-4"
+                    className="flex w-full flex-col items-center justify-center max-h-[134px] gap-3 p-4"
                     noValidate
                 >
                     <Input label="Бригада" placeholder='Введите бригаду' name={'brigadeId'} />
@@ -78,7 +80,9 @@ export const Login = () => {
                         {isSubmitting ? 'Вход...' : 'Войти'}
                     </Button>
                 </form>
-            </FormProvider>
-        </>
-    )
+                <div />
+            </div>
+        </FormProvider>
+    </>
+)
 }

@@ -42,28 +42,28 @@ const WizardParser = ({ wizard }) => {
     const { photos, takePicture } = useMultiCamera()
 
     const onSubmit = methods.handleSubmit((data) => {
-        console.log('Данные формы (все поля):', data)
-        return
+        console.log('Данные формы (все поля):', data);
+
         if (step?.id === 'step3') {
             if (!data.noAccess && (!photos.counter || !photos.seal)) {
-                alert('Пожалуйста, добавьте фото или отметьте "Нет доступа"')
-                return
+                alert('Пожалуйста, добавьте фото или отметьте "Нет доступа"');
+                return;
             }
         }
 
         // Сохранить в sessionStorage если надо
         if (!data.noAccess) {
-            sessionStorage.setItem('counterPhoto', JSON.stringify(photos.counter))
-            sessionStorage.setItem('sealPhoto', JSON.stringify(photos.seal))
+            sessionStorage.setItem('counterPhoto', JSON.stringify(photos.counter));
+            sessionStorage.setItem('sealPhoto', JSON.stringify(photos.seal));
         } else {
-            sessionStorage.removeItem('counterPhoto')
-            sessionStorage.removeItem('sealPhoto')
+            sessionStorage.removeItem('counterPhoto');
+            sessionStorage.removeItem('sealPhoto');
         }
-        sessionStorage.setItem('noAccess', String(data.noAccess))
+        sessionStorage.setItem('noAccess', String(data.noAccess));
 
         // Переходим на следующий шаг
-        dispatch(nextFormStep())
-    })
+        dispatch(nextFormStep());
+    });
 
     const step = wizard.find((item) => item.currentStep === currentStep)
     if (!step) {

@@ -16,10 +16,9 @@ function ActCreate() {
             currentStep: 1,
             content: [
                 {
-                    type: 'checkbox',
+                    type: 'input',
                     title: 'Лицевой счет',
                     name: 'licevoy_schet',
-                    value: false,
                     placeholder: 'Введите лицевой счет',
                     disabled: false,
                     required: false,
@@ -28,7 +27,6 @@ function ActCreate() {
         },
         {
             id: 'step2',
-            currentStep: 2,
             content: [
                 {
                     type: 'input',
@@ -49,7 +47,6 @@ function ActCreate() {
         },
         {
             id: 'step3',
-            currentStep: 3,
             content: [
                 {
                     type: 'fileInput',
@@ -91,11 +88,11 @@ function ActCreate() {
         },
         {
             id: 'step5',
-            currentStep: 5,
             title: 'Акт о:',
             content: [
                 {
                     type: 'radio',
+                    name: 'actType',
                     options: [
                         {
                             title: 'Радио 1',
@@ -116,12 +113,26 @@ function ActCreate() {
                     ],
                 },
             ],
+            next: (data: any) => {
+                switch (data.actType) {
+                    case 'value1':
+                        return 'step6';
+                    case 'value2':
+                        return 'step7';
+                    case 'value3':
+                        return 'step8';
+                    case 'value4':
+                        return 'step9';
+                    default:
+                        return 'step6';
+                }
+            }
         },
     ]
 
     return (
         <div className="flex h-[80vh] flex-col">
-            <WizardParser wizard={wizard} />
+            <WizardParser wizard={wizard}/>
             {/*<div className="flex-grow overflow-auto">*/}
             {/*    {currentStep === 1 && <ContactInfo />}*/}
             {/*    {currentStep === 2 && <UploadPhoto />}*/}

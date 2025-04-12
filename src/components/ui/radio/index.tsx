@@ -29,7 +29,7 @@ const Radio = (props: IRadioProps) => {
                 onChange={handleCheckboxChange}
                 className="accent-black-1 border-black-1 h-4 w-4 border outline-none hover:shadow-none focus:ring-0 focus:outline-none"
             />
-            <span className="text-sm">{props.label}</span>
+            <span className="text-14-20-regular">{props.label}</span>
         </label>
     )
 }

@@ -30,6 +30,7 @@ function buildDefaultValues(wizardConfig: any[]) {
 }
 
 const WizardParser = ({ wizard }) => {
+    const [currentStepId, setCurrentStepId] = useState('step1');
     const defaultValues = buildDefaultValues(wizard)
 
     const methods = useForm({
@@ -42,27 +43,10 @@ const WizardParser = ({ wizard }) => {
     const { photos, takePicture } = useMultiCamera()
 
     const onSubmit = methods.handleSubmit((data) => {
-        console.log('Данные формы (все поля):', data);
+        console.log('refvrfff', data);
 
-        if (step?.id === 'step3') {
-            if (!data.noAccess && (!photos.counter || !photos.seal)) {
-                alert('Пожалуйста, добавьте фото или отметьте "Нет доступа"');
-                return;
-            }
-        }
-
-        // Сохранить в sessionStorage если надо
-        if (!data.noAccess) {
-            sessionStorage.setItem('counterPhoto', JSON.stringify(photos.counter));
-            sessionStorage.setItem('sealPhoto', JSON.stringify(photos.seal));
-        } else {
-            sessionStorage.removeItem('counterPhoto');
-            sessionStorage.removeItem('sealPhoto');
-        }
-        sessionStorage.setItem('noAccess', String(data.noAccess));
-
-        // Переходим на следующий шаг
-        dispatch(nextFormStep());
+        const stepInfo = wizard.find(w => w.id === currentStepId);
+        setCurrentStepId(stepInfo.next);
     });
 
     const step = wizard.find((item) => item.currentStep === currentStep)

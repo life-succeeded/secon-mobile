@@ -9,11 +9,16 @@ function Tasks() {
 
     assertAuthenticated()
 
-    const agents = Object.entries(getAuthData()).map((fio) => parseFullName(fio[1]))
+    console.log(getAuthData())
+
+    const agents = Object.entries(getAuthData())
+        .filter((entry): entry is [string, string] => typeof entry[1] === 'string')
+        .filter(([key, _]) => key !== 'brigadeId')
+        .map(([_, fio]) => parseFullName(fio))
 
     return (
         <>
-            <div className="flex h-screen flex-col">
+            <div className="flex flex-col">
                 <Agents agents={agents} />
                 <TaskFeed />
             </div>

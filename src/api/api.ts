@@ -1,26 +1,49 @@
 import { Config } from '../utils/config'
 import axios, { AxiosError } from 'axios'
+import { IBrigade, IBrigadeCreate, ITask, ITaskCreate } from './api.types'
 
 const instance = axios.create({
     baseURL: Config.apiEndpoint,
 })
 
-export const createBrigade = async (item: TSpecialty) => {
+export const createBrigade = async (item: IBrigadeCreate) => {
     try {
-        const { data, status } = await instance.post<ApiResponse<TSpecialty, ApiError>>(
-            `specialities`,
-            item,
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            },
-        )
+        const brigade = await instance.post<IBrigade>(`brigades`, item)
 
-        return { success: data.success, status: status }
+        return brigade
     } catch (err) {
-        if (err instanceof AxiosError) {
-            return { success: false, status: err.status }
-        }
+        console.error(err)
 
-        return { success: false, status: 500 }
+        return null
     }
+}
+
+export const getBrigadeById = async (id: string) => {
+    try {
+        const brigade = await instance.get<IBrigade>(`brigades/${id}`)
+
+        return brigade
+    } catch (err) {
+        console.error(err)
+
+        return null;
+    }
+}
+
+export const getTasks = async (brigadeId: string) => {
+    const result = await instance.get<Array<ITask>>(`/tasks/by-brigade-id/${brigadeId}`)
+
+    return result
+}
+
+export const getTaskById = async (taskId: string) => {
+    const result = await instance.get<ITask>(`/tasks/${taskId}`)
+
+    return result
+}
+
+export const createTask = async (task: ITaskCreate) => {
+    const result = await instance.post<ITask>(`/tasks`)
+
+    return result
 }

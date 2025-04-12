@@ -1,15 +1,19 @@
 import { useParams } from 'react-router'
-import { useState } from 'react'
 import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
+import { useState } from 'react'
+import { Spinner } from '../components/ui/spinner'
 import InteractiveMap from '../components/core/map'
 import LocateControl from '../components/core/LocateControl'
+import { getFullName } from '../utils/strings'
+import useGetTaskById from '../api/hooks/useGetTaskById'
 
 export const ActDetails = () => {
     const { id } = useParams<{ id: string }>()
     const [isLocating, setIsLocating] = useState(false)
     const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
+
+    const { data: task, error, isLoading } = useGetTaskById({ id })
 
     const handleLocate = () => {
         if (!navigator.geolocation) {
@@ -37,6 +41,18 @@ export const ActDetails = () => {
         )
     }
 
+    if (isLoading) {
+        return <Spinner />
+    }
+
+    if (error) {
+        return <div className="p-4 text-center text-red-500">Ошибка при загрузке задачи</div>
+    }
+
+    if (!task) {
+        return <div className="p-4 text-center">Задача не найдена</div>
+    }
+
     return (
         <div className="flex h-full flex-col">
             <div className="relative h-[50vh] w-full">
@@ -51,18 +67,18 @@ export const ActDetails = () => {
                 </div>
             </div>
 
-            <div className="border-t border-gray-200 p-5">
+            <div className="border-t border-gray-200 px-5 pb-5">
                 <div className="m-5 flex flex-col gap-3">
-                    <p className="text-14-20-regular select-none">ул. Пушкина, д. 1, кв. 1</p>
-                    <Input label="Время визита" />
-                    <Label text={'Пресняков Артём Дмитриевич'} icon="user" />
+                    <p className="text-14-20-regular select-none">{task.address}</p>
+                    {/* <Input name="time" label="Время визита" /> */}
+                    <Label text={getFullName(task.consumer)} icon="user" />
                     <Label
-                        text={'8 800 555 35 35'}
+                        text={task.consumer.phone_number}
                         className="underline-black-1 underline underline-offset-2"
                         icon="phone"
                     />
-                    <Label text={'70ББ000584'} icon="idCard" />
-                    <Label text={'Причина: плохой очень человек'} icon="fileBlank" />
+                    <Label text={`${task.account_number}`} icon="idCard" />
+                    <Label text={task.comment} icon="fileBlank" />
                 </div>
                 <Button className="w-full">Составить акт</Button>
             </div>

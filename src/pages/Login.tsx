@@ -1,103 +1,86 @@
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { Button } from '../components/ui/button'
 import { Header } from '../components/ui/header'
 import { Input } from '../components/ui/input'
+import { useState } from 'react'
+
+import { object, string } from 'yup'
+import { yupResolver } from "@hookform/resolvers/yup";
+import { getBrigadeById } from '../api/api'
+import { getFullName } from '../utils/strings'
+import { InspectorTostring } from '../api/api.types'
+import { loginResolver } from '../lib/validators/login'
 
 type FormData = {
-    fio1: string
-    fio2: string
+    brigadeId: string
 }
 
 export const Login = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<FormData>({
-        mode: 'onChange',
-        reValidateMode: 'onChange',
+    const fm = useForm<FormData>({
         defaultValues: {
-            fio1: '',
-            fio2: '',
+            brigadeId: '',
         },
-    })
+        resolver: yupResolver(loginResolver)
+    });
 
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [submitError, setSubmitError] = useState<string | null>(null)
     const navigate = useNavigate()
 
-    const onSubmit = (data: FormData) => {
-        sessionStorage.setItem('fio1', data.fio1.trim())
-        sessionStorage.setItem('fio2', data.fio2.trim())
-        navigate('/')
-    }
+    const onSubmit = async (data: FormData) => {
+        setIsSubmitting(true)
+        setSubmitError(null)
 
-    const validateFIO = (value: string) => {
-        if (!value) return 'ФИО обязательно для заполнения'
+        try {
+            const brigadeId = data.brigadeId.trim()
 
-        const trimmed = value.trim()
-        if (!trimmed) return 'ФИО не может состоять только из пробелов'
+            const brigade = await getBrigadeById(brigadeId);
 
-        const parts = trimmed.split(/\s+/).filter((part) => part.length > 0)
-
-        if (parts.length < 2) return 'Введите хотя бы имя и фамилию'
-        if (parts.length > 3) return 'ФИО должно содержать не более 3 слов'
-
-        for (const part of parts) {
-            const subParts = part.split('-')
-
-            for (const subPart of subParts) {
-                if (!/^[А-ЯЁ][а-яё]*$/.test(subPart)) {
-                    if (subParts.length > 1) {
-                        return 'Каждая часть двойной фамилии/имени должна начинаться с заглавной буквы и содержать только буквы'
-                    }
-                    return 'Каждое слово должно начинаться с заглавной буквы и содержать только буквы'
-                }
+            if (!brigade || !brigade.data) {
+                throw new Error('Не удалось получить бригаду')
             }
 
-            // Проверяем, что после дефиса тоже заглавная буква
-            if (part.includes('-') && !/^[А-ЯЁ][а-яё]*-[А-ЯЁ][а-яё]*$/.test(part)) {
-                return 'Двойные фамилии/имена должны быть в формате "Иванов-Петров"'
-            }
+            sessionStorage.setItem('brigadeId', brigadeId)
+            sessionStorage.setItem('fio1', InspectorTostring(brigade.data.first_inspector))
+            sessionStorage.setItem('fio2', InspectorTostring(brigade.data.second_inspector))
+
+            navigate('/')
+        } catch (error) {
+            console.error('Ошибка при создании бригады:', error)
+            setSubmitError('Произошла ошибка при входе. Пожалуйста, попробуйте еще раз.')
+        } finally {
+            setIsSubmitting(false)
         }
-
-        return true
     }
 
     return (
-        <>
-            <Header hideControls={true} />
+    <>
+        <Header hideControls={true} />
 
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="flex h-full w-full flex-col items-center justify-center gap-3 self-center p-4"
-                noValidate
-            >
-                <Input
-                    label="ФИО 1"
-                    error={errors.fio1?.message}
-                    {...register('fio1', {
-                        required: 'ФИО обязательно для заполнения',
-                        validate: validateFIO,
-                    })}
-                />
-
-                <Input
-                    label="ФИО 2"
-                    error={errors.fio2?.message}
-                    {...register('fio2', {
-                        required: 'ФИО обязательно для заполнения',
-                        validate: validateFIO,
-                    })}
-                />
-
-                <Button
-                    type="submit"
-                    className="mt-5 w-full"
-                    disabled={!!errors.fio1 || !!errors.fio2}
+        <FormProvider {...fm}>
+            <div className="h-full w-full p-5 grid grid-rows-[minmax(0,0.8fr),minmax(0,1fr),minmax(0,4fr)] overflow-hidden">
+                <div className="min-h-0 max-h-[100px]"></div>
+                <form
+                    onSubmit={fm.handleSubmit(data => onSubmit(data).then())}
+                    className="flex w-full flex-col items-center justify-center max-h-[134px] gap-3 p-4"
+                    noValidate
                 >
-                    Войти
-                </Button>
-            </form>
-        </>
-    )
+                    <Input label="Бригада" placeholder='Введите бригаду' name={'brigadeId'} />
+
+                    {submitError && <div className="text-sm text-red-500">{submitError}</div>}
+
+                    <Button
+                        type="submit"
+                        className="mt-5 w-full"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? 'Вход...' : 'Войти'}
+                    </Button>
+                </form>
+                <div />
+            </div>
+        </FormProvider>
+    </>
+)
 }

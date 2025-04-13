@@ -21,16 +21,16 @@ const DeviceValue = ({ defaultAccount, renderBelow }: Props) => {
 
     const fm = useFormContext()
 
-    useEffect(() => {
-        if (defaultAccount || savedAccount) {
-            fm.reset({ deviceValue: defaultAccount || savedAccount || '' })
-        }
-    }, [defaultAccount, savedAccount])
+    // useEffect(() => {
+    //     if (defaultAccount || savedAccount) {
+    //         fm.reset({ deviceValue: defaultAccount || savedAccount || '' })
+    //     }
+    // }, [defaultAccount, savedAccount])
 
     const handleNext = async () => {
         const isValid = await fm.trigger()
         if (isValid) {
-            dispatch(updateFormState({ deviceValue: fm.getValues().account }))
+            dispatch(updateFormState({ deviceValue: fm.getValues().deviceValue }))
             dispatch(nextFormStep())
         }
     }

@@ -12,11 +12,13 @@ import PersonalAccount from './act-create/PersonalAccount'
 import Place from './act-create/Place'
 import PowerSupplyType from './act-create/PowerSupplyType'
 import DeviceValue from './act-create/DeviceValue'
+import GenerateAct from './act-create/GenerateAct'
 
-type FormData = {
+export type TFormData = {
     account: string
     address: string
     number: string
+    phoneNumber: string
     fullName: string
     noAccess: boolean
     actType: string
@@ -24,10 +26,12 @@ type FormData = {
     violation: string
     powerSupplyType: string
     deviceValue: string
+    sealPlace: string
+    sealNumber: string
 }
 
 function ActCreate() {
-    const fm = useForm<FormData>()
+    const fm = useForm<TFormData>()
 
     const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
     console.log('📍 [ActCreate] Текущий шаг из Redux:', currentStep)
@@ -50,6 +54,8 @@ function ActCreate() {
                 return <PowerSupplyType />
             case 7:
                 return <DeviceValue />
+            case 8:
+                return <GenerateAct />
             default:
                 return null
         }

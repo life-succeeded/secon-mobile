@@ -21,11 +21,11 @@ const PowerSupplyType = ({ defaultAccount, renderBelow }: Props) => {
 
     const fm = useFormContext()
 
-    useEffect(() => {
-        if (defaultAccount || savedAccount) {
-            fm.reset({ powerSupplyType: defaultAccount || savedAccount || '' })
-        }
-    }, [defaultAccount, savedAccount])
+    // useEffect(() => {
+    //     if (defaultAccount || savedAccount) {
+    //         fm.reset({ powerSupplyType: defaultAccount || savedAccount || '' })
+    //     }
+    // }, [defaultAccount, savedAccount])
 
     const handleNext = async () => {
         const isValid = await fm.trigger()

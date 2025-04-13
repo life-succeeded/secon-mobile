@@ -3,90 +3,84 @@ import { RootState } from '../../store/store'
 import { updateFormState, nextFormStep } from '../../store/navigationSlice'
 import { Input } from '../../components/ui/input'
 import { Button } from '../../components/ui/button'
-import { FormProvider, useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { FormProvider, useForm, useFormContext } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import { contactInfoResolver } from '../../lib/validators/act-create/contact-info'
 import { yupResolver } from '@hookform/resolvers/yup'
-
-type FormData = {
-    address: string
-    number: string
-    fullName: string
-}
+import { InspectorTostring } from '../../api/api.types'
+import { getBrigadeById } from '../../api/api'
 
 function ContactInfo() {
     const dispatch = useDispatch()
+    const saved = useSelector((state: RootState) => state.navigation.formSteps.formState)
+
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState<string | null>(null)
 
-    const handleNext = () => {
-        dispatch(nextFormStep())
-    }
+    const fm = useFormContext()
 
-    const fm = useForm<FormData>({
-        defaultValues: {
-            fullName: '',
-            number: '',
-            address: ''
-        },
-        resolver: yupResolver(contactInfoResolver)
-    });
+    //   useEffect(() => {
+    //     if (saved) {
+    //       fm.reset({
+    //         address: saved.address || '',
+    //         number: saved.phoneNumber || '',
+    //         fullName: saved.consumer || ''
+    //       })
+    //     }
+    //   }, [saved])
 
-    const onSubmit = async (data: FormData) => {
+    const handleNext = async () => {
+        const isValid = await fm.trigger()
+        if (!isValid) return
+
+        const data = fm.getValues()
+
         setIsSubmitting(true)
         setSubmitError(null)
 
         try {
-            sessionStorage.setItem('contactNumber', data.number)
-            sessionStorage.setItem('consumerName', data.fullName)
-            sessionStorage.setItem('objectAddress', data.address)
-            handleNext()
+            dispatch(
+                updateFormState({
+                    phoneNumber: data.phoneNumber,
+                    consumer: data.fullName,
+                    address: data.address,
+                }),
+            )
+
+            dispatch(nextFormStep())
         } catch (error) {
-            console.error('Ошибка при сохранении контактной информации:', error)
-            setSubmitError('Произошла ошибка при сохранении данных. Пожалуйста, попробуйте еще раз.')
+            console.error('Ошибка при создании бригады:', error)
+            setSubmitError('Произошла ошибка при входе. Пожалуйста, попробуйте еще раз.')
         } finally {
             setIsSubmitting(false)
         }
     }
 
     return (
-        <div className="pt-25 relative flex h-full flex-col px-5">
+        <div className="relative flex h-full flex-col px-5 pt-25">
             <div className="flex w-full flex-col gap-5">
-                <FormProvider {...fm}>
-                    <form onSubmit={fm.handleSubmit(onSubmit)} className="flex w-full flex-col gap-3">
-                        <Input
-                            name="number"
-                            label={'Контактный номер'}
-                            placeholder="Введите контактный номер"
-                        />
-                        {submitError && <div className="text-sm text-red-500">{submitError}</div>}
-                        <Input
-                            name="fullName"
-                            label={'Потребитель'}
-                            placeholder="Введите ФИО потребителя"
-                        />
-                        {submitError && <div className="text-sm text-red-500">{submitError}</div>}
+                <div className="flex w-full flex-col gap-3">
+                    <Input
+                        name="phoneNumber"
+                        label="Контактный номер"
+                        placeholder="Введите контактный номер"
+                    />
+                    <Input
+                        name="fullName"
+                        label="Потребитель"
+                        placeholder="Введите ФИО потребителя"
+                    />
+                    <div className="flex flex-col gap-2">
+                        <label className="text-14-20-regular">Объект</label>
+                        <Input name="address" placeholder="Введите адрес объекта" />
+                    </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-14-20-regular">Объект</label>
-                            <Input
-                                name="address"
-                                placeholder="Введите адрес объекта"
-                            />
-                            {submitError && <div className="text-sm text-red-500">{submitError}</div>}
-                        </div>
-                        <div className="absolute bottom-5 left-5 right-5">
-                            <Button 
-                                className="w-full" 
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? 'Сохранение...' : 'Продолжить'}
-                            </Button>
-                        </div>
-                    </form>
-                </FormProvider>
+                    {submitError && <div className="mt-1 text-sm text-red-500">{submitError}</div>}
+                </div>
             </div>
+            <Button className="w-full" type="button" onClick={handleNext} disabled={isSubmitting}>
+                Продолжить
+            </Button>
         </div>
     )
 }

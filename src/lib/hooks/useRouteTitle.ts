@@ -5,7 +5,7 @@ const routeTitles: Record<string, string> = {
     '/map': 'Карта',
     '/create': 'Акт',
     '/acts': 'Акты',
-    '/report': 'Отчёт',
+    '/report': 'Отчёты',
     '/login': 'Войти',
 }
 
@@ -28,5 +28,5 @@ export const useRouteTitle = () => {
         return 'Акт'
     }
 
-    return routeTitles[location.pathname] || 'Заголовок'
+    return routeTitles[location.pathname] || 'Акт'
 }

@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 
-interface PhotoData {
+export interface PhotoData {
     fileName: string
     data: string | null // base64
+    type?: string
 }
 
 export const useMultiCamera = () => {
@@ -91,6 +92,7 @@ export const useMultiCamera = () => {
     return {
         photos,
         error,
+        setPhotos,
         takePicture,
         pickFromGallery,
         resetPhoto,

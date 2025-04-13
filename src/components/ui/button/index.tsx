@@ -25,6 +25,7 @@ const button = tv({
                 '!active:bg-transparent',
                 'disabled:hover:bg-transparent', // Особый случай для transparent варианта
             ],
+            blue: 'bg-[#9747FF]',
         },
     },
     defaultVariants: {

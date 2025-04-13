@@ -1,6 +1,11 @@
 import { Config } from '../utils/config'
 import axios, { AxiosError } from 'axios'
-import { IBrigade, IBrigadeCreate, ITask, ITaskCreate } from './api.types'
+import { IBrigade, IBrigadeCreate, ITask, ITaskCreate, ITaskUpdateStatus, TTaskStatus } from './api.types'
+import { stat } from 'fs'
+import {
+    ICreateInspectUniversal,
+    IInspection,
+} from './api.types'
 
 const instance = axios.create({
     baseURL: Config.apiEndpoint,
@@ -26,7 +31,7 @@ export const getBrigadeById = async (id: string) => {
     } catch (err) {
         console.error(err)
 
-        return null;
+        return null
     }
 }
 
@@ -43,7 +48,28 @@ export const getTaskById = async (taskId: string) => {
 }
 
 export const createTask = async (task: ITaskCreate) => {
-    const result = await instance.post<ITask>(`/tasks`)
+    const result = await instance.post<ITask>(`/tasks`, task)
 
-    return result
+    return result.data as ITask
+}
+
+export const createInspectUniversal = async (inspect: ICreateInspectUniversal) => {
+    const result = await instance.post<IInspection>(`/inspections`, inspect)
+
+    return result.data as IInspection
+}
+
+/*
+
+const useCreateInspectControl = (params: { data: ICreateInspectControl }) => {
+    const { data } = params
+
+    return useAxios<IInspection, ICreateInspectControl>(`/inspect/`, 'post', false, data)
+}
+*/
+
+export const updateStatus = async (id: string, status: TTaskStatus) => {
+    return await instance.patch<ITaskUpdateStatus>(`/tasks/${id}/status`, {
+        status: status
+    })
 }

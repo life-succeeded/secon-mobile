@@ -11,7 +11,7 @@ export type TIconVariant =
     | 'time'
     | 'user'
     | 'phone'
-    | 'idCard'
+    | 'idCard' | 'magic'
 
 export interface IIconProps {
     className?: string

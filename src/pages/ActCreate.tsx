@@ -13,7 +13,7 @@ import ContactInfo from './act-create/ContactInfo'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PhotoData } from '../lib/hooks/useMultiCamera'
 import PowerSuply from './act-create/power-suply'
-import { setFormStep } from '../store/navigationSlice'
+import { nextFormStep, setFormStep } from '../store/navigationSlice'
 import PersonalAccount from './act-create/PersonalAccount'
 
 type FormData = {
@@ -27,6 +27,11 @@ type FormData = {
 
     originalFile: PhotoData;
     counterValue: PhotoData;
+    
+    // 9
+    pullElectro: string
+    timeToOff: string;
+    dateToOff: string;
 }
 
 function ActCreate() {
@@ -39,7 +44,7 @@ function ActCreate() {
     const renderPageState = () => {
         switch (currentStep) {
             case 1:
-                return <PersonalAccount/>
+                return <PersonalAccount />
             case 2:
                 return <ContactInfo />
             case 3:
@@ -49,6 +54,9 @@ function ActCreate() {
 
             case 5:
                 return <SwitchingDevice />
+
+            case 9:
+                return <PowerSuply />
             default:
                 return null;
         }

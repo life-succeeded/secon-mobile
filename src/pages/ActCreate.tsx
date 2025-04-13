@@ -122,17 +122,50 @@ function ActCreate() {
                     case 'inspection':
                         return <Violation />
                     case 'unauthorized':
-                        switch (violation) {
-                            case '1':
-                                return <Way />
-                            case '2':
-                                return <PowerSuply />
-                            default:
-                                return null
-                        }
+                        
                     default:
                         return null
                 }
+                case 10:
+                switch (actType) {
+                    case 'restriction':
+                        return <PowerSupplyType />
+                    case 'resumption':
+                        return <PowerSuply />
+                    case 'inspection':
+                        return <Violation />
+                    case 'unauthorized':
+                        
+                    default:
+                        return null
+                }
+                case 11:
+                switch (actType) {
+                    case 'restriction':
+                        return <DeviceValue />
+                    case 'resumption':
+                        return <PowerSuply />
+                    case 'inspection':
+                        return <Violation />
+                    case 'unauthorized':
+                        
+                    default:
+                        return null
+                }
+                case 12:
+                switch (actType) {
+                    case 'restriction':
+                        return <GenerateAct />
+                    case 'resumption':
+                        return <PowerSuply />
+                    case 'inspection':
+                        return <Violation />
+                    case 'unauthorized':
+                        
+                    default:
+                        return null
+                }
+            
         }
     }
 

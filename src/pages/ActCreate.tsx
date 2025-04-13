@@ -21,6 +21,7 @@ export type TFormData = {
     sealPlace: string
     sealNumber: string
     phoneNumber: string
+    violationDisruption: string
 
     account: string
     address: string

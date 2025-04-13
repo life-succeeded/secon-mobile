@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { nextFormStep, updateFormState } from '../../store/navigationSlice'
+import { nextFormStep, setFormStep, updateFormState } from '../../store/navigationSlice'
 import { Input } from '../../components/ui/input'
 import { Button } from '../../components/ui/button'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
@@ -103,10 +103,10 @@ const GenerateAct = ({ renderBelow }: Props) => {
                                 place: values.sealPlace,
                             },
                         ],
-                        type: 'счётчик',
+                        type: values?.powerSupplyType ?? 'счетчик',
                         number: values.number,
                         deployment_place: 0,
-                        other_place: 'other_place',
+                        other_place: 'иное',
                     }
 
                     const createdInspection = await createInspectUniversal({
@@ -124,11 +124,12 @@ const GenerateAct = ({ renderBelow }: Props) => {
                         method: values.duration,
                         device,
                         reason_type: 0,
-                        reason: 'пусть живет пока',
-                        images: [{ name: 'фотка', url: 'ссылка на фотку' }],
+                        reason: values?.reasonMb ?? '',
+                        images: [{ name: values?.originalFile?.fileName ?? 'фотка', url: values?.url ?? 'ссылка на фотку' }],
                         energy_action_date: new Date().toISOString(),
                     })
 
+                    dispatch(setFormStep(1))
                     navigate('/acts')
                 }}
             >

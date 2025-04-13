@@ -16,6 +16,8 @@ import Way from './act-create/way'
 import GenerateAct from './act-create/GenerateAct'
 import ReasonMb from './act-create/Reason'
 import useCreateTask from '../api/hooks/useCreateTask'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { formDataResolver } from '../lib/validators/formData'
 import DisconnectionReason from './act-create/DisconnectionReason'
 import Violation from './act-create/ViolationDescription'
 
@@ -54,6 +56,8 @@ export type TFormData = {
 
     reasonType: string
     reasonMb: string
+
+    url: string
 }
 
 function ActCreate() {
@@ -69,11 +73,11 @@ function ActCreate() {
             case 2:
                 return <ContactInfo />
             case 3:
-                return <UploadPhoto />
+                return <DeviceValue />
             case 4:
-                return <ActType />
+                return <UploadPhoto />
             case 5:
-                return <SwitchingDevice />
+                return <ActType />
             case 6:
                 switch (actType) {
                     case 'restriction':

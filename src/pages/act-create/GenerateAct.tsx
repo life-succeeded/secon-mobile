@@ -9,8 +9,11 @@ import { useEffect } from 'react'
 import { RootState } from '../../store/store'
 import { TFormData } from '../ActCreate'
 import { parseFullName } from '../../utils/strings'
-import { IConsumer } from '../../api/api.types'
+import { IConsumer, IDevice } from '../../api/api.types'
 import { useAuth } from '../../lib/hooks/useAuth'
+import useCreateTask, { useCreateTaskLazy } from '../../api/hooks/useCreateTask'
+import { createInspectUniversal, createTask } from '../../api/api'
+import { useNavigate } from 'react-router'
 
 type Props = {
     defaultAccount?: string
@@ -19,6 +22,8 @@ type Props = {
 
 const GenerateAct = ({ renderBelow }: Props) => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
     const savedSealPlace = useSelector(
         (state: RootState) => state.navigation.formSteps.formState['sealPlace'],
     )
@@ -65,25 +70,66 @@ const GenerateAct = ({ renderBelow }: Props) => {
                 icon="magic"
                 className="w-full"
                 type="button"
-                onClick={() => {
+                onClick={async () => {
                     const values = fm.getValues() as TFormData
                     console.log(values)
 
-                    const brigadeId = getAuthData().brigadeId
+                    const brigade_id = getAuthData().brigadeId
+                    const address = values.address
 
                     const consumer: IConsumer = {
                         ...parseFullName(values.fullName),
                         phone_number: values.phoneNumber,
                     }
 
-                    const address = values.address
-                    const value = Number(values.deviceValue)
-                    const seals = [
-                        {
-                            number: values.sealNumber,
-                            place: values.sealPlace,
-                        },
-                    ]
+                    const account_number = values.account
+
+                    const createdTask = await createTask({
+                        brigade_id,
+                        consumer,
+                        address,
+                        account_number,
+                        comment: 'Test',
+                        visit_date: new Date().toISOString(),
+                    })
+
+                    const task_id = createdTask.id
+
+                    const device: IDevice = {
+                        value: Number(values.deviceValue),
+                        seals: [
+                            {
+                                number: values.sealNumber,
+                                place: values.sealPlace,
+                            },
+                        ],
+                        type: 'счётчик',
+                        number: values.number,
+                        deployment_place: 0,
+                        other_place: 'other_place',
+                    }
+
+                    const createdInspection = await createInspectUniversal({
+                        task_id,
+                        brigade_id,
+                        address,
+                        consumer,
+                        resolution: 0,
+                        type: 0,
+                        have_automaton: true,
+                        account_number,
+                        is_incomplete_payment: true,
+                        other_reason: values?.reasonMb ?? '',
+                        method_by: Number(values.pullElectroAuthor),
+                        method: values.duration,
+                        device,
+                        reason_type: 0,
+                        reason: 'пусть живет пока',
+                        images: [{ name: 'фотка', url: 'ссылка на фотку' }],
+                        energy_action_date: new Date().toISOString(),
+                    })
+
+                    navigate('/acts')
                 }}
             >
                 Сгенерировать акт

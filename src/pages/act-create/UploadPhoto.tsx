@@ -7,6 +7,7 @@ import { Checkbox } from '../../components/ui/checkbox'
 import { PhotoData, useMultiCamera } from '../../lib/hooks/useMultiCamera'
 import { Label } from '../../components/ui/label'
 import { ImageCropper } from '../../components/core/cropper'
+import { Input } from '../../components/ui/input'
 
 function UploadPhoto() {
     const [photoType, setPhotoType] = useState('')
@@ -114,6 +115,7 @@ function UploadPhoto() {
                 <div>Добавление фото счётчика до работы</div>
                 <div className="flex w-full flex-col gap-6">
                     <div className="flex w-full flex-col gap-2">
+                        <Input name={'counterNumberNew'} label='Заводской № прибора учета' />
                         <Button
                             type="button"
                             onClick={() => {

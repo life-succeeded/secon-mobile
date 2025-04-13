@@ -8,16 +8,16 @@ import { useEffect, useState } from 'react'
 import { fp } from '../../lib/fp'
 import { Input } from '../../components/ui/input'
 
-function Way() {
+function ViolationUnconnection() {
     const dispatch = useDispatch()
 
     const { watch, setError, formState, getValues } = useFormContext()
-    const actType = watch('pullElectroAuthor')
+    const actType = watch('violationUnconnection')
 
     const handleNext = () => {
         console.log(getValues())
         if (!actType) {
-            setError('pullElectroAuthor', { type: 'error', message: 'Ввдеите данные' })
+            setError('violationUnconnection', { type: 'error', message: 'Введите данные' })
             return
         }
         dispatch(nextFormStep())
@@ -27,11 +27,11 @@ function Way() {
         <div className="relative flex h-full flex-col px-5 pt-25">
             <div className="flex flex-col gap-4 overflow-auto">
                 <label className="text-14-20-regular">
-                    Подача электроэнергии ограничена/приостановлена:
+                    Самовольное подключение энергопринимающих устройств Потребителя к электрическим
+                    сетям:
                 </label>
-                <Radio label="Потребителем самостоятельно" name="pullElectroAuthor" value="0" />
-                <Radio label="Исполнителем " name="pullElectroAuthor" value="1" />
-                <Input name={'duration'} label="Путем" placeholder="Введите путь" />
+                <Radio label="Не выявлено" name="violationUnconnection" value="0" />
+                <Radio label="Выявлено" name="violationUnconnection" value="1" />
             </div>
 
             <div className="absolute top-130 right-5 left-5">
@@ -48,4 +48,4 @@ function Way() {
     )
 }
 
-export default Way
+export default ViolationUnconnection

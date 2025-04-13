@@ -1,9 +1,8 @@
 import { twMerge } from 'tailwind-merge'
 import { fallback } from '../../../utils/helpers'
 import { renderIcon } from '../../icons/helpers'
-import Card from '../../ui/card'
-import Item from '../../ui/item'
 import { Badge, TBadgeStatus } from '../../ui/badge'
+import { useId } from 'react'
 
 type TTaskStatus = 'inProgress' | 'todo' | 'done'
 
@@ -43,6 +42,8 @@ const renderBadgeByStatus = (state: TTaskStatus) => {
 }
 
 export const Task = (props: ITaskProps) => {
+    const id = useId();
+
     return (
         <div className="text-14-20-regular flex flex-row justify-between px-5 py-3 select-none">
             <div className="flex flex-col justify-start gap-3">
@@ -54,9 +55,9 @@ export const Task = (props: ITaskProps) => {
                         fill: '#8f8f8f',
                         className: twMerge('text-grey-1'),
                     })}
-                    <a className="text-14-20-regular text-black-1 hover:text-black-3 underline-offset-2">
+                    <div id={id} className="text-14-20-regular text-black-1 hover:text-black-3 underline-offset-2">
                         {props.time}
-                    </a>
+                    </div>
                 </div>
             </div>
             {renderBadgeByStatus(props.status)}

@@ -1,6 +1,5 @@
 import { Agents } from '../components/core/agents'
 import { TaskFeed } from '../components/core/task-feed'
-import { Navbar } from '../components/ui/navbar'
 import { useAuth } from '../lib/hooks/useAuth'
 import { parseFullName } from '../utils/strings'
 

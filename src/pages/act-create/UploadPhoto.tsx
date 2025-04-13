@@ -8,6 +8,7 @@ import { PhotoData, useMultiCamera } from '../../lib/hooks/useMultiCamera'
 import { Label } from '../../components/ui/label'
 import { ImageCropper } from '../../components/core/cropper'
 import { Input } from '../../components/ui/input'
+import axios from 'axios'
 
 function UploadPhoto() {
     const [photoType, setPhotoType] = useState('')
@@ -17,6 +18,8 @@ function UploadPhoto() {
 
     const { watch, setValue, getValues } = useFormContext();
 
+    const addres = watch('address');
+    const deviceNumber = watch('deviceValue');
     const noAccessCheck = watch('noAccess')
     const oldFile = watch('originalFile')
 
@@ -37,6 +40,66 @@ function UploadPhoto() {
 
     const handleNext = () => {
         dispatch(nextFormStep())
+    }
+
+    function base64ToBlob(base64, mimeType) {
+        const byteCharacters = atob(base64.split(',')[1]);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+            const slice = byteCharacters.slice(offset, offset + 512);
+            const byteNumbers = new Array(slice.length);
+
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        return new Blob(byteArrays, { type: mimeType });
+    }
+
+    async function sendBase64File(base64String, fileName, mimeType) {
+        // Преобразуем base64 в Blob
+        const blob = base64ToBlob(base64String, mimeType);
+
+        // Создаем FormData и добавляем файл
+        const formData = new FormData();
+        formData.append('file', blob, fileName || 'file');
+
+        // Дополнительные данные, если нужно
+        formData.append('address', addres);
+        formData.append('device_number', deviceNumber);
+
+        try {
+            const response = await axios.post<{name: string}>('https://tns.quassbot.ru/api/images', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+
+            });
+
+            const photo = photos[photoType]
+
+            setPhotos({
+                [photoType]: {
+                    ...photo,
+                    fileName: response.data.name
+                }
+            })
+
+            const newPhoto = photos[photoType]
+
+            setValue('originalFile', newPhoto)
+
+            console.log('Файл успешно отправлен:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Ошибка при отправке файла:', error);
+            throw error;
+        }
     }
 
     const handleTakePicture = async (type: 'counter' | 'seal') => {
@@ -101,6 +164,7 @@ function UploadPhoto() {
         return (
             <ImageCropper file={file} onChange={(file: PhotoData) => {
                 console.log('file', file)
+                sendBase64File(file.data, file.fileName, 'image/jpeg')
                 setValue('counterValue', file)
             }}
             />

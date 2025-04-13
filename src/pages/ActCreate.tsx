@@ -16,6 +16,8 @@ import Way from './act-create/way'
 import GenerateAct from './act-create/GenerateAct'
 import ReasonMb from './act-create/Reason'
 import useCreateTask from '../api/hooks/useCreateTask'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { formDataResolver } from '../lib/validators/formData'
 
 export type TFormData = {
     sealPlace: string
@@ -55,7 +57,9 @@ export type TFormData = {
 }
 
 function ActCreate() {
-    const fm = useForm<TFormData>()
+    const fm = useForm<TFormData>({
+        // resolver: yupResolver(formDataResolver)
+    })
 
     const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
     console.log('📍 [ActCreate] Текущий шаг из Redux:', currentStep)
@@ -67,18 +71,18 @@ function ActCreate() {
             case 2:
                 return <ContactInfo />
             case 3:
-                return <UploadPhoto />
+                return <DeviceValue />
             case 4:
+                return <UploadPhoto />
+            case 5:
                 return <ActType />
             // case 5:
             //     return <SwitchingDevice />
-            case 5:
-                return <Place />
             case 6:
-                return <PowerSupplyType />
+                return <Place />
             case 7:
-                return <DeviceValue />
-            case 8:
+                return <PowerSupplyType />
+            case 8: 
                 return <ReasonMb />
             case 9:
                 return <PowerSuply />

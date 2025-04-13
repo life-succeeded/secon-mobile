@@ -50,4 +50,4 @@ const DeviceValue = ({ defaultAccount, renderBelow }: Props) => {
     )
 }
 
-export default PowerSupplyType
+export default DeviceValue

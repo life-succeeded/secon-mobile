@@ -24,6 +24,7 @@ export type TFormData = {
     sealNumber: string
     phoneNumber: string
     violationDisruption: string
+    consumption: string
 
     account: string
     address: string
@@ -49,11 +50,10 @@ export type TFormData = {
     duration: string
 
     // any
-    counterNumberNew: string;
+    counterNumberNew: string
 
-    reasonType: string;
-    reasonMb: string;
-
+    reasonType: string
+    reasonMb: string
 }
 
 function ActCreate() {

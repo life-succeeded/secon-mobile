@@ -24,6 +24,7 @@ function ActCreate() {
                     required: false,
                 },
             ],
+            next: 'step2',
         },
         {
             id: 'step2',
@@ -44,6 +45,7 @@ function ActCreate() {
                     name: 'obyect',
                 },
             ],
+            next: 'step3',
         },
         {
             id: 'step3',
@@ -69,6 +71,7 @@ function ActCreate() {
                     title: 'Нет доступа к счетчику',
                 },
             ],
+            next: 'step4',
         },
         {
             id: 'step4',
@@ -85,6 +88,7 @@ function ActCreate() {
                     placeholder: 'Добавить фото счетчика',
                 },
             ],
+            next: 'step5',
         },
         {
             id: 'step5',
@@ -92,23 +96,23 @@ function ActCreate() {
             content: [
                 {
                     type: 'radio',
-                    name: 'actType',
+                    name: 'asf',
                     options: [
                         {
-                            title: 'Радио 1',
-                            value: 'value1',
+                            title: 'О ВВЕДЕНИИ ОГРАНИЧЕНИЯ (ПРИОСТАНОВЛЕНИИ) КОММУНАЛЬНОЙ УСЛУГИ ПО ЭЛЕКТРОСНАБЖЕНИЮ',
+                            value: '',
                         },
                         {
-                            title: 'Радио 2',
-                            value: 'value2',
+                            title: 'О ВОЗОБНОВЛЕНИИ ПРЕДОСТАВЛЕНИЯ КОММУНАЛЬНОЙ УСЛУГИ ПО ЭЛЕКТРОСНАБЖЕНИЮ',
+                            value: '',
                         },
                         {
-                            title: 'Радио 3',
-                            value: 'value3',
+                            title: 'ОСУЩЕСТВЛЕНИЯ ПРОВЕРКИ ВВЕДЕННОГО ОГРАНИЧЕНИЯ РЕЖИМА ПОТРЕБЛЕНИЯ',
+                            value: '',
                         },
                         {
-                            title: 'Радио 4',
-                            value: 'value4',
+                            title: 'О САМОВОЛЬНОМ ПОДКЛЮЧЕНИИ К ЭЛЕКТРИЧЕСКИМ СЕТЯМ',
+                            value: '',
                         },
                     ],
                 },
@@ -116,23 +120,65 @@ function ActCreate() {
             next: (data: any) => {
                 switch (data.actType) {
                     case 'value1':
-                        return 'step6';
+                        return 'step6'
                     case 'value2':
-                        return 'step7';
+                        return 'step7'
                     case 'value3':
-                        return 'step8';
+                        return 'step8'
                     case 'value4':
-                        return 'step9';
+                        return 'step9'
                     default:
-                        return 'step6';
+                        return 'step6'
                 }
-            }
+            },
+        },
+        {
+            id: 'step5-1',
+            title: 'Коммутационный (вводной) аппарат:',
+            content: [
+                {
+                    type: 'radio',
+                    name: 'asf',
+                    options: [
+                        {
+                            title: 'Имеется',
+                            value: '',
+                        },
+                        {
+                            title: 'Отсутствует',
+                            value: '',
+                        },
+                    ],
+                },
+            ],
+            next: 'step5-2',
+        },
+        {
+            id: 'step5-2',
+            title: 'Основание введения ограничения (приостановления) режима потребления: ',
+            content: [
+                {
+                    type: 'radio',
+                    name: 'asf',
+                    options: [
+                        {
+                            title: 'Неполная оплата коммунальной услуги по электроснабжению',
+                            value: '',
+                        },
+                        {
+                            title: 'Иное',
+                            value: '',
+                        },
+                    ],
+                },
+            ],
+            next: 'step5-3',
         },
     ]
 
     return (
         <div className="flex h-[80vh] flex-col">
-            <WizardParser wizard={wizard}/>
+            <WizardParser wizard={wizard} />
             {/*<div className="flex-grow overflow-auto">*/}
             {/*    {currentStep === 1 && <ContactInfo />}*/}
             {/*    {currentStep === 2 && <UploadPhoto />}*/}

@@ -30,7 +30,7 @@ function buildDefaultValues(wizardConfig: any[]) {
 }
 
 const WizardParser = ({ wizard }) => {
-    const [currentStepId, setCurrentStepId] = useState('step1');
+    const [currentStepId, setCurrentStepId] = useState('step1')
     const defaultValues = buildDefaultValues(wizard)
 
     const methods = useForm({
@@ -43,11 +43,54 @@ const WizardParser = ({ wizard }) => {
     const { photos, takePicture } = useMultiCamera()
 
     const onSubmit = methods.handleSubmit((data) => {
-        const stepInfo = wizard.find(w => w.id === currentStepId);
-        setCurrentStepId(stepInfo.next);
-    });
+        const stepInfo = wizard.find((w) => w.id === currentStepId)
+        setCurrentStepId(stepInfo.next)
+    })
 
-    const step = wizard.find((item) => item.currentStep === currentStep)
+    const renderField = () => {
+        console.log(step.content)
+
+        if (step.content.options) {
+            console.log(step.content)
+
+            return step.content.map((field, index) => {
+                return (
+                    <>
+                        {field.options.map(() => {
+                            return (
+                                <FieldRenderer
+                                    key={`${field.title}_${index}`}
+                                    field={field}
+                                    photos={photos}
+                                    takePicture={takePicture}
+                                />
+                            )
+                        })}
+
+                        <FieldRenderer
+                            key={`${field.title}_${index}`}
+                            field={field}
+                            photos={photos}
+                            takePicture={takePicture}
+                        />
+                    </>
+                )
+            })
+        }
+
+        return step.content.map((field, index) => {
+            return (
+                <FieldRenderer
+                    key={`${field.title}_${index}`}
+                    field={field}
+                    photos={photos}
+                    takePicture={takePicture}
+                />
+            )
+        })
+    }
+
+    const step = wizard.find((item) => item.id === currentStepId)
     if (!step) {
         return <div>Шаг не найден</div>
     }

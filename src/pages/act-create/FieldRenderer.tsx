@@ -46,7 +46,13 @@ export const FieldRenderer: FC<FieldRendererProps> = ({ field, photos, takePictu
                 </div>
             )
         case 'radio':
-            return <Radio name={field.name} value={field.value} label={field.label} />
+            return (
+                <div className="flex flex-col gap-3">
+                    {field.options.map((option) => {
+                        return <Radio name={field.name} value={option.value} label={option.title} />
+                    })}
+                </div>
+            )
         case 'checkbox':
             return (
                 <Checkbox

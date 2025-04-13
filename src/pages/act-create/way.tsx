@@ -11,7 +11,7 @@ import { Input } from '../../components/ui/input'
 function Way() {
     const dispatch = useDispatch()
 
-    const { watch, setError, formState, getValues } = useFormContext();
+    const { watch, setError, formState, getValues } = useFormContext()
     const actType = watch('pullElectroAuthor')
 
     const handleNext = () => {
@@ -24,16 +24,18 @@ function Way() {
     }
 
     return (
-        <div className="flex flex-col h-full relative px-5 pt-25">
+        <div className="relative flex h-full flex-col px-5 pt-25">
             <div className="flex flex-col gap-4 overflow-auto">
-                <label className="text-14-20-regular">Подача электроэнергии ограничена/приостановлена:</label>
-                <Radio label="Потребителем самостоятельно" name="pullElectroAuthor" value='1' />
-                <Radio label="Исполнителем " name="pullElectroAuthor" value='2' />
-                <Input name={'duration'} label='Путем' placeholder='Введите путь' />
+                <label className="text-14-20-regular">
+                    Подача электроэнергии ограничена/приостановлена:
+                </label>
+                <Radio label="Потребителем самостоятельно" name="pullElectroAuthor" value="0" />
+                <Radio label="Исполнителем " name="pullElectroAuthor" value="1" />
+                <Input name={'duration'} label="Путем" placeholder="Введите путь" />
             </div>
 
-            <div className="absolute top-130 left-5 right-5">
-                <Button className="w-full" type='button' onClick={() => handleNext()}>
+            <div className="absolute top-130 right-5 left-5">
+                <Button className="w-full" type="button" onClick={() => handleNext()}>
                     Продолжить
                 </Button>
             </div>

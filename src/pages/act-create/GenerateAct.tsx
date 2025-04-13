@@ -93,14 +93,6 @@ const GenerateAct = ({ renderBelow }: Props) => {
 
                     const task_id = createdTask.id
 
-                    const value = Number(values.deviceValue)
-                    const seals = [
-                        {
-                            number: values.sealNumber,
-                            place: values.sealPlace,
-                        },
-                    ]
-
                     const device: IDevice = {
                         value: Number(values.deviceValue),
                         seals: [
@@ -133,8 +125,8 @@ const GenerateAct = ({ renderBelow }: Props) => {
                         account_number,
                         is_incomplete_payment: true,
                         other_reason: 'tasd',
-                        method_by: 0,
-                        method: 'чик-чик',
+                        method_by: Number(values.pullElectroAuthor),
+                        method: values.duration,
                         device,
                         reason_type: 0,
                         reason: 'бедный',

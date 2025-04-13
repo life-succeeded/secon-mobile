@@ -48,3 +48,30 @@ export interface ITaskCreate extends Omit<ITask, 'id'> {}
 export interface ITaskUpdateStatus {
     new_status: TTaskStatus
 }
+
+export interface IFile {
+    name: string
+    url: string
+}
+
+export interface IReport {
+    id: string
+    type: 0
+    file: IFile
+    for_date: string
+    created_at: string
+}
+
+/*[
+    {
+        "id": "67faf4757cc23443fe93fdb4",
+        "type": 0,
+        "file": {
+            "name": "Отчет за 13.04.2025.xlsx",
+            "url": "https://tns.quassbot.ru/storage/documents/Отчет за 13.04.2025.xlsx"
+        },
+        "for_date": "2025-04-13T00:00:00Z",
+        "created_at": "2025-04-12T23:17:09.217Z"
+    }
+]
+*/

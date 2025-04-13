@@ -8,6 +8,7 @@ import ActType from './act-create/ActType';
 import SwitchingDevice from './act-create/SwitchingDevice';
 import Violation from './act-create/Violation';
 import ViolationDescription from './act-create/ViolationDescription';
+import DisconnectionReason from './act-create/DisconnectionReason';
 
 type FormData = {
   account: string;
@@ -33,11 +34,11 @@ function ActCreate() {
       case 6:
         switch (actType) {
           case 'restriction':
-            return <Violation />;
+            return <DisconnectionReason />;
           case 'resumption':
             return <ViolationDescription />;
           case 'inspection':
-            return <Violation />;
+            return <DisconnectionReason />;
           case 'unauthorized':
             return <ViolationDescription />;
           default:

@@ -63,14 +63,17 @@ function SwitchingDevice() {
           {submitError && (
             <div className="text-sm text-red-500">{submitError}</div>
           )}
-        </div>
+        </div >
+        <div className='flex flex-col justify-self-end'>
           <Button
+          className='w-full'
             type="button"
             onClick={handleNext}
             disabled={isSubmitting || !fm.watch('switchingDevice')}
           >
             {isSubmitting ? 'Сохранение...' : 'Продолжить'}
           </Button>
+          </div>
         </div>
       </div>
   );

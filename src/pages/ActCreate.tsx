@@ -15,7 +15,7 @@ import DeviceValue from './act-create/DeviceValue'
 import Way from './act-create/way'
 import GenerateAct from './act-create/GenerateAct'
 
-type FormData = {
+export type TFormData = {
     sealPlace: string
     sealNumber: string
 

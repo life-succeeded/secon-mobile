@@ -106,6 +106,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({ file, onChange }) =>
 
             const croppedImage = canvas.toDataURL('image/jpeg', 0.9);
 
+            console.log('croppedImage', croppedImage)
             onChange({
                 fileName: file.name,
                 data: croppedImage

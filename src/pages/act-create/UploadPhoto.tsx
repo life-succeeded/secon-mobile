@@ -4,18 +4,31 @@ import { Button } from '../../components/ui/button'
 import { useFormContext } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { Checkbox } from '../../components/ui/checkbox'
-import { useMultiCamera } from '../../lib/hooks/useMultiCamera'
+import { PhotoData, useMultiCamera } from '../../lib/hooks/useMultiCamera'
 import { Label } from '../../components/ui/label'
 import { ImageCropper } from '../../components/core/cropper'
 
 function UploadPhoto() {
+    const [photoType, setPhotoType] = useState('')
     const dispatch = useDispatch()
-    const { takePicture, photos } = useMultiCamera()
+    const { takePicture, photos, setPhotos } = useMultiCamera()
     const [isNoAccess, setIsNoAccess] = useState(false)
 
-    const { watch } = useFormContext();
+    const { watch, setValue, getValues } = useFormContext();
 
     const noAccessCheck = watch('noAccess')
+    const oldFile = watch('originalFile')
+
+    useEffect(() => {
+        const dataType = (oldFile as { type: string })?.type
+        if (!dataType) return;
+        setPhotos({
+            [dataType]: oldFile
+        });
+
+        console.log('log', dataType, oldFile)
+        console.log(photos)
+    }, [oldFile])
 
     useEffect(() => {
         setIsNoAccess(noAccessCheck)
@@ -35,11 +48,16 @@ function UploadPhoto() {
 
     const onNext = () => {
         try {
-            if (!noAccessCheck && (!photos['counter'] || !photos['seal'])) {
+            console.log(photos)
+            if (!noAccessCheck && (!photos['counter'] && !photos['seal'])) {
                 throw new Error(
                     'Пожалуйста, добавьте все необходимые фотографии или отметьте отсутствие доступа',
                 )
             }
+
+            const photo = photos[photoType]
+            setValue('originalFile', photo)
+            console.log('values', getValues())
 
             handleNext()
         } catch (error: any) {
@@ -77,11 +95,14 @@ function UploadPhoto() {
         }
         const photo = photos[type];
 
-        console.log(photo)
         const file = base64ToFile(photo.data, photo.fileName);
 
         return (
-            <ImageCropper file={file} onChange={() => { }} />
+            <ImageCropper file={file} onChange={(file: PhotoData) => {
+                console.log('file', file)
+                setValue('counterValue', file)
+            }}
+            />
         )
     }
 
@@ -95,7 +116,10 @@ function UploadPhoto() {
                     <div className="flex w-full flex-col gap-2">
                         <Button
                             type="button"
-                            onClick={() => handleTakePicture('counter')}
+                            onClick={() => {
+                                handleTakePicture('counter');
+                                setPhotoType('counter')
+                            }}
                             disabled={isNoAccess}
                         >
                             Добавить фото счётчика
@@ -109,7 +133,10 @@ function UploadPhoto() {
                     <div className="flex w-full flex-col gap-2">
                         <Button
                             type="button"
-                            onClick={() => handleTakePicture('seal')}
+                            onClick={() => {
+                                handleTakePicture('seal');
+                                setPhotoType('seal')
+                            }}
                             disabled={isNoAccess}
                         >
                             Добавить фото пломбы

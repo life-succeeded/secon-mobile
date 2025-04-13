@@ -4,6 +4,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 export interface PhotoData {
     fileName: string
     data: string | null // base64
+    type?: string
 }
 
 export const useMultiCamera = () => {
@@ -91,6 +92,7 @@ export const useMultiCamera = () => {
     return {
         photos,
         error,
+        setPhotos,
         takePicture,
         pickFromGallery,
         resetPhoto,

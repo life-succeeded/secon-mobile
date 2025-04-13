@@ -1,39 +1,52 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../store/store'
-import { updateFormState, nextFormStep } from '../../store/navigationSlice'
-import { FormProvider, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { nextFormStep } from '../../store/navigationSlice'
+import { Button } from '../../components/ui/button'
+import { useFormContext } from 'react-hook-form'
 import Radio from '../../components/ui/radio'
-import { useState } from 'react'
+import { fp } from '../../lib/fp'
 
-function Violation() {
-    const methods = useForm()
+type Props = {
+    defaultViolation?: string
+}
+
+const Place = ({ defaultViolation }: Props) => {
     const dispatch = useDispatch()
-    const [selectedViolation, setSelectedViolation] = useState<string>('')
-    const { formState, currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
+    const { watch, formState, setError } = useFormContext()
 
-    const handleNext = () => {
+    const value = watch('violation')
+
+    const handleNext = async () => {
+        if (!value) {
+            setError('violation', { type: 'error', message: 'Выберите тип' })
+            return
+        }
+
+        console.log(value)
+
         dispatch(nextFormStep())
     }
 
     return (
         <div className="relative flex h-full flex-col px-5 pt-25">
-            <div className="mx-5flex-grow overflow-auto">
-                <div className="flex w-full flex-col justify-center gap-5">
-                    <div className="flex w-full flex-col justify-center gap-4">
-                        <label className="text-14-20-regular">
-                            Нарушение потребителем введенного ограничения:
-                        </label>
-                        <FormProvider {...methods}>
-                            <form className="flex flex-col gap-2">
-                                <Radio name="violation" value="1" label="Не выявлено" />
-                                <Radio name="violation" value="2" label="Выявлено" />
-                            </form>
-                        </FormProvider>
-                    </div>
-                </div>
+            <div className="flex w-full flex-col justify-center gap-4">
+                <label className="text-14-20-regular">
+                    Нарушение потребителем введенного ограничения:
+                </label>
+
+                <Radio name="violation" value="1" label="Не выявлено" />
+                <Radio name="violation" value="2" label="Выявлено" />
             </div>
+
+            <div className="text-12-16-medium text-red-500">
+                {fp.getOr('', `errors.violation.message`, formState)}
+                {fp.has(`errors.violation.message`, formState)}
+            </div>
+
+            <Button className="w-full" type="button" onClick={handleNext}>
+                Продолжить
+            </Button>
         </div>
     )
 }
 
-export default Violation
+export default Place

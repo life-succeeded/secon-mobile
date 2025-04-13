@@ -23,6 +23,9 @@ importers:
       '@capacitor/core':
         specifier: ^7.1.0
         version: 7.1.0
+      '@capacitor/device':
+        specifier: ^7.0.1
+        version: 7.0.1(@capacitor/core@7.1.0)
       '@capacitor/geolocation':
         specifier: ^7.1.1
         version: 7.1.1(@capacitor/core@7.1.0)
@@ -210,6 +213,11 @@ packages:
 
   '@capacitor/core@7.1.0':
     resolution: {integrity: sha512-I0a4C8gux5sx+HDamJjCiWHEWRdJU3hejwURFOSwJjUmAMkfkrm4hOsI0dgd+S0eCkKKKYKz9WNm7DAIvhm2zw==}
+
+  '@capacitor/device@7.0.1':
+    resolution: {integrity: sha512-ImjR2LmCEhbckYtOHXTfi5v6B7d4HPX9uKIAQs7wzzmE+yRRXuUTEzARBQ00dZDInAInkbuyQRdjwPTSHZUpnw==}
+    peerDependencies:
+      '@capacitor/core': '>=7.0.0'
 
   '@capacitor/geolocation@7.1.1':
     resolution: {integrity: sha512-DXqZBQZSAYXMVXw4YhL87tPDBf4DD3VEjSDWlaALakU29rhAsMloJdqLvxXLarm16dCEBeMKMkBdCgKKHWgkZQ==}
@@ -2597,6 +2605,10 @@ snapshots:
   '@capacitor/core@7.1.0':
     dependencies:
       tslib: 2.8.1
+
+  '@capacitor/device@7.0.1(@capacitor/core@7.1.0)':
+    dependencies:
+      '@capacitor/core': 7.1.0
 
   '@capacitor/geolocation@7.1.1(@capacitor/core@7.1.0)':
     dependencies:

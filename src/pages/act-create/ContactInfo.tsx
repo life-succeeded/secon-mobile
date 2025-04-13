@@ -39,10 +39,6 @@ function ContactInfo() {
     setSubmitError(null)
 
     try {
-        sessionStorage.setItem('contactNumber', data.number)
-        sessionStorage.setItem('consumerName', data.fullName)
-        sessionStorage.setItem('objectAddress', data.address)
-
       dispatch(updateFormState({
         phoneNumber: data.number,
         consumer: data.fullName,

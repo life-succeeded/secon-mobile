@@ -21,7 +21,7 @@ export default function Radio<TFormValues extends FieldValues = FieldValues, TVa
     const formContext = useFormContext<TFormValues>()
 
     const renderRadio = ({ field }: { field: any }) => (
-        <label className={`mb-[10px] inline-flex gap-2 select-none ${className}`}>
+        <label className={'${className} mb-[10px] inline-flex gap-2 select-none'}>
             <input
                 type="radio"
                 value={value as unknown as string}
@@ -40,7 +40,7 @@ export default function Radio<TFormValues extends FieldValues = FieldValues, TVa
     }
 
     return (
-        <label className={`mb-[10px] inline-flex gap-2 select-none ${className}`}>
+        <label className={'${className} mb-[10px] inline-flex gap-2 select-none'}>
             <input
                 type="radio"
                 name={name}

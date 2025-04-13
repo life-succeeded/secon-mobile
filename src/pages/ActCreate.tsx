@@ -6,9 +6,42 @@ import SwitchingDevice from './act-create/SwitchingDevice'
 import UploadPhoto from './act-create/UploadPhoto'
 import Violation from './act-create/Violation'
 import ViolationDescription from './act-create/ViolationDescription'
+import { useCallback, useRef, useState } from 'react'
+import ContextLayout from './act-create/ctx/contextLayout'
+import { ActCreateContext, ContextModel } from './act-create/ctx/ctx'
+import ContactInfo from './act-create/ContactInfo'
+import { FormProvider, useForm } from 'react-hook-form'
+
+type FormData = {
+    address: string;
+    number: string;
+    fullName: string;
+    noAccess: boolean;
+    actType: string;
+    hasApparat: string;
+}
 
 function ActCreate() {
+    const fm = useForm<FormData>();
+
     const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
+
+    const renderPageState = () => {
+        switch (currentStep) {
+            case 1:
+                return <ContactInfo />
+            case 2:
+                return <UploadPhoto />
+            case 3:
+                return <ActType />
+            case 4:
+                return <SwitchingDevice />
+            case 5:
+                return <ActType />
+            default:
+                return null;
+        }
+    }
 
     const wizard = [
         {
@@ -121,15 +154,22 @@ function ActCreate() {
 
     return (
         <div className="flex h-[80vh] flex-col">
-            <WizardParser wizard={wizard} />
+            <FormProvider {...fm}>
+                <form>
+                    {renderPageState()}
+                </form>
+            </FormProvider>
+
+            {/* <UploadPhoto /> */}
+            {/* <WizardParser wizard={wizard} /> */}
             {/*<div className="flex-grow overflow-auto">*/}
             {/*    {currentStep === 1 && <ContactInfo />}*/}
-            {/*    {currentStep === 2 && <UploadPhoto />}*/}
+            {/* {currentStep === 2 && <UploadPhoto />} */}
             {/*    {currentStep === 3 && <ActType />}*/}
             {/*    {currentStep === 4 && <SwitchingDevice />}*/}
             {/*    {currentStep === 5 && <ActType />}*/}
             {/*</div>*/}
-            <div className="flex-grow overflow-auto"></div>
+            {/* <div className="flex-grow overflow-auto"></div> */}
         </div>
     )
 }

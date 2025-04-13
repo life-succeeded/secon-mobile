@@ -1,12 +1,10 @@
 import { Config } from '../utils/config'
 import axios, { AxiosError } from 'axios'
+import { IBrigade, IBrigadeCreate, ITask, ITaskCreate, ITaskUpdateStatus, TTaskStatus } from './api.types'
+import { stat } from 'fs'
 import {
-    IBrigade,
-    IBrigadeCreate,
     ICreateInspectUniversal,
     IInspection,
-    ITask,
-    ITaskCreate,
 } from './api.types'
 
 const instance = axios.create({
@@ -69,3 +67,9 @@ const useCreateInspectControl = (params: { data: ICreateInspectControl }) => {
     return useAxios<IInspection, ICreateInspectControl>(`/inspect/`, 'post', false, data)
 }
 */
+
+export const updateStatus = async (id: string, status: TTaskStatus) => {
+    return await instance.patch<ITaskUpdateStatus>(`/tasks/${id}/status`, {
+        status: status
+    })
+}

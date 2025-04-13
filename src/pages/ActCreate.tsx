@@ -66,7 +66,7 @@ function ActCreate() {
         (state: RootState) => state.navigation.formSteps,
     )
 
-    const renderPageState = () => {
+ const renderPageState = () => {
         switch (currentStep) {
             case 1:
                 return <PersonalAccount />

@@ -13,34 +13,38 @@ import Place from './act-create/Place'
 import PowerSupplyType from './act-create/PowerSupplyType'
 import DeviceValue from './act-create/DeviceValue'
 import Way from './act-create/way'
+import GenerateAct from './act-create/GenerateAct'
 
 type FormData = {
-    account: string;
-    address: string;
-    number: string;
-    fullName: string;
-    noAccess: boolean;
-    actType: string;
-    hasApparat: string;
+    sealPlace: string
+    sealNumber: string
 
-    originalFile: PhotoData;
-    counterValue: PhotoData;
+    account: string
+    address: string
+    number: string
+    fullName: string
+    noAccess: boolean
+    actType: string
+    hasApparat: string
+
+    originalFile: PhotoData
+    counterValue: PhotoData
 
     // 8
     pullElectro: string
-    timeToOff: string;
-    dateToOff: string;
-    violation: string;
-    powerSupplyType: string;
-    deviceValue: string;
+    timeToOff: string
+    dateToOff: string
+    violation: string
+    powerSupplyType: string
+    deviceValue: string
 
-    // 9 
-    pullElectroAuthor: string;
-    duration: string;
+    // 9
+    pullElectroAuthor: string
+    duration: string
 }
 
 function ActCreate() {
-    const fm = useForm<FormData>()
+    const fm = useForm<TFormData>()
 
     const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
     console.log('📍 [ActCreate] Текущий шаг из Redux:', currentStep)
@@ -63,11 +67,13 @@ function ActCreate() {
                 return <PowerSupplyType />
             case 7:
                 return <DeviceValue />
-                // return <SwitchingDevice />
             case 8:
                 return <PowerSuply />
             case 9:
                 return <Way />
+
+            case 10:
+                return <GenerateAct />
             default:
                 return null
         }

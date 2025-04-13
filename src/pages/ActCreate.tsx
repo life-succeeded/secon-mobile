@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import WizardParser from './act-create/WizardParser'
 import ActType from './act-create/ActType'
@@ -11,6 +11,9 @@ import ContextLayout from './act-create/ctx/contextLayout'
 import { ActCreateContext, ContextModel } from './act-create/ctx/ctx'
 import ContactInfo from './act-create/ContactInfo'
 import { FormProvider, useForm } from 'react-hook-form'
+import { PhotoData } from '../lib/hooks/useMultiCamera'
+import PowerSuply from './act-create/power-suply'
+import { setFormStep } from '../store/navigationSlice'
 
 type FormData = {
     address: string;
@@ -19,12 +22,17 @@ type FormData = {
     noAccess: boolean;
     actType: string;
     hasApparat: string;
+
+    originalFile: PhotoData;
+    counterValue: PhotoData;
 }
 
 function ActCreate() {
     const fm = useForm<FormData>();
 
     const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
+    const dispatch = useDispatch()
+    dispatch(setFormStep(9))
 
     const renderPageState = () => {
         switch (currentStep) {
@@ -38,6 +46,8 @@ function ActCreate() {
                 return <SwitchingDevice />
             case 5:
                 return <ActType />
+            case 9:
+                return <PowerSuply />
             default:
                 return null;
         }

@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { updateFormState, nextFormStep } from '../../store/navigationSlice'
-import { ProgressBar } from '../../components/ui/progressbar'
-import { Button } from '../../components/ui/button'
 import { FormProvider, useForm } from 'react-hook-form'
 import Radio from '../../components/ui/radio'
 import { useState } from 'react'

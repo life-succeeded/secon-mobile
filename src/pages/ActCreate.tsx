@@ -14,10 +14,12 @@ import PowerSupplyType from './act-create/PowerSupplyType'
 import DeviceValue from './act-create/DeviceValue'
 import Way from './act-create/way'
 import GenerateAct from './act-create/GenerateAct'
+import useCreateTask from '../api/hooks/useCreateTask'
 
 export type TFormData = {
     sealPlace: string
     sealNumber: string
+    phoneNumber
 
     account: string
     address: string

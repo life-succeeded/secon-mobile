@@ -7,27 +7,40 @@ import ContactInfo from './act-create/ContactInfo'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PhotoData } from '../lib/hooks/useMultiCamera'
 import PowerSuply from './act-create/power-suply'
-import { setFormStep } from '../store/navigationSlice'
+import { nextFormStep, setFormStep } from '../store/navigationSlice'
 import PersonalAccount from './act-create/PersonalAccount'
 import Place from './act-create/Place'
 import PowerSupplyType from './act-create/PowerSupplyType'
 import DeviceValue from './act-create/DeviceValue'
+import Way from './act-create/way'
 import GenerateAct from './act-create/GenerateAct'
 
-export type TFormData = {
+type FormData = {
+    sealPlace: string
+    sealNumber: string
+
     account: string
     address: string
     number: string
-    phoneNumber: string
     fullName: string
     noAccess: boolean
     actType: string
     hasApparat: string
+
+    originalFile: PhotoData
+    counterValue: PhotoData
+
+    // 8
+    pullElectro: string
+    timeToOff: string
+    dateToOff: string
     violation: string
     powerSupplyType: string
     deviceValue: string
-    sealPlace: string
-    sealNumber: string
+
+    // 9
+    pullElectroAuthor: string
+    duration: string
 }
 
 function ActCreate() {
@@ -55,6 +68,11 @@ function ActCreate() {
             case 7:
                 return <DeviceValue />
             case 8:
+                return <PowerSuply />
+            case 9:
+                return <Way />
+
+            case 10:
                 return <GenerateAct />
             default:
                 return null

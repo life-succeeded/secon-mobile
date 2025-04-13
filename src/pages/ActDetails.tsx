@@ -13,6 +13,7 @@ import useUpdateTaskStatus from '../api/hooks/useUpdateTaskStatus'
 import { LatLngTuple, Map as LeafletMap } from 'leaflet'
 import { Geolocation } from '@capacitor/geolocation'
 import { toast } from 'react-hot-toast'
+import { updateStatus } from '../api/api'
 
 const geocodeAddress = async (address: string): Promise<LatLngTuple | null> => {
   try {
@@ -44,8 +45,9 @@ export const ActDetails = () => {
   const handleCreateAct = async () => {
     if (task) {
       try {
-        const { execute } = useUpdateTaskStatus({ id: task.id, status: 1 })
-        await execute()
+        // const { execute } = useUpdateTaskStatus({ id: task.id, status: 1 })
+        // await execute()
+        await updateStatus(id, 1)
 
         dispatch(updateFormState({
           accountNumber: task.account_number,

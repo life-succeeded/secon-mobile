@@ -1,6 +1,7 @@
 import { Config } from '../utils/config'
 import axios, { AxiosError } from 'axios'
-import { IBrigade, IBrigadeCreate, ITask, ITaskCreate } from './api.types'
+import { IBrigade, IBrigadeCreate, ITask, ITaskCreate, ITaskUpdateStatus, TTaskStatus } from './api.types'
+import { stat } from 'fs'
 
 const instance = axios.create({
     baseURL: Config.apiEndpoint,
@@ -46,4 +47,10 @@ export const createTask = async (task: ITaskCreate) => {
     const result = await instance.post<ITask>(`/tasks`)
 
     return result
+}
+
+export const updateStatus = async (id: string, status: TTaskStatus) => {
+    return await instance.patch<ITaskUpdateStatus>(`/tasks/${id}/status`, {
+        status: status
+    })
 }

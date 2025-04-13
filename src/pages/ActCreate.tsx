@@ -14,6 +14,7 @@ import PowerSupplyType from './act-create/PowerSupplyType'
 import DeviceValue from './act-create/DeviceValue'
 import Way from './act-create/way'
 import GenerateAct from './act-create/GenerateAct'
+import ReasonMb from './act-create/Reason'
 
 export type TFormData = {
     sealPlace: string
@@ -41,6 +42,13 @@ export type TFormData = {
     // 9
     pullElectroAuthor: string
     duration: string
+
+    // any
+    counterNumberNew: string;
+
+    reasonType: string;
+    reasonMb: string;
+
 }
 
 function ActCreate() {
@@ -68,11 +76,13 @@ function ActCreate() {
             case 7:
                 return <DeviceValue />
             case 8:
-                return <PowerSuply />
+                return <ReasonMb />
             case 9:
+                return <PowerSuply />
+            case 10:
                 return <Way />
 
-            case 10:
+            case 11:
                 return <GenerateAct />
             default:
                 return null

@@ -13,6 +13,7 @@ import { IConsumer, IDevice } from '../../api/api.types'
 import { useAuth } from '../../lib/hooks/useAuth'
 import useCreateTask, { useCreateTaskLazy } from '../../api/hooks/useCreateTask'
 import { createInspectUniversal, createTask } from '../../api/api'
+import { useNavigate } from 'react-router'
 
 type Props = {
     defaultAccount?: string
@@ -21,6 +22,7 @@ type Props = {
 
 const GenerateAct = ({ renderBelow }: Props) => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const savedSealPlace = useSelector(
         (state: RootState) => state.navigation.formSteps.formState['sealPlace'],
@@ -107,13 +109,6 @@ const GenerateAct = ({ renderBelow }: Props) => {
                         other_place: 'other_place',
                     }
 
-                    const now = new Date()
-
-                    const offset = -now.getTimezoneOffset() / 60
-                    const timezoneOffset = `${offset >= 0 ? '+' : ''}${offset.toString().padStart(2, '0')}:00`
-
-                    const energy_action_date = now.toISOString().replace('Z', timezoneOffset)
-
                     const createdInspection = await createInspectUniversal({
                         task_id,
                         brigade_id,
@@ -129,10 +124,12 @@ const GenerateAct = ({ renderBelow }: Props) => {
                         method: values.duration,
                         device,
                         reason_type: 0,
-                        reason: 'бедный',
+                        reason: 'пусть живет пока',
                         images: [{ name: 'фотка', url: 'ссылка на фотку' }],
-                        energy_action_date,
+                        energy_action_date: new Date().toISOString(),
                     })
+
+                    navigate('/acts')
                 }}
             >
                 Сгенерировать акт

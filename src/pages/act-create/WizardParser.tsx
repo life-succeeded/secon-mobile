@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '../../components/ui/button'
 import { useDispatch, useSelector } from 'react-redux'
 import { nextFormStep } from '../../store/navigationSlice'
@@ -43,8 +43,6 @@ const WizardParser = ({ wizard }) => {
     const { photos, takePicture } = useMultiCamera()
 
     const onSubmit = methods.handleSubmit((data) => {
-        console.log('refvrfff', data);
-
         const stepInfo = wizard.find(w => w.id === currentStepId);
         setCurrentStepId(stepInfo.next);
     });

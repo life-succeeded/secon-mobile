@@ -8,7 +8,6 @@ import { personalAccountResolver } from '../../lib/validators/act-create/persona
 import { useEffect } from 'react'
 import { RootState } from '../../store/store'
 
-
 type Props = {
   defaultAccount?: string
   renderBelow?: React.ReactNode

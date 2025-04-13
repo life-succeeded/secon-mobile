@@ -4,6 +4,7 @@ import { setFormStep } from '../../store/navigationSlice'
 import { Button } from '../../components/ui/button'
 import Radio from '../../components/ui/radio'
 import { useFormContext } from 'react-hook-form'
+import { fp } from '../../lib/fp'
 
 const ACT_TYPES = [
     {
@@ -38,9 +39,16 @@ function ActType() {
 
     const onSubmit = async () => {
         const isValid = await fm.trigger('actType')
+
         if (!isValid) return
 
         const value = fm.getValues('actType')
+
+        if (!value) {
+            fm.setError('violation', { type: 'error', message: 'Выберите вид акта' })
+            return
+        }
+
         const selectedAct = ACT_TYPES.find((act) => act.value === value)
 
         sessionStorage.setItem('actType', value)
@@ -58,19 +66,14 @@ function ActType() {
                         name="actType"
                         value={type.value}
                         label={type.label}
-                        checked={fm.watch('actType') === type.value}
-                        onChange={() => {
-                            fm.setValue('actType', type.value, { shouldValidate: true })
-                        }}
-                        wrapperClassName="items-start"
+                        className="items-start"
                     />
                 ))}
 
-                {typeof fm.formState.errors.actType?.message === 'string' && (
-                    <p className="mt-2 text-sm text-red-500">
-                        {fm.formState.errors.actType.message}
-                    </p>
-                )}
+                <div className="text-12-16-medium text-red-500">
+                    {fp.getOr('', `errors.violation.message`, fm.formState)}
+                    {fp.has(`errors.violation.message`, fm.formState)}
+                </div>
             </div>
 
             <div className="absolute right-5 bottom-5 left-5">

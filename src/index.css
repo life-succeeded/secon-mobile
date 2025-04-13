@@ -106,4 +106,29 @@ code {
     monospace;
 }
 
+/* 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+} */
 
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@supports (padding-bottom: constant(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+      padding-bottom: constant(safe-area-inset-bottom);
+  }
+}
+
+body {
+  /* Стандартные отступы */
+  padding-top: env(safe-area-inset-top);    /* Верх (чёлка) */
+  padding-right: env(safe-area-inset-right); /* Правый край */
+  padding-bottom: env(safe-area-inset-bottom); /* Низ (панель навигации) */
+  padding-left: env(safe-area-inset-left);   /* Левый край */
+}

@@ -13,6 +13,7 @@ import { TimeIcon } from './bxTime'
 import { UserIcon } from './bxUser'
 import { PhoneIcon } from './bxPhone'
 import { IdCardIcon } from './bxIdCard'
+import { MagicIcon } from './bxMagic'
 
 // this could be much better than it is... saving time with this monstrosity...
 export const renderIcon = (variant: TIconVariant, params?: IIconParams) => {
@@ -131,6 +132,16 @@ export const renderIcon = (variant: TIconVariant, params?: IIconParams) => {
         case 'idCard':
             return (
                 <IdCardIcon
+                    fill={fallback(fill, 'white')}
+                    width={fallback(width, undefined)}
+                    height={fallback(height, undefined)}
+                    className={fallback(className, undefined)}
+                />
+            )
+
+        case 'magic':
+            return (
+                <MagicIcon
                     fill={fallback(fill, 'white')}
                     width={fallback(width, undefined)}
                     height={fallback(height, undefined)}

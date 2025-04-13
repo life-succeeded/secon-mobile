@@ -5,7 +5,7 @@ const routeTitles: Record<string, string> = {
     '/map': 'Карта',
     '/create': 'Акт',
     '/acts': 'Акты',
-    '/report': 'Отчёт',
+    '/report': 'Отчёты',
     '/login': 'Войти',
 }
 

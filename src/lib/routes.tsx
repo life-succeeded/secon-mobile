@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router'
 import ActCreate from '../pages/ActCreate'
 import ActList from '../pages/ActList'
 import Map from '../pages/Map'
-import Report from '../pages/Report'
+import Reports from '../pages/Reports'
 import Tasks from '../pages/Tasks'
 import { ActDetails } from '../pages/ActDetails'
 import { Wrapper } from '../components/core/wrapContent'
@@ -66,7 +66,7 @@ export const AppRoutes = () => (
                 <ProtectedRoute>
                     <FullScreenWrapper>
                         <Wrapper>
-                            <Report />
+                            <Reports />
                         </Wrapper>
                     </FullScreenWrapper>
                 </ProtectedRoute>

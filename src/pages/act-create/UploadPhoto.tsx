@@ -19,7 +19,7 @@ function UploadPhoto() {
     const { watch, setValue, getValues } = useFormContext();
 
     const addres = watch('address');
-    const deviceNumber = watch('deviceValue');
+    const deviceNumber = watch('counterNumberNew');
     const noAccessCheck = watch('noAccess')
     const oldFile = watch('originalFile')
 
@@ -181,7 +181,7 @@ function UploadPhoto() {
                 <div>Добавление фото счётчика до работы</div>
                 <div className="flex w-full flex-col gap-6">
                     <div className="flex w-full flex-col gap-2">
-                        <Input name={'counterNumberNew'} label='Заводской № прибора учета' />
+                        <Input name={'number'} label='Заводской № прибора учета' />
                         <Button
                             type="button"
                             onClick={() => {

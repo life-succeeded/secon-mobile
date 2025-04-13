@@ -12,9 +12,7 @@ import { fp } from '../../../lib/fp'
 type CheckboxProps<T extends Record<string, unknown>> = {
     label?: string
     name: Path<T>
-    register: UseFormRegister<T>
     required?: boolean
-    error?: string
     className?: string
     disabled?: boolean
 }
@@ -22,12 +20,11 @@ type CheckboxProps<T extends Record<string, unknown>> = {
 export const Checkbox = <T extends Record<string, unknown>>({
     label,
     name,
-    register,
     required = false,
     className = '',
     disabled = false,
 }: CheckboxProps<T>) => {
-    const { formState } = useFormContext()
+    const { formState, register } = useFormContext()
     return (
         <div className={`flex flex-col ${className}`}>
             <label className={twMerge(`mb-[10px] inline-flex gap-2 select-none`, className)}>

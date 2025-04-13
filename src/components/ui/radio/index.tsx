@@ -1,38 +1,3 @@
-// import { Controller, useFormContext } from "react-hook-form"
-
-// export type RadioProps<T = string> = {
-//     name: string
-//     value: T
-//     label: string
-//     disabled?: boolean
-//     className?: string
-// }
-
-// const Radio = ({ name, value, label, disabled = false, className = '' }) => {
-//     const { register } = useFormContext()
-
-//     return (
-//         <Controller
-//         name={name}
-//         control={control}
-//         render={({ }) => (
-//             <label className="mb-[10px] inline-flex gap-2 select-none">
-//             <input
-//                 type="radio"
-//                 value={value as unknown as string}
-//                 disabled={disabled}
-//                 {...register(name)}
-//                 className="accent-black-1 border-black-1 h-4 w-4 -translate-y-[-2px] border outline-none hover:shadow-none focus:ring-0 focus:outline-none"
-//             />
-//             <span className="text-14-20-regular">{label}</span>
-//         </label>
-//         )} />
-
-//     )
-// }
-
-// export default Radio
-
 import { useFormContext, Controller } from 'react-hook-form'
 import type { FieldValues, UseControllerProps, Control } from 'react-hook-form'
 
@@ -52,7 +17,7 @@ export default function Radio<TFormValues extends FieldValues = FieldValues, TVa
     disabled = false,
     className = '',
     control,
-}: TRadioProps<TFormValues>) {
+}: TRadioProps<TFormValues, TValue>) {
     const formContext = useFormContext<TFormValues>()
 
     const renderRadio = ({ field }: { field: any }) => (

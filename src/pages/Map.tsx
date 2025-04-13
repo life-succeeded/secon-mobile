@@ -1,143 +1,133 @@
-import L, { LatLngTuple } from 'leaflet'
-import { MapContainer, TileLayer, Marker, Polyline, Tooltip, useMap } from 'react-leaflet'
 import { useEffect, useRef, useState } from 'react'
-import 'leaflet/dist/leaflet.css'
+import useGetTasksByBrigadeId from '../api/hooks/useGetTasksByBrigadeId'
+import InteractiveMap from '../components/core/map'
+import LocateControl from '../components/core/LocateControl'
+import { LatLngTuple, Map as LeafletMap, LatLngBounds } from 'leaflet'
+import { Geolocation } from '@capacitor/geolocation'
+import { toast } from 'react-hot-toast'
 
-// Убираем логотип Leaflet
-L.Control.Attribution.prototype.options.prefix = ''
+interface TaskMarker {
+  id: string
+  position: LatLngTuple
+}
 
-// Иконка обычных точек
-const DefaultIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-})
+const geocodeAddress = async (address: string): Promise<LatLngTuple | null> => {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`
+    )
+    const data = await response.json()
+    if (data && data.length > 0) {
+      const { lat, lon } = data[0]
+      return [parseFloat(lat), parseFloat(lon)]
+    }
+    return null
+  } catch (error) {
+    toast.error('Ошибка при геокодировании адреса')
+    return null
+  }
+}
 
-// Иконка местоположения пользователя
-const UserLocationIcon = L.icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-  iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-})
+const FullScreenMap = () => {
+  const brigadeId = sessionStorage.getItem('brigadeId')
+  const { data: tasks } = useGetTasksByBrigadeId({ brigadeId: brigadeId ?? '' })
+  const [markers, setMarkers] = useState<TaskMarker[]>([])
+  const [userLocation, setUserLocation] = useState<LatLngTuple | null>(null)
+  const [isCentered, setIsCentered] = useState(false)
+  const mapRef = useRef<LeafletMap | null>(null)
 
-const RouteDisplay = ({ points }: { points: LatLngTuple[] }) => {
-  const [route, setRoute] = useState<LatLngTuple[]>([])
-  const map = useMap()
+  const handleCenterOnUser = () => {
+    if (userLocation && mapRef.current) {
+      mapRef.current.setView(userLocation, 16)
+      setIsCentered(true)
+      setTimeout(() => setIsCentered(false), 1500)
+    } else {
+      toast.error('Не удалось определить ваше местоположение')
+    }
+  }
 
   useEffect(() => {
-    if (points.length < 2) {
-      setRoute([])
-      return
-    }
-
-    const fetchRoute = async () => {
+    const fetchGeolocation = async () => {
       try {
-        const coordsString = points.map(p => `${p[1]},${p[0]}`).join(';')
-        const response = await fetch(
-          `https://router.project-osrm.org/route/v1/driving/${coordsString}?overview=full&geometries=geojson`
-        )
-        const data = await response.json()
-        const coords = data.routes[0].geometry.coordinates.map(
-          (c: [number, number]) => [c[1], c[0]]
-        )
-        setRoute(coords)
-        map.fitBounds(L.latLngBounds(coords))
+        const position = await Geolocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 10000,
+        })
+        const coords: LatLngTuple = [position.coords.latitude, position.coords.longitude]
+        setUserLocation(coords)
       } catch (error) {
-        console.error('Routing error:', error)
+        console.warn('Ошибка при получении геолокации:', error)
       }
     }
 
-    fetchRoute()
-  }, [points])
+    fetchGeolocation()
+  }, [])
 
-  return route.length > 0 ? (
-    <Polyline
-      positions={route}
-      pathOptions={{ color: '#3b82f6', weight: 4, opacity: 0.7 }}
-    />
-  ) : null
-}
+  useEffect(() => {
+    if (!brigadeId || !tasks) return
 
-const InteractiveMap = ({
-  className = 'h-[500px] w-full',
-  enableRouting = true,
-  userLocation = null,
-}: {
-  className?: string
-  enableRouting?: boolean
-  userLocation?: LatLngTuple | null
-}) => {
-  const [staticMarkers] = useState<LatLngTuple[]>([
-    [53.195, 45.004],
-    [53.202, 45.018],
-    [53.188, 45.025],
-    [53.175, 45.010],
-  ])
+    const fetchCoordinates = async () => {
+      try {
+        const plannedTasks = tasks.filter((task) => task.status === 0)
 
-  const [center] = useState<LatLngTuple>([53.195, 45.004])
-  const mapRef = useRef<L.Map>(null)
+        const parsedAddresses = plannedTasks.map((task) => {
+          const parts = task.address.split(',')
+          if (parts.length >= 3) {
+            const [rawCity, rawStreet, rawHouse] = parts.map((p) => p.trim())
+            const city = rawCity.replace(/^г\.\s*/i, '')
+            const street = rawStreet.replace(/^ул\.\s*/i, '')
+            const house = rawHouse.replace(/^д\.\s*/i, '')
+            return `${street} ${house}, Пенза, Пензенская область, Россия`
+          }
+          return `${task.address}, Пенза, Пензенская область, Россия`
+        })
 
-  const allMarkers = userLocation
-    ? [...staticMarkers, userLocation]
-    : staticMarkers
+        const coords = await Promise.all(
+          parsedAddresses.map((addr, index) =>
+            geocodeAddress(addr).then((coord) =>
+              coord ? { id: plannedTasks[index].id, position: coord } : null
+            )
+          )
+        )
+
+        const validMarkers = coords.filter((item): item is TaskMarker => item !== null)
+        setMarkers(validMarkers)
+
+        if (validMarkers.length > 0 && mapRef.current) {
+          const bounds = new LatLngBounds(validMarkers.map((m) => m.position))
+          if (userLocation) bounds.extend(userLocation)
+          mapRef.current.fitBounds(bounds, { padding: [50, 50] })
+        }
+      } catch (error) {
+        toast.error('Ошибка при обработке координат')
+        console.error(error)
+      }
+    }
+
+    fetchCoordinates()
+  }, [tasks, brigadeId, userLocation])
+
+  if (!brigadeId) {
+    return <div className="p-4 text-red-500">Ошибка: не указана бригада</div>
+  }
 
   return (
-    <MapContainer
-      center={center}
-      zoom={13}
-      minZoom={2}
-      maxZoom={18}
-      scrollWheelZoom
-      className={className}
-      ref={mapRef}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution=""
-      />
+    <div className="h-[calc(100vh-150px)] w-full overflow-hidden">
+      <div className="relative w-full h-full">
+        <InteractiveMap
+          markers={markers}
+          userLocation={userLocation}
+          mapRef={mapRef}
+          enableRouting
+          className="w-full h-full"
+        />
 
-      {staticMarkers.map((position, index) => (
-        <Marker
-          key={`marker-${index}`}
-          position={position}
-          icon={DefaultIcon}
-        >
-          <Tooltip permanent>
-            <div className="flex flex-col">
-              <span className="font-medium">Точка {index + 1}</span>
-              <span className="text-xs text-gray-500">
-                {position[0].toFixed(4)}, {position[1].toFixed(4)}
-              </span>
-            </div>
-          </Tooltip>
-        </Marker>
-      ))}
-
-      {userLocation && (
-        <Marker
-          position={userLocation}
-          icon={UserLocationIcon}
-        >
-          <Tooltip permanent>
-            <div className="flex flex-col">
-              <span className="font-medium">Вы здесь</span>
-              <span className="text-xs text-gray-500">
-                {userLocation[0].toFixed(4)}, {userLocation[1].toFixed(4)}
-              </span>
-            </div>
-          </Tooltip>
-        </Marker>
-      )}
-
-      {enableRouting && <RouteDisplay points={allMarkers} />}
-    </MapContainer>
+        <div className="absolute bottom-4 right-4 z-[1001]">
+          <LocateControl onClick={handleCenterOnUser} isLocating={isCentered} />
+        </div>
+      </div>
+    </div>
   )
 }
 
-export default InteractiveMap
+export default FullScreenMap

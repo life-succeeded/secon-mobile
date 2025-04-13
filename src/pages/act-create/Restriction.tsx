@@ -1,37 +1,29 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../store/store'
+import { useDispatch } from 'react-redux'
 import { nextFormStep } from '../../store/navigationSlice'
-import { Button } from '../../components/ui/button'
 import Radio from '../../components/ui/radio'
+import { forwardRef, useImperativeHandle } from 'react'
 
-function Restriction() {
-    const dispatch = useDispatch()
-    const { formState } = useSelector((state: RootState) => state.navigation.formSteps)
-
-    const handleNext = () => {
-
-        dispatch(nextFormStep())
-    }
-
-    return (
-        <div className="flex flex-col gap-5">
-            <div className="mx-5flex-grow overflow-auto">
-                <div className="flex w-full flex-col justify-center gap-5">
-                    <div className="flex w-full flex-col justify-center gap-4 ">
-                    <label className="text-14-20-regular">Основание введения ограничения (приостановления) режима потребления: </label>
-                        <div className="flex flex-col gap-2">
-                                <Radio label="Имеется" name="yes" />
-                                <Radio label="Отсутствует" name="no" />
-                        </div>
-                    </div>
-
-                    <Button onClick={handleNext} className=' mt-65'>
-                        Продолжить
-                    </Button>
-                </div>
-            </div>
-        </div>
-    )
+export type RestrictionRef = {
+  submitForm: () => Promise<boolean>
 }
+
+const Restriction = forwardRef<RestrictionRef>((_, ref) => {
+  const dispatch = useDispatch()
+
+  useImperativeHandle(ref, () => ({
+    submitForm: async () => {
+      dispatch(nextFormStep())
+      return true
+    }
+  }))
+
+  return (
+    <div className="flex flex-col gap-5 pt-25 px-5">
+      <label className="text-14-20-regular">Основание введения ограничения:</label>
+      <Radio label="Имеется" name="reason" />
+      <Radio label="Отсутствует" name="reason" />
+    </div>
+  )
+})
 
 export default Restriction

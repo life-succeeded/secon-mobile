@@ -64,6 +64,9 @@ const navigationSlice = createSlice({
       state.formSteps.currentStep = 1;
       state.formSteps.formState = {};
     },
+    setFormStep: (state, action: PayloadAction<number>) => {
+      state.formSteps.currentStep = action.payload;
+    },
   },
 });
 
@@ -74,6 +77,7 @@ export const {
   nextFormStep, 
   prevFormStep, 
   updateFormState, 
-  resetForm 
+  resetForm,
+  setFormStep 
 } = navigationSlice.actions;
 export const navigationReducer = navigationSlice.reducer;

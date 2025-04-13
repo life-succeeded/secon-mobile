@@ -28,5 +28,5 @@ export const useRouteTitle = () => {
         return 'Акт'
     }
 
-    return routeTitles[location.pathname] || 'Заголовок'
+    return routeTitles[location.pathname] || 'Акт'
 }

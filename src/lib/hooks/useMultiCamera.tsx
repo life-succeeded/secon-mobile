@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 
-interface PhotoData {
+export interface PhotoData {
     fileName: string
     data: string | null // base64
 }

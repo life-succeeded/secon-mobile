@@ -33,18 +33,18 @@ const PersonalAccount = ({ defaultAccount, renderBelow }: Props) => {
         }
     }
 
-    return (
+    return (<div>
         <div className="relative flex h-full flex-col px-5 pt-25">
             <div className="flex w-full flex-col gap-3">
                 <Input name="account" label="Лицевой счёт" placeholder="Введите лицевой счёт" />
             </div>
-
-            {renderBelow && <div className="mt-8">{renderBelow}</div>}
             <Button className="w-full" type="button" onClick={handleNext}>
                 Продолжить
             </Button>
         </div>
-    )
+    
+    </div>
+  )
 }
 
 export default PersonalAccount

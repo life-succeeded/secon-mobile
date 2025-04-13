@@ -20,12 +20,15 @@ type FormData = {
   fullName: string;
   noAccess: boolean;
   actType: string;
+  violation: string;
   hasApparat: string;
 };
 
 function ActCreate() {
   const fm = useForm<FormData>();
-  const { currentStep, actType } = useSelector((state: RootState) => state.navigation.formSteps);
+  const { currentStep, actType, violation } = useSelector(
+    (state: RootState) => state.navigation.formSteps
+  );
 
   const renderPageState = () => {
     switch (currentStep) {
@@ -69,25 +72,31 @@ function ActCreate() {
           case 'inspection':
             return <Way />;
           case 'unauthorized':
-            return <Place />; //+ violation unconnection
+            return <Violation />; 
           default:
             return null;
         };
         case 9:
-        switch (actType) {
-          case 'restriction':
-            return <Place />;
-          case 'resumption':
-            return <PowerSuply />;
-          case 'inspection':
-            return <Violation />;
-          case 'unauthorized':
-            return <PowerSuply />; 
-          default:
-            return null;
-        };
-      default: return null;
-    }
+  switch (actType) {
+    case 'restriction':
+      return <Place />;
+    case 'resumption':
+      return <PowerSuply />;
+    case 'inspection':
+      return <Violation />;
+    case 'unauthorized':
+      switch (violation) {
+        case '1':
+          return <Way />;
+        case '2':
+          return <PowerSuply />;
+        default:
+          return null; 
+      }
+    default:
+      return null;
+    }}
+
   };
 
   return (

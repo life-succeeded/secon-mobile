@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface NavigationState {
   history: string[];
@@ -8,6 +8,7 @@ interface NavigationState {
     maxSteps: number;
     stepHistory: number[];
     actType?: string;
+    violation?: string;
     formState: {
       accountNumber?: string;
       phoneNumber?: string;
@@ -22,9 +23,10 @@ const initialState: NavigationState = {
   currentIndex: 0,
   formSteps: {
     currentStep: 1,
-    maxSteps: 8,
+    maxSteps: 99,
     stepHistory: [1],
     actType: undefined,
+    violation: undefined,
     formState: {},
   },
 };
@@ -50,7 +52,6 @@ const navigationSlice = createSlice({
         state.currentIndex += 1;
       }
     },
-
     nextFormStep(state) {
       if (state.formSteps.currentStep < state.formSteps.maxSteps) {
         const next = state.formSteps.currentStep + 1;
@@ -75,6 +76,9 @@ const navigationSlice = createSlice({
     setActType(state, action: PayloadAction<string>) {
       state.formSteps.actType = action.payload;
     },
+    setViolation(state, action: PayloadAction<string>) {
+      state.formSteps.violation = action.payload;
+    },
     updateFormState(state, action: PayloadAction<Partial<NavigationState['formSteps']['formState']>>) {
       state.formSteps.formState = {
         ...state.formSteps.formState,
@@ -86,6 +90,7 @@ const navigationSlice = createSlice({
       state.formSteps.stepHistory = [1];
       state.formSteps.formState = {};
       state.formSteps.actType = undefined;
+      state.formSteps.violation = undefined;
     },
   },
 });
@@ -100,6 +105,7 @@ export const {
   resetForm,
   setFormStep,
   setActType,
+  setViolation, // добавлен в экспорт
 } = navigationSlice.actions;
 
 export const navigationReducer = navigationSlice.reducer;

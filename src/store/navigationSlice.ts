@@ -6,6 +6,8 @@ interface NavigationState {
   formSteps: {
     currentStep: number;
     maxSteps: number;
+    stepHistory: number[];
+    actType?: string;
     formState: {
       accountNumber?: string;
       phoneNumber?: string;
@@ -21,6 +23,8 @@ const initialState: NavigationState = {
   formSteps: {
     currentStep: 1,
     maxSteps: 8,
+    stepHistory: [1],
+    actType: undefined,
     formState: {},
   },
 };
@@ -41,43 +45,61 @@ const navigationSlice = createSlice({
         state.currentIndex--;
       }
     },
-    goForward: (state) => {
+    goForward(state) {
       if (state.currentIndex < state.history.length - 1) {
         state.currentIndex += 1;
       }
     },
-    
-    nextFormStep: (state) => {
+
+    nextFormStep(state) {
       if (state.formSteps.currentStep < state.formSteps.maxSteps) {
-        state.formSteps.currentStep += 1;
+        const next = state.formSteps.currentStep + 1;
+        state.formSteps.stepHistory.push(next);
+        state.formSteps.currentStep = next;
       }
     },
-    prevFormStep: (state) => {
-      if (state.formSteps.currentStep > 1) {
-        state.formSteps.currentStep -= 1;
+    prevFormStep(state) {
+      if (state.formSteps.stepHistory.length > 1) {
+        state.formSteps.stepHistory.pop();
+        state.formSteps.currentStep =
+          state.formSteps.stepHistory[state.formSteps.stepHistory.length - 1];
       }
     },
-    updateFormState: (state, action: PayloadAction<Partial<NavigationState['formSteps']['formState']>>) => {
-      state.formSteps.formState = { ...state.formSteps.formState, ...action.payload };
+    setFormStep(state, action: PayloadAction<number>) {
+      const step = action.payload;
+      if (state.formSteps.stepHistory[state.formSteps.stepHistory.length - 1] !== step) {
+        state.formSteps.stepHistory.push(step);
+      }
+      state.formSteps.currentStep = step;
     },
-    resetForm: (state) => {
+    setActType(state, action: PayloadAction<string>) {
+      state.formSteps.actType = action.payload;
+    },
+    updateFormState(state, action: PayloadAction<Partial<NavigationState['formSteps']['formState']>>) {
+      state.formSteps.formState = {
+        ...state.formSteps.formState,
+        ...action.payload,
+      };
+    },
+    resetForm(state) {
       state.formSteps.currentStep = 1;
+      state.formSteps.stepHistory = [1];
       state.formSteps.formState = {};
-    },
-    setFormStep: (state, action: PayloadAction<number>) => {
-      state.formSteps.currentStep = action.payload;
+      state.formSteps.actType = undefined;
     },
   },
 });
 
-export const { 
-  pushRoute, 
-  goBack, 
+export const {
+  pushRoute,
+  goBack,
   goForward,
-  nextFormStep, 
-  prevFormStep, 
-  updateFormState, 
+  nextFormStep,
+  prevFormStep,
+  updateFormState,
   resetForm,
-  setFormStep 
+  setFormStep,
+  setActType,
 } = navigationSlice.actions;
+
 export const navigationReducer = navigationSlice.reducer;

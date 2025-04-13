@@ -39,8 +39,6 @@ const PersonalAccount = ({ defaultAccount, renderBelow }: Props) => {
         <div className="flex w-full flex-col gap-3">
           <Input name="account" label="Лицевой счёт" placeholder="Введите лицевой счёт" />
         </div>
-
-      {renderBelow && <div className="mt-8">{renderBelow}</div>}
       <Button className="w-full" type="button" onClick={handleNext}>
         Продолжить
       </Button>

@@ -20,8 +20,8 @@ const Restriction = forwardRef<RestrictionRef>((_, ref) => {
   return (
     <div className="flex flex-col gap-5 pt-25 px-5">
       <label className="text-14-20-regular">Основание введения ограничения:</label>
-      <Radio label="Имеется" name="reason" />
-      <Radio label="Отсутствует" name="reason" />
+      <Radio label="Имеется" name="reason" value={''} />
+      <Radio label="Отсутствует" name="reason" value={''} />
     </div>
   )
 })

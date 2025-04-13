@@ -7,11 +7,11 @@ import { Button } from '../../components/ui/button'
 import { fp } from '../../lib/fp'
 
 const SWITCHING_OPTIONS = [
-  { id: 'yes', value: 'yes', label: 'Имеется' },
-  { id: 'no', value: 'no', label: 'Отсутствует' },
+  { id: 'debt', value: 'debt', label: 'Неполная оплата коммунальной услуги по электроснабжению' },
+  { id: 'other', value: 'other', label: 'Иное' },
 ];
 
-function SwitchingDevice() {
+function DisconnectionReason() {
   const dispatch = useDispatch();
   const fm = useFormContext();
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -34,7 +34,7 @@ function SwitchingDevice() {
   return (
     <div className="flex flex-col h-full relative px-5 pt-25">
       <div className="flex flex-col gap-4 overflow-auto">
-        <label className="text-14-20-regular">Коммутационный (вводной) аппарат:</label>
+        <label className="text-14-20-regular">Основание введения ограничения (приостановления) режима потребления:</label>
         {SWITCHING_OPTIONS.map((option) => (
           <Radio
             key={option.id}
@@ -48,11 +48,12 @@ function SwitchingDevice() {
           <div className="text-12-16-medium text-red-500">{submitError}</div>
         )}
       </div>
+
         <Button className="w-full" type="button" onClick={handleNext}>
           Продолжить
         </Button>
-    </div>
+      </div>
   )
 }
 
-export default SwitchingDevice;
+export default DisconnectionReason;

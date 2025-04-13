@@ -18,6 +18,8 @@ import ReasonMb from './act-create/Reason'
 import useCreateTask from '../api/hooks/useCreateTask'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { formDataResolver } from '../lib/validators/formData'
+import DisconnectionReason from './act-create/DisconnectionReason'
+import Violation from './act-create/ViolationDescription'
 
 export type TFormData = {
     sealPlace: string
@@ -59,12 +61,10 @@ export type TFormData = {
 }
 
 function ActCreate() {
-    const fm = useForm<TFormData>({
-        // resolver: yupResolver(formDataResolver)
-    })
-
-    const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
-    console.log('📍 [ActCreate] Текущий шаг из Redux:', currentStep)
+    const fm = useForm<FormData>()
+    const { currentStep, actType, violation } = useSelector(
+        (state: RootState) => state.navigation.formSteps,
+    )
 
     const renderPageState = () => {
         switch (currentStep) {
@@ -78,23 +78,100 @@ function ActCreate() {
                 return <UploadPhoto />
             case 5:
                 return <ActType />
-            // case 5:
-            //     return <SwitchingDevice />
+            case 5:
+                return <SwitchingDevice />
             case 6:
-                return <Place />
+                switch (actType) {
+                    case 'restriction':
+                        return <DisconnectionReason />
+                    case 'resumption':
+                        return <PowerSuply />
+                    case 'inspection':
+                        return <DisconnectionReason />
+                    case 'unauthorized':
+                        return <DisconnectionReason />
+                    default:
+                        return null
+                }
             case 7:
-                return <PowerSupplyType />
-            case 8: 
-                return <ReasonMb />
+                switch (actType) {
+                    case 'restriction':
+                        return <PowerSuply />
+                    case 'resumption':
+                        return <Way />
+                    case 'inspection':
+                        return <PowerSuply />
+                    case 'unauthorized':
+                        return <PowerSuply />
+                    default:
+                        return null
+                }
+            case 8:
+                switch (actType) {
+                    case 'restriction':
+                        return <Way />
+                    case 'resumption':
+                        return <Place />
+                    case 'inspection':
+                        return <Way />
+                    case 'unauthorized':
+                        return <Violation />
+                    default:
+                        return null
+                }
             case 9:
-                return <PowerSuply />
-            case 10:
-                return <Way />
-
-            case 11:
-                return <GenerateAct />
-            default:
-                return null
+                switch (actType) {
+                    case 'restriction':
+                        return <Place />
+                    case 'resumption':
+                        return <PowerSuply />
+                    case 'inspection':
+                        return <Violation />
+                    case 'unauthorized':
+                        
+                    default:
+                        return null
+                }
+                case 10:
+                switch (actType) {
+                    case 'restriction':
+                        return <PowerSupplyType />
+                    case 'resumption':
+                        return <PowerSuply />
+                    case 'inspection':
+                        return <Violation />
+                    case 'unauthorized':
+                        
+                    default:
+                        return null
+                }
+                case 11:
+                switch (actType) {
+                    case 'restriction':
+                        return <DeviceValue />
+                    case 'resumption':
+                        return <PowerSuply />
+                    case 'inspection':
+                        return <Violation />
+                    case 'unauthorized':
+                        
+                    default:
+                        return null
+                }
+                case 12:
+                switch (actType) {
+                    case 'restriction':
+                        return <GenerateAct />
+                    case 'resumption':
+                        return <PowerSuply />
+                    case 'inspection':
+                        return <Violation />
+                    case 'unauthorized':
+                        
+                    default:
+                        return null
+                }
+            
         }
     }
 

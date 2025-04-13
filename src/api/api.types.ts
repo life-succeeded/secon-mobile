@@ -62,16 +62,39 @@ export interface IReport {
     created_at: string
 }
 
-/*[
-    {
-        "id": "67faf4757cc23443fe93fdb4",
-        "type": 0,
-        "file": {
-            "name": "Отчет за 13.04.2025.xlsx",
-            "url": "https://tns.quassbot.ru/storage/documents/Отчет за 13.04.2025.xlsx"
+export interface IDevice {
+    type: string
+    number: number
+    deployment_place: number
+    other_place: string
+    seals: [
+        {
+            number: number
+            place: string
         },
-        "for_date": "2025-04-13T00:00:00Z",
-        "created_at": "2025-04-12T23:17:09.217Z"
-    }
-]
-*/
+    ]
+    value: number
+}
+
+export interface IInspection {
+    task_id: string
+    brigade_id: string
+    type: 0
+    act_number: string
+    resolution: number
+    address: string
+    consumer: IConsumer
+    have_automaton: boolean
+    account_number: string
+    is_incomplete_payment: boolean
+    other_reason: string
+    method_by: number
+    method: string
+    device: IDevice
+    reason_type: number
+    reason: string
+    act_copies: number
+    images: IFile[]
+    inspection_date: string
+    resolution_file: IFile
+}

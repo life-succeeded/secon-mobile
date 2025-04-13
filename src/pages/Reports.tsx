@@ -10,7 +10,7 @@ import { useAuth } from '../lib/hooks/useAuth'
 import useGetAllReports from '../api/hooks/useGetAllReports'
 import Report from '../components/core/report'
 
-const TaskFeedTabs = ({ reports }: { reports: IReport[] }) => {
+const ReportFeedTabs = ({ reports }: { reports: IReport[] }) => {
     const tabs: Array<ITab> = [
         {
             id: 'today',
@@ -72,7 +72,7 @@ function Reports() {
         return <div className="p-4 text-center">Отчеты не найдены</div>
     }
 
-    return <TaskFeedTabs reports={reports} />
+    return <ReportFeedTabs reports={reports} />
 }
 
 export default Reports

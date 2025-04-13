@@ -1,45 +1,87 @@
-import { useDispatch, useSelector } from 'react-redux'
-// import { RootState } from '../../store/store'
-import { nextFormStep } from '../../store/navigationSlice'
+// components/act-create/ActType.tsx
+import { useDispatch } from 'react-redux'
+import { setFormStep } from '../../store/navigationSlice'
 import { Button } from '../../components/ui/button'
 import Radio from '../../components/ui/radio'
 import { useFormContext } from 'react-hook-form'
-import { useEffect, useState } from 'react'
-import { fp } from '../../lib/fp'
+
+const ACT_TYPES = [
+    {
+        id: 'act1',
+        label: 'О ВВЕДЕНИИ ОГРАНИЧЕНИЯ ПОДАЧИ ЭЛЕКТРОЭНЕРГИИ',
+        value: 'restriction',
+        step: 5,
+    },
+    {
+        id: 'act2',
+        label: 'О ВОЗОБНОВЛЕНИИ ПОДАЧИ ЭЛЕКТРОЭНЕРГИИ',
+        value: 'resumption',
+        step: 6,
+    },
+    {
+        id: 'act3',
+        label: 'ОСУЩЕСТВЛЕНИЯ ПРОВЕРКИ ПРИБОРОВ УЧЕТА',
+        value: 'inspection',
+        step: 7,
+    },
+    {
+        id: 'act4',
+        label: 'О САМОВОЛЬНОМ ПОДКЛЮЧЕНИИ К ЭЛЕКТРИЧЕСКИМ СЕТЯМ',
+        value: 'unauthorized',
+        step: 8,
+    },
+]
 
 function ActType() {
     const dispatch = useDispatch()
+    const fm = useFormContext()
 
-    const { watch, setError, formState } = useFormContext();
-    const actType = watch('actType')
+    const onSubmit = async () => {
+        const isValid = await fm.trigger('actType')
+        if (!isValid) return
 
-    const handleNext = () => {
-        if (!actType) {
-            setError('actType', { type: 'error', message: 'Выберите тип' })
-            return
-        }
-        dispatch(nextFormStep())
+        const value = fm.getValues('actType')
+        const selectedAct = ACT_TYPES.find((act) => act.value === value)
+
+        sessionStorage.setItem('actType', value)
+        dispatch(setFormStep(selectedAct!.step))
     }
 
     return (
-        <div className="flex flex-col h-full relative px-5 pt-25">
-            <div className="flex flex-col gap-4 overflow-auto">
+        <div className="relative flex h-full flex-col px-5 pt-25">
+            <div className="mb-20 flex flex-col gap-4 overflow-auto">
                 <label className="text-14-20-regular">Акт о:</label>
-                <Radio label="О ВВЕДЕНИИ ОГРАНИЧЕНИЯ..." name="actType" value='1' />
-                <Radio label="О ВОЗОБНОВЛЕНИИ..." name="actType" value='2' />
-                <Radio label="ОСУЩЕСТВЛЕНИЯ ПРОВЕРКИ..." name="actType" value='3' />
-                <Radio label="О САМОВОЛЬНОМ ПОДКЛЮЧЕНИИ..." name="actType" value='4' />
+
+                {ACT_TYPES.map((type) => (
+                    <Radio
+                        key={type.id}
+                        name="actType"
+                        value={type.value}
+                        label={type.label}
+                        checked={fm.watch('actType') === type.value}
+                        onChange={() => {
+                            fm.setValue('actType', type.value, { shouldValidate: true })
+                        }}
+                        wrapperClassName="items-start"
+                    />
+                ))}
+
+                {typeof fm.formState.errors.actType?.message === 'string' && (
+                    <p className="mt-2 text-sm text-red-500">
+                        {fm.formState.errors.actType.message}
+                    </p>
+                )}
             </div>
 
-            <div className="absolute top-130 left-5 right-5">
-                <Button className="w-full" type='button' onClick={handleNext}>
-                    Продолжить
+            <div className="absolute right-5 bottom-5 left-5">
+                <Button
+                    className="w-full"
+                    type="button"
+                    onClick={onSubmit}
+                    disabled={fm.formState.isSubmitting}
+                >
+                    {fm.formState.isSubmitting ? 'Загрузка...' : 'Продолжить'}
                 </Button>
-            </div>
-
-            <div className="text-12-16-medium text-red-500">
-                {fp.getOr('', `errors.actType.message`, formState)}
-                {fp.has(`errors.actType.message`, formState)}
             </div>
         </div>
     )

@@ -14,8 +14,10 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { PhotoData } from '../lib/hooks/useMultiCamera'
 import PowerSuply from './act-create/power-suply'
 import { setFormStep } from '../store/navigationSlice'
+import PersonalAccount from './act-create/PersonalAccount'
 
 type FormData = {
+    account: string;
     address: string;
     number: string;
     fullName: string;
@@ -31,23 +33,22 @@ function ActCreate() {
     const fm = useForm<FormData>();
 
     const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
-    const dispatch = useDispatch()
-    dispatch(setFormStep(9))
+
+    console.log('📍 [ActCreate] Текущий шаг из Redux:', currentStep);
 
     const renderPageState = () => {
         switch (currentStep) {
             case 1:
-                return <ContactInfo />
+                return <PersonalAccount/>
             case 2:
-                return <UploadPhoto />
+                return <ContactInfo />
             case 3:
-                return <ActType />
+                return <UploadPhoto />
             case 4:
-                return <SwitchingDevice />
-            case 5:
                 return <ActType />
-            case 9:
-                return <PowerSuply />
+
+            case 5:
+                return <SwitchingDevice />
             default:
                 return null;
         }

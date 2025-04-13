@@ -7,6 +7,8 @@ import ContactInfo from './act-create/ContactInfo'
 import { FormProvider, useForm } from 'react-hook-form'
 import PersonalAccount from './act-create/PersonalAccount'
 import Place from './act-create/Place'
+import PowerSupplyType from './act-create/PowerSupplyType'
+import DeviceValue from './act-create/DeviceValue'
 
 type FormData = {
     account: string
@@ -17,6 +19,8 @@ type FormData = {
     actType: string
     hasApparat: string
     violation: string
+    powerSupplyType: string
+    deviceValue: string
 }
 
 function ActCreate() {
@@ -39,6 +43,10 @@ function ActCreate() {
             //     return <SwitchingDevice />
             case 5:
                 return <Place />
+            case 6:
+                return <PowerSupplyType />
+            case 7:
+                return <DeviceValue />
             default:
                 return null
         }

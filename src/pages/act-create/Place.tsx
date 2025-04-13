@@ -11,22 +11,20 @@ import Radio from '../../components/ui/radio'
 import { fp } from '../../lib/fp'
 
 type Props = {
-    defaultViolation?: string
+    defaultPlace?: string
 }
 
-const Place = ({ defaultViolation }: Props) => {
+const Place = ({ defaultPlace }: Props) => {
     const dispatch = useDispatch()
     const { watch, formState, setError } = useFormContext()
 
-    const value = watch('violation')
+    const value = watch('place')
 
     const handleNext = async () => {
         if (!value) {
-            setError('violation', { type: 'error', message: 'Выберите тип' })
+            setError('place', { type: 'error', message: 'Выберите тип' })
             return
         }
-
-        console.log(value)
 
         dispatch(nextFormStep())
     }
@@ -34,12 +32,11 @@ const Place = ({ defaultViolation }: Props) => {
     return (
         <div className="relative flex h-full flex-col px-5 pt-25">
             <div className="flex w-full flex-col justify-center gap-4">
-                <label className="text-14-20-regular">
-                    Нарушение потребителем введенного ограничения:
-                </label>
+                <label className="text-14-20-regular">Место установки прибора учета:</label>
 
-                <Radio name="violation" value="1" label="Не выявлено" />
-                <Radio name="violation" value="2" label="Выявлено" />
+                <Radio name="place" value="В квартире" label="В квартире" />
+                <Radio name="place" value="На лестничной площадке" label="На лестничной площадке" />
+                <Radio name="place" value="Иное" label="Иное" />
             </div>
 
             <div className="text-12-16-medium text-red-500">

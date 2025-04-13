@@ -17,7 +17,7 @@ function PowerSuply() {
     const handleNext = () => {
         console.log(getValues())
         if (!actType) {
-            setError('pullElectro', { type: 'error', message: 'Ввдеите данные' })
+            setError('pullElectro', { type: 'error', message: 'Введите данные' })
             return
         }
         dispatch(nextFormStep())

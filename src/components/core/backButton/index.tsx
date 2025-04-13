@@ -1,30 +1,24 @@
-import { renderIcon } from '../../icons/helpers';
 import { Button } from '../../ui/button';
-import { useNavigate, useLocation } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { goBack, prevFormStep } from '../../../store/navigationSlice';
+import { useLocation, useNavigate } from 'react-router';
+import { prevFormStep } from '../../../store/navigationSlice';
 import { RootState } from '../../../store/store';
+import { renderIcon } from '../../icons/helpers';
 
 export const BackButton = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
-  const { history, currentIndex, formSteps } = useSelector((state: RootState) => state.navigation);
+  const { formSteps } = useSelector((state: RootState) => state.navigation);
 
   const isOnCreatePage = location.pathname.startsWith('/create');
-  const isNotFirstStep = formSteps.currentStep > 1;
+  const isNotFirstStep = formSteps.stepHistory.length > 1;
 
   const handleGoBack = () => {
     if (isOnCreatePage && isNotFirstStep) {
       dispatch(prevFormStep());
     } else {
-      if (currentIndex > 0) {
-        const previousPath = history[currentIndex - 1];
-        dispatch(goBack());
-        navigate(previousPath, { replace: true });
-      } else {
-        navigate('/', { replace: true });
-      }
+      navigate('/', { replace: true });
     }
   };
 

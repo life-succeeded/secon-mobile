@@ -19,7 +19,8 @@ import useCreateTask from '../api/hooks/useCreateTask'
 export type TFormData = {
     sealPlace: string
     sealNumber: string
-    phoneNumber
+    phoneNumber: string
+    violationDisruption: string
 
     account: string
     address: string

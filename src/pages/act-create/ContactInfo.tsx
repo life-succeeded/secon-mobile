@@ -11,7 +11,7 @@ function ContactInfo() {
         dispatch(nextFormStep())
     }
 
-    const fm = useFormContext();
+    const fm = useFormContext()
 
     const onNext = () => {
         try {
@@ -22,9 +22,8 @@ function ContactInfo() {
     }
 
     return (
-        // <div className="flex w-full h-full flex-col gap-5 p-5 grid-rows-[1fr_auto]">
-        <div className="flex w-full h-full flex-grow flex-col gap-3 p-5 pt-25 grid-rows-[auto_1fr_auto]">
-            <div className='pt-25 flex-grow'>
+        <div className="flex h-full w-full flex-grow grid-rows-[auto_1fr_auto] flex-col gap-3 p-5 pt-25">
+            <div className="flex-grow pt-25">
                 <Input
                     name="number"
                     label={'Контактный номер'}
@@ -40,7 +39,6 @@ function ContactInfo() {
                     <label className="text-14-20-regular">Объект</label>
                     <Input name="address" placeholder="Введите адрес объекта" />
                 </div>
-
             </div>
             <div className="">
                 <Button onClick={() => onNext()} className="w-full" type="submit">

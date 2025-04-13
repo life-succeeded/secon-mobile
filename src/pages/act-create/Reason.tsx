@@ -28,7 +28,7 @@ function ReasonMb() {
                 <label className="text-14-20-regular">Основание введения ограничения (приостановления) режима потребления: </label>
                 <Radio label="Неполная оплата коммунальной услуги по электроснабжению" name="reasonType" value='1' />
                 <Radio label="Иное" name="reasonType" value='2' />
-                {actType && <Input name={'reasonMb'} placeholder='Введите причину' />}
+                {actType == '2' && <Input name={'reasonMb'} placeholder='Введите причину' />}
             </div>
 
             <div>

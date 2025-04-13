@@ -119,7 +119,7 @@ const GenerateAct = ({ renderBelow }: Props) => {
                         have_automaton: true,
                         account_number,
                         is_incomplete_payment: true,
-                        other_reason: 'tasd',
+                        other_reason: values?.reasonMb ?? '',
                         method_by: Number(values.pullElectroAuthor),
                         method: values.duration,
                         device,

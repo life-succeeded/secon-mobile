@@ -19,7 +19,7 @@ function UploadPhoto() {
     const { watch, setValue, getValues } = useFormContext();
 
     const addres = watch('address');
-    const deviceNumber = watch('deviceValue');
+    const deviceNumber = watch('counterNumberNew');
     const noAccessCheck = watch('noAccess')
     const oldFile = watch('originalFile')
 

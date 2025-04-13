@@ -73,12 +73,10 @@ function ActCreate() {
             case 2:
                 return <ContactInfo />
             case 3:
-                return <DeviceValue />
-            case 4:
                 return <UploadPhoto />
-            case 5:
+            case 4:
                 return <ActType />
-            case 6:
+            case 5:
                 switch (actType) {
                     case 'restriction':
                         return <DisconnectionReason />
@@ -88,49 +86,49 @@ function ActCreate() {
                         return <DisconnectionReason />
                     case 'unauthorized':
                         return <DisconnectionReason />
+                    default:
+                        return null
+                }
+            case 6:
+                switch (actType) {
+                    case 'restriction':
+                        return <PowerSuply />
+                    case 'resumption':
+                        return <Way />
+                    case 'inspection':
+                        return <PowerSuply />
+                    case 'unauthorized':
+                        return <PowerSuply />
                     default:
                         return null
                 }
             case 7:
                 switch (actType) {
                     case 'restriction':
-                        return <PowerSuply />
-                    case 'resumption':
                         return <Way />
+                    case 'resumption':
+                        return <Place />
                     case 'inspection':
-                        return <PowerSuply />
+                        return <Way />
                     case 'unauthorized':
-                        return <PowerSuply />
+                        return <Violation />
                     default:
                         return null
                 }
             case 8:
                 switch (actType) {
                     case 'restriction':
-                        return <Way />
-                    case 'resumption':
-                        return <Place />
-                    case 'inspection':
-                        return <Way />
-                    case 'unauthorized':
-                        return <Violation />
-                    default:
-                        return null
-                }
-            case 9:
-                switch (actType) {
-                    case 'restriction':
                         return <Place />
                     case 'resumption':
                         return <PowerSuply />
                     case 'inspection':
                         return <Violation />
                     case 'unauthorized':
-                        
+
                     default:
                         return null
                 }
-                case 10:
+            case 9:
                 switch (actType) {
                     case 'restriction':
                         return <PowerSupplyType />
@@ -139,11 +137,11 @@ function ActCreate() {
                     case 'inspection':
                         return <Violation />
                     case 'unauthorized':
-                        
+
                     default:
                         return null
                 }
-                case 11:
+            case 10:
                 switch (actType) {
                     case 'restriction':
                         return <DeviceValue />
@@ -152,11 +150,11 @@ function ActCreate() {
                     case 'inspection':
                         return <Violation />
                     case 'unauthorized':
-                        
+
                     default:
                         return null
                 }
-                case 12:
+            case 11:
                 switch (actType) {
                     case 'restriction':
                         return <GenerateAct />
@@ -165,11 +163,11 @@ function ActCreate() {
                     case 'inspection':
                         return <Violation />
                     case 'unauthorized':
-                        
+
                     default:
                         return null
                 }
-            
+
         }
     }
 

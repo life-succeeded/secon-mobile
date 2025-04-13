@@ -74,7 +74,7 @@ function UploadPhoto() {
         formData.append('device_number', deviceNumber);
 
         try {
-            const response = await axios.post<{name: string}>('https://tns.quassbot.ru/api/images', formData, {
+            const response = await axios.post<{name: string, url: string }>('https://tns.quassbot.ru/api/images', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -93,6 +93,8 @@ function UploadPhoto() {
             const newPhoto = photos[photoType]
 
             setValue('originalFile', newPhoto)
+
+            setValue('url', response.data.url)
 
             console.log('Файл успешно отправлен:', response.data);
             return response.data;

@@ -54,6 +54,8 @@ export type TFormData = {
 
     reasonType: string
     reasonMb: string
+
+    url: string
 }
 
 function ActCreate() {

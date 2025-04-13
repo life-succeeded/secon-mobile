@@ -78,8 +78,6 @@ function ActCreate() {
                 return <UploadPhoto />
             case 5:
                 return <ActType />
-            case 5:
-                return <SwitchingDevice />
             case 6:
                 switch (actType) {
                     case 'restriction':

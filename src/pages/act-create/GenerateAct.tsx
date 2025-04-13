@@ -124,7 +124,7 @@ const GenerateAct = ({ renderBelow }: Props) => {
                         method: values.duration,
                         device,
                         reason_type: 0,
-                        reason: values?.reasonMb ?? 'причина',
+                        reason: values?.reasonMb ?? '',
                         images: [{ name: values?.originalFile?.fileName ?? 'фотка', url: values?.url ?? 'ссылка на фотку' }],
                         energy_action_date: new Date().toISOString(),
                     })

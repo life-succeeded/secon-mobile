@@ -12,6 +12,7 @@ import PersonalAccount from './act-create/PersonalAccount'
 import Place from './act-create/Place'
 import PowerSupplyType from './act-create/PowerSupplyType'
 import DeviceValue from './act-create/DeviceValue'
+import Way from './act-create/way'
 
 type FormData = {
     account: string;
@@ -25,13 +26,17 @@ type FormData = {
     originalFile: PhotoData;
     counterValue: PhotoData;
 
-    // 9
+    // 8
     pullElectro: string
     timeToOff: string;
     dateToOff: string;
-    violation: string
-    powerSupplyType: string
-    deviceValue: string
+    violation: string;
+    powerSupplyType: string;
+    deviceValue: string;
+
+    // 9 
+    pullElectroAuthor: string;
+    duration: string;
 }
 
 function ActCreate() {
@@ -57,11 +62,12 @@ function ActCreate() {
             case 6:
                 return <PowerSupplyType />
             case 7:
-                // return <DeviceValue />
-                return <SwitchingDevice />
-
-            case 9:
+                return <DeviceValue />
+                // return <SwitchingDevice />
+            case 8:
                 return <PowerSuply />
+            case 9:
+                return <Way />
             default:
                 return null
         }

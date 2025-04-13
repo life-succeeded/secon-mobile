@@ -37,13 +37,13 @@ export interface ITask {
     visit_date: string
     status: TTaskStatus
     consumer: IConsumer
-    account_number: number
+    account_number: string
     comment: string
     created_at: string
     updated_at: string
 }
 
-export interface ITaskCreate extends Omit<ITask, 'id'> {}
+export interface ITaskCreate extends Omit<ITask, 'id' | 'updated_at' | 'created_at' | 'status'> {}
 
 export interface ITaskUpdateStatus {
     new_status: TTaskStatus
@@ -64,12 +64,12 @@ export interface IReport {
 
 export interface IDevice {
     type: string
-    number: number
+    number: string
     deployment_place: number
     other_place: string
     seals: [
         {
-            number: number
+            number: string
             place: string
         },
     ]
@@ -93,7 +93,6 @@ export interface IInspection {
     device: IDevice
     reason_type: number
     reason: string
-    act_copies: number
     images: IFile[]
     inspection_date: string
     resolution_file: IFile
@@ -103,7 +102,6 @@ export interface ICreateInspectUniversal {
     task_id: string
     brigade_id: string
     type: 0
-    act_number: string
     resolution: number
     address: string
     consumer: IConsumer
@@ -116,7 +114,7 @@ export interface ICreateInspectUniversal {
     device: IDevice
     reason_type: number
     reason: string
-    act_copies: number
+    energy_action_date: string
     images: IFile[]
 }
 
@@ -124,7 +122,6 @@ export interface ICreateInspectControl {
     task_id: string
     brigade_id: string
     type: 0
-    act_number: string
     resolution: number
     address: string
     consumer: IConsumer

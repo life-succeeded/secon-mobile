@@ -11,33 +11,36 @@ import ContextLayout from './act-create/ctx/contextLayout'
 import { ActCreateContext, ContextModel } from './act-create/ctx/ctx'
 import ContactInfo from './act-create/ContactInfo'
 import { FormProvider, useForm } from 'react-hook-form'
+import PersonalAccount from './act-create/PersonalAccount'
 
 type FormData = {
-    address: string
-    number: string
-    fullName: string
-    noAccess: boolean
-    actType: string
-    hasApparat: string
+    account: string;
+    address: string;
+    number: string;
+    fullName: string;
+    noAccess: boolean;
+    actType: string;
+    hasApparat: string;
 }
 
 function ActCreate() {
     const fm = useForm<FormData>()
 
     const { currentStep } = useSelector((state: RootState) => state.navigation.formSteps)
+    console.log('📍 [ActCreate] Текущий шаг из Redux:', currentStep);
 
     const renderPageState = () => {
         switch (currentStep) {
             case 1:
-                return <ContactInfo />
+                return <PersonalAccount/>
             case 2:
-                return <UploadPhoto />
+                return <ContactInfo />
             case 3:
-                return <ActType />
+                return <UploadPhoto />
             case 4:
-                return <SwitchingDevice />
-            case 5:
                 return <ActType />
+            case 5:
+                return <SwitchingDevice />
             default:
                 return null
         }

@@ -8,10 +8,10 @@ import { useEffect, useState } from 'react'
 import { fp } from '../../lib/fp'
 import { Input } from '../../components/ui/input'
 
-function PowerSuply() {
+function PowerSupply() {
     const dispatch = useDispatch()
 
-    const { watch, setError, formState, getValues } = useFormContext();
+    const { watch, setError, formState, getValues } = useFormContext()
     const actType = watch('pullElectro')
 
     const handleNext = () => {
@@ -24,17 +24,17 @@ function PowerSuply() {
     }
 
     return (
-        <div className="flex flex-col h-full relative px-5 pt-25">
+        <div className="relative flex h-full flex-col px-5 pt-25">
             <div className="flex flex-col gap-4 overflow-auto">
                 <label className="text-14-20-regular">Подача электроэнергии</label>
-                <Radio label="Ограничена" name="pullElectro" value='1' />
-                <Radio label="Приостановлена" name="pullElectro" value='2' />
-                <Input name={'timeToOff'} label='Время' placeholder='ЧЧ:ММ' />
-                <Input name={'dateToOff'} label='Дата' placeholder='ЧЧ.ММ.ГГГГ' />
+                <Radio label="Ограничена" name="pullElectro" value="1" />
+                <Radio label="Приостановлена" name="pullElectro" value="2" />
+                <Input name={'timeToOff'} label="Время" placeholder="ЧЧ:ММ" />
+                <Input name={'dateToOff'} label="Дата" placeholder="ЧЧ.ММ.ГГГГ" />
             </div>
 
-            <div className="absolute top-130 left-5 right-5">
-                <Button className="w-full" type='button' onClick={() => handleNext()}>
+            <div className="absolute top-130 right-5 left-5">
+                <Button className="w-full" type="button" onClick={() => handleNext()}>
                     Продолжить
                 </Button>
             </div>
@@ -47,4 +47,4 @@ function PowerSuply() {
     )
 }
 
-export default PowerSuply
+export default PowerSupply

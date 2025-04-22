@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import ActType from './act-create/ActType'
 import SwitchingDevice from './act-create/SwitchingDevice'
@@ -6,18 +6,16 @@ import UploadPhoto from './act-create/UploadPhoto'
 import ContactInfo from './act-create/ContactInfo'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PhotoData } from '../lib/hooks/useMultiCamera'
-import PowerSuply from './act-create/power-suply'
-import { nextFormStep, setFormStep } from '../store/navigationSlice'
+import PowerSupply from './act-create/PowerSupply'
 import PersonalAccount from './act-create/PersonalAccount'
 import Place from './act-create/Place'
 import PowerSupplyType from './act-create/PowerSupplyType'
 import DeviceValue from './act-create/DeviceValue'
-import Way from './act-create/way'
 import GenerateAct from './act-create/GenerateAct'
-import ReasonMb from './act-create/Reason'
-import useCreateTask from '../api/hooks/useCreateTask'
 import DisconnectionReason from './act-create/DisconnectionReason'
 import Violation from './act-create/ViolationDescription'
+import Way from './act-create/way'
+import { useEffect } from 'react'
 
 export type TFormData = {
     sealPlace: string
@@ -34,8 +32,11 @@ export type TFormData = {
     actType: string
     hasApparat: string
 
-    originalFile: PhotoData
+    originalCounterFile: PhotoData
     counterValue: PhotoData
+
+    originalSealFile: PhotoData
+    sealValue: PhotoData
 
     // 8
     pullElectro: string
@@ -57,10 +58,18 @@ export type TFormData = {
 }
 
 function ActCreate() {
-    const fm = useForm<FormData>()
-    const { currentStep, actType, violation } = useSelector(
+    const { currentStep, actType, formState } = useSelector(
         (state: RootState) => state.navigation.formSteps,
     )
+
+    const fm = useForm<TFormData>({
+        defaultValues: {
+            phoneNumber: formState.phoneNumber,
+            address: formState.address,
+            fullName: formState.consumer,
+            account: formState.accountNumber,
+        },
+    })
 
     const renderPageState = () => {
         switch (currentStep) {
@@ -79,7 +88,7 @@ function ActCreate() {
                     case 'restriction':
                         return <DisconnectionReason />
                     case 'resumption':
-                        return <PowerSuply />
+                        return <PowerSupply />
                     case 'inspection':
                         return <DisconnectionReason />
                     case 'unauthorized':
@@ -90,13 +99,13 @@ function ActCreate() {
             case 7:
                 switch (actType) {
                     case 'restriction':
-                        return <PowerSuply />
+                        return <PowerSupply />
                     case 'resumption':
                         return <Way />
                     case 'inspection':
-                        return <PowerSuply />
+                        return <PowerSupply />
                     case 'unauthorized':
-                        return <PowerSuply />
+                        return <PowerSupply />
                     default:
                         return null
                 }
@@ -118,54 +127,64 @@ function ActCreate() {
                     case 'restriction':
                         return <Place />
                     case 'resumption':
-                        return <PowerSuply />
+                        return <PowerSupply />
                     case 'inspection':
                         return <Violation />
                     case 'unauthorized':
-                        
+
                     default:
                         return null
                 }
-                case 10:
+            case 10:
                 switch (actType) {
                     case 'restriction':
                         return <PowerSupplyType />
                     case 'resumption':
-                        return <PowerSuply />
+                        return <Way />
                     case 'inspection':
                         return <Violation />
                     case 'unauthorized':
-                        
+
                     default:
                         return null
                 }
-                case 11:
+            case 11:
                 switch (actType) {
                     case 'restriction':
                         return <DeviceValue />
                     case 'resumption':
-                        return <PowerSuply />
+                        return <Place />
                     case 'inspection':
                         return <Violation />
                     case 'unauthorized':
-                        
+
                     default:
                         return null
                 }
-                case 12:
+            case 12:
                 switch (actType) {
                     case 'restriction':
                         return <GenerateAct />
                     case 'resumption':
-                        return <PowerSuply />
+                        return <PowerSupplyType />
                     case 'inspection':
                         return <Violation />
                     case 'unauthorized':
-                        
+
                     default:
                         return null
                 }
-            
+            case 13:
+                switch (actType) {
+                    case 'resumption':
+                        return <GenerateAct />
+                    case 'inspection':
+                        return <Violation />
+                    case 'unauthorized':
+
+                    default:
+                        return null
+                }
         }
     }
 

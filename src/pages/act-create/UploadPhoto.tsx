@@ -8,6 +8,8 @@ import { PhotoData, useMultiCamera } from '../../lib/hooks/useMultiCamera'
 import { Label } from '../../components/ui/label'
 import { ImageCropper } from '../../components/core/cropper'
 import { Input } from '../../components/ui/input'
+import toast from 'react-hot-toast'
+import { base64ToFile } from '../../utils/strings'
 
 function UploadPhoto() {
     const [photoType, setPhotoType] = useState('')
@@ -15,17 +17,17 @@ function UploadPhoto() {
     const { takePicture, photos, setPhotos } = useMultiCamera()
     const [isNoAccess, setIsNoAccess] = useState(false)
 
-    const { watch, setValue, getValues } = useFormContext();
+    const { watch, setValue, getValues } = useFormContext()
 
     const noAccessCheck = watch('noAccess')
     const oldFile = watch('originalFile')
 
     useEffect(() => {
         const dataType = (oldFile as { type: string })?.type
-        if (!dataType) return;
+        if (!dataType) return
         setPhotos({
-            [dataType]: oldFile
-        });
+            [dataType]: oldFile,
+        })
 
         console.log('log', dataType, oldFile)
         console.log(photos)
@@ -49,11 +51,11 @@ function UploadPhoto() {
 
     const onNext = () => {
         try {
-            console.log(photos)
-            if (!noAccessCheck && (!photos['counter'] && !photos['seal'])) {
-                throw new Error(
+            if (!noAccessCheck && !photos['counter'] && !photos['seal']) {
+                toast.error(
                     'Пожалуйста, добавьте все необходимые фотографии или отметьте отсутствие доступа',
                 )
+                return
             }
 
             const photo = photos[photoType]
@@ -66,61 +68,36 @@ function UploadPhoto() {
         }
     }
 
-    function base64ToFile(base64: string, filename: string): File {
-        if (!base64) {
-            throw new Error('Base64 string is empty');
-        }
+    // const renderCropper = (type: 'seal' | 'counter') => {
+    //     if (!photos[type]) {
+    //         return null
+    //     }
+    //     const photo = photos[type]
 
-        const parts = base64.split(';base64,');
-        const mimeType = parts.length > 1 ? parts[0].split(':')[1] : 'image/jpeg';
-        const base64Data = parts.length > 1 ? parts[1] : base64;
+    //     const file = base64ToFile(photo.data, photo.fileName)
 
-        try {
-            const byteString = atob(base64Data);
-            const byteNumbers = new Array(byteString.length);
-            for (let i = 0; i < byteString.length; i++) {
-                byteNumbers[i] = byteString.charCodeAt(i);
-            }
-
-            const byteArray = new Uint8Array(byteNumbers);
-
-            return new File([byteArray], filename, { type: mimeType });
-        } catch (e) {
-            throw new Error('Failed to decode base64 string: ' + e.message);
-        }
-    }
-
-    const renderCropper = (type: 'seal' | 'counter') => {
-        if (!photos[type]) {
-            return null;
-        }
-        const photo = photos[type];
-
-        const file = base64ToFile(photo.data, photo.fileName);
-
-        return (
-            <ImageCropper file={file} onChange={(file: PhotoData) => {
-                console.log('file', file)
-                setValue('counterValue', file)
-            }}
-            />
-        )
-    }
+    //     return (
+    //         <ImageCropper
+    //             file={file}
+    //             onChange={(file: PhotoData) => {
+    //                 console.log('file', file)
+    //                 setValue(type + 'Value', file)
+    //             }}
+    //         />
+    //     )
+    // }
 
     return (
-        <div
-            className="flex w-full h-full    flex-grow flex-col gap-3 p-5 pt-25 grid-rows-[auto_1fr_auto]"
-        >
-            <div className='flex-grow'>
+        <div className="flex h-full w-full flex-grow grid-rows-[auto_1fr_auto] flex-col gap-3 p-5 pt-25">
+            <div className="flex-grow">
                 <div>Добавление фото счётчика до работы</div>
                 <div className="flex w-full flex-col gap-6">
                     <div className="flex w-full flex-col gap-2">
-                        <Input name={'counterNumberNew'} label='Заводской № прибора учета' />
+                        <Input name={'counterNumberNew'} label="Заводской № прибора учета" />
                         <Button
                             type="button"
                             onClick={() => {
-                                handleTakePicture('counter');
-                                setPhotoType('counter')
+                                handleTakePicture('counter')
                             }}
                             disabled={isNoAccess}
                         >
@@ -129,15 +106,13 @@ function UploadPhoto() {
                         {!isNoAccess && photos['counter'] && (
                             <Label icon="image" text={photos['counter'].fileName} />
                         )}
-                        {renderCropper('counter')}
-
+                        {/* {renderCropper('counter')} */}
                     </div>
                     <div className="flex w-full flex-col gap-2">
                         <Button
                             type="button"
                             onClick={() => {
-                                handleTakePicture('seal');
-                                setPhotoType('seal')
+                                handleTakePicture('seal')
                             }}
                             disabled={isNoAccess}
                         >
@@ -146,22 +121,14 @@ function UploadPhoto() {
                         {!isNoAccess && photos['seal'] && (
                             <Label icon="image" text={photos['seal'].fileName} />
                         )}
-                        {renderCropper('seal')}
+                        {/* {renderCropper('seal')} */}
                     </div>
                 </div>
-                <Checkbox
-                    className="py-2"
-                    label="Нет доступа к счётчику"
-                    name='noAccess'
-                />
+                <Checkbox className="py-2" label="Нет доступа к счётчику" name="noAccess" />
             </div>
 
-
             <div className="">
-                <Button
-                    className="w-full" type="button"
-                    onClick={() => onNext()}
-                >
+                <Button className="w-full" type="button" onClick={() => onNext()}>
                     Продолжить
                 </Button>
             </div>

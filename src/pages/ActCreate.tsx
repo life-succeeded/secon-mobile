@@ -13,7 +13,7 @@ import DeviceValue from './act-create/DeviceValue'
 import GenerateAct from './act-create/GenerateAct'
 import DisconnectionReason from './act-create/DisconnectionReason'
 import Violation from './act-create/ViolationDescription'
-import Way from './act-create/way'
+import Way from './act-create/Way'
 
 export type TFormData = {
     sealPlace: string
@@ -35,6 +35,9 @@ export type TFormData = {
 
     originalSealFile: PhotoData
     sealValue: PhotoData
+
+    sealImage: { url: string; name: string }
+    counterImage: { url: string; name: string }
 
     // 8
     pullElectro: string
@@ -71,7 +74,7 @@ function ActCreate() {
         },
     })
 
- const renderPageState = () => {
+    const renderPageState = () => {
         switch (currentStep) {
             case 1:
                 return <PersonalAccount />
@@ -172,7 +175,6 @@ function ActCreate() {
                     default:
                         return null
                 }
-
         }
     }
 

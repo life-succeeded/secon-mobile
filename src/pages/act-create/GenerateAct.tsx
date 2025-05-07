@@ -109,6 +109,8 @@ const GenerateAct = ({ renderBelow }: Props) => {
                         other_place: 'иное',
                     }
 
+                    const images = [values.sealImage, values.counterImage]
+
                     const createdInspection = await createInspectUniversal({
                         task_id,
                         brigade_id,
@@ -125,7 +127,8 @@ const GenerateAct = ({ renderBelow }: Props) => {
                         device,
                         reason_type: 0,
                         reason: values?.reasonMb ?? '',
-                        images: [{ name: values?.originalFile?.fileName ?? 'фотка', url: values?.url ?? 'ссылка на фотку' }],
+                        images,
+
                         energy_action_date: new Date().toISOString(),
                     })
 

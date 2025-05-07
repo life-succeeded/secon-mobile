@@ -26,7 +26,7 @@ function ActType() {
     }
 
     dispatch(setActType(value));
-    dispatch(setFormStep(5));
+    dispatch(setFormStep(6));
   };
 
   return (

@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import ActType from './act-create/ActType'
-import SwitchingDevice from './act-create/SwitchingDevice'
 import UploadPhoto from './act-create/UploadPhoto'
 import ContactInfo from './act-create/ContactInfo'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -15,7 +14,6 @@ import GenerateAct from './act-create/GenerateAct'
 import DisconnectionReason from './act-create/DisconnectionReason'
 import Violation from './act-create/ViolationDescription'
 import Way from './act-create/way'
-import { useEffect } from 'react'
 
 export type TFormData = {
     sealPlace: string
@@ -55,6 +53,8 @@ export type TFormData = {
 
     reasonType: string
     reasonMb: string
+
+    url: string
 }
 
 function ActCreate() {
@@ -71,7 +71,7 @@ function ActCreate() {
         },
     })
 
-    const renderPageState = () => {
+ const renderPageState = () => {
         switch (currentStep) {
             case 1:
                 return <PersonalAccount />
@@ -82,8 +82,6 @@ function ActCreate() {
             case 4:
                 return <ActType />
             case 5:
-                return <SwitchingDevice />
-            case 6:
                 switch (actType) {
                     case 'restriction':
                         return <DisconnectionReason />
@@ -96,7 +94,7 @@ function ActCreate() {
                     default:
                         return null
                 }
-            case 7:
+            case 6:
                 switch (actType) {
                     case 'restriction':
                         return <PowerSupply />
@@ -109,7 +107,7 @@ function ActCreate() {
                     default:
                         return null
                 }
-            case 8:
+            case 7:
                 switch (actType) {
                     case 'restriction':
                         return <Way />
@@ -122,7 +120,7 @@ function ActCreate() {
                     default:
                         return null
                 }
-            case 9:
+            case 8:
                 switch (actType) {
                     case 'restriction':
                         return <Place />
@@ -135,7 +133,7 @@ function ActCreate() {
                     default:
                         return null
                 }
-            case 10:
+            case 9:
                 switch (actType) {
                     case 'restriction':
                         return <PowerSupplyType />
@@ -148,7 +146,7 @@ function ActCreate() {
                     default:
                         return null
                 }
-            case 11:
+            case 10:
                 switch (actType) {
                     case 'restriction':
                         return <DeviceValue />
@@ -161,7 +159,7 @@ function ActCreate() {
                     default:
                         return null
                 }
-            case 12:
+            case 11:
                 switch (actType) {
                     case 'restriction':
                         return <GenerateAct />
@@ -174,17 +172,7 @@ function ActCreate() {
                     default:
                         return null
                 }
-            case 13:
-                switch (actType) {
-                    case 'resumption':
-                        return <GenerateAct />
-                    case 'inspection':
-                        return <Violation />
-                    case 'unauthorized':
 
-                    default:
-                        return null
-                }
         }
     }
 

@@ -19,12 +19,6 @@ const PersonalAccount = ({ defaultAccount, renderBelow }: Props) => {
 
     const fm = useFormContext()
 
-    // useEffect(() => {
-    //     if (defaultAccount || savedAccount) {
-    //         fm.reset({ account: defaultAccount || savedAccount || '' })
-    //     }
-    // }, [defaultAccount, savedAccount])
-
     const handleNext = async () => {
         const isValid = await fm.trigger()
         if (isValid) {
@@ -33,18 +27,18 @@ const PersonalAccount = ({ defaultAccount, renderBelow }: Props) => {
         }
     }
 
-    return (<div>
-        <div className="relative flex h-full flex-col px-5 pt-25">
-            <div className="flex w-full flex-col gap-3">
-                <Input name="account" label="Лицевой счёт" placeholder="Введите лицевой счёт" />
+    return (
+        <div>
+            <div className="relative flex h-full flex-col px-5 pt-25">
+                <div className="flex w-full flex-col gap-3">
+                    <Input name="account" label="Лицевой счёт" placeholder="Введите лицевой счёт" />
+                </div>
+                <Button className="w-full" type="button" onClick={handleNext}>
+                    Продолжить
+                </Button>
             </div>
-            <Button className="w-full" type="button" onClick={handleNext}>
-                Продолжить
-            </Button>
         </div>
-    
-    </div>
-  )
+    )
 }
 
 export default PersonalAccount

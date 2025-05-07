@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
+import { Camera, CameraResultType, CameraSource, ImageOptions } from '@capacitor/camera'
 
 export interface PhotoData {
     fileName: string
@@ -11,7 +11,7 @@ export const useMultiCamera = () => {
     const [photos, setPhotos] = useState<Record<string, PhotoData | null>>({})
     const [error, setError] = useState<string | null>(null)
 
-    const takePicture = async (key: string, options = {}) => {
+    const takePicture = async (key: string, options: ImageOptions | {} = {}) => {
         try {
             const image = await Camera.getPhoto({
                 quality: 90,
@@ -25,7 +25,7 @@ export const useMultiCamera = () => {
                 throw new Error('Не удалось получить фото')
             }
 
-            let fileName = null
+            let fileName: string = null
             if (image.path) {
                 fileName = image.path.split('/').pop() || null
             } else {
@@ -60,7 +60,7 @@ export const useMultiCamera = () => {
                 throw new Error('Не удалось выбрать фото')
             }
 
-            let fileName = null
+            let fileName: string = null
             if (image.path) {
                 fileName = image.path.split('/').pop() || null
             } else {
